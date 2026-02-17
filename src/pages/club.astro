@@ -775,6 +775,7 @@ import Layout from '../components/layout/Layout.astro';
 
   /* ─── RESPONSIVE ─────────────────────────────────────────────── */
   @media (max-width: 768px) {
+    /* Grids → single column */
     .historia-grid,
     .estadio-hero,
     .estadio-stats-grid,
@@ -782,15 +783,49 @@ import Layout from '../components/layout/Layout.astro';
     .valores-grid,
     .inst-grid { grid-template-columns: 1fr; }
 
+    /* Section padding reductions */
+    .section,
+    .timeline-section,
+    .estadio-section,
+    .valores-section,
+    .instalaciones-section,
+    .quote-section { padding: 64px 1.25rem; }
+
+    /* Hero content */
+    .hero-content { padding: 0 1.25rem 60px; }
+    .hero-meta { gap: 20px; flex-wrap: wrap; }
+    .hero-title { font-size: clamp(56px, 14vw, 120px); }
+
+    /* Historia cards */
+    .historia-card { padding: 24px 20px; }
+    .historia-year { font-size: 56px; }
+
+    /* Timeline: collapse to left-side vertical line */
     .timeline::before { left: 20px; }
     .timeline-item { grid-template-columns: 40px 1fr; }
     .timeline-item:nth-child(odd) .tl-content,
     .timeline-item:nth-child(even) .tl-content { grid-column: 2; text-align: left; }
     .timeline-item:nth-child(odd) .tl-empty,
     .timeline-item:nth-child(even) .tl-empty { display: none; }
-    .tl-dot { grid-column: 1; }
+    .tl-dot { grid-column: 1; justify-content: flex-start; }
+    .tl-content { padding-right: 0; }
 
-    .estadio-big { min-height: 260px; }
+    /* Estadio */
+    .estadio-big { min-height: 200px; padding: 28px 20px; }
+    .stat-cell { padding: 24px 16px; }
+    .estadio-stats-grid { margin-top: 0; }
+
+    /* Canchas row */
+    .cancha-step { padding: 24px 20px; }
+
+    /* Valores */
+    .valor-card { padding: 28px 20px; }
+
+    /* Instalaciones */
+    .inst-card { padding: 24px 20px; }
+
+    /* Section title */
+    .section-title { font-size: clamp(48px, 12vw, 80px); }
   }
 </style>
 

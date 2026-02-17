@@ -528,7 +528,7 @@ import Hero from '../components/ui/Hero.astro';
             type: 'Fútbol 11',
             icon: '⚽',
             video: '/videos/cancha-principal.mp4',
-            image: '/images/canchas/cancha-principal.jpg',
+            image: '/imagenes/primera/primera1.jpg',
             features: ['Césped natural','Iluminación profesional','Tribunas','Vestuarios amplios','Capacidad: 11 vs 11'],
             wa: 'Hola!%20Quiero%20consultar%20el%20alquiler%20de%20la%20Cancha%20Principal'
           },
@@ -537,7 +537,7 @@ import Hero from '../components/ui/Hero.astro';
             type: 'Fútbol 7',
             icon: '🥅',
             video: '/videos/cancha-2.mp4',
-            image: '/images/canchas/cancha-2.jpg',
+            image: '/imagenes/infatiles/infantil1.jpg',
             features: ['Césped sintético','Iluminación LED','Vestuarios','Estacionamiento','Capacidad: 7 vs 7'],
             wa: 'Hola!%20Quiero%20consultar%20el%20alquiler%20de%20Cancha%20N%C2%B02'
           },
@@ -546,7 +546,7 @@ import Hero from '../components/ui/Hero.astro';
             type: 'Multiuso Techado',
             icon: '🏀',
             video: '/videos/polideportivo.mp4',
-            image: '/images/canchas/polideportivo.jpg',
+            image: '/imagenes/basquet/basquet1.jpg',
             features: ['Básquet · Handball · Fútbol Sala','Piso reglamentario','Vestuarios','Gradas','Techado'],
             wa: 'Hola!%20Quiero%20consultar%20el%20alquiler%20del%20Polideportivo'
           }
@@ -630,37 +630,21 @@ import Hero from '../components/ui/Hero.astro';
           <div class="showcase-label">CLUB ATLÉTICO INDEPENDIENTE</div>
         </div>
 
-        <!-- Secondary slots — usá tus imágenes/videos -->
+        <!-- Secondary slots -->
         <div class="showcase-item">
-          <div class="media-placeholder">
-            <div class="media-placeholder-icon">⚽</div>
-            <div class="media-placeholder-text">Cancha Principal</div>
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.55rem;letter-spacing:0.15em;color:rgba(255,255,255,0.1);margin-top:0.2rem;">
-              Reemplazá con tu imagen
-            </div>
-          </div>
-          <!-- Cuando tengas la imagen: <img src="/images/canchas/cancha-principal.jpg" alt="Cancha Principal" /> -->
+          <img src="/imagenes/primera/primera1.jpg" alt="Cancha Principal" loading="lazy" />
           <div class="showcase-overlay"></div>
           <div class="showcase-label">Cancha Principal — Fútbol 11</div>
         </div>
 
         <div class="showcase-item">
-          <div class="media-placeholder">
-            <div class="media-placeholder-icon">🏀</div>
-            <div class="media-placeholder-text">Polideportivo</div>
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.55rem;letter-spacing:0.15em;color:rgba(255,255,255,0.1);margin-top:0.2rem;">
-              Reemplazá con tu imagen
-            </div>
-          </div>
-          <!-- Cuando tengas la imagen: <img src="/images/canchas/polideportivo.jpg" alt="Polideportivo" /> -->
+          <img src="/imagenes/handball/hand1.jpg" alt="Polideportivo" loading="lazy" />
           <div class="showcase-overlay"></div>
           <div class="showcase-label">Polideportivo — Multiuso</div>
         </div>
       </div>
 
-      <p class="body-text reveal" style="font-size:0.72rem;color:rgba(255,255,255,0.2);margin-top:0.75rem;text-align:center;letter-spacing:0.05em;">
-        Agregá tus fotos/videos en <code style="color:rgba(212,43,43,0.6)">/public/images/canchas/</code> y <code style="color:rgba(212,43,43,0.6)">/public/videos/</code> para reemplazar los placeholders
-      </p>
+
     </div>
   </section>
 

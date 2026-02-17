@@ -96,6 +96,7 @@ export const sports = [
     categories: ['Mini', 'U13', 'U15', 'U17', 'Mayor'],
     schedule: 'Lunes, Miércoles y Viernes 18:00–20:00',
     color: 'orange',
+    images: ['/imagenes/basquet/basquet1.jpg', '/imagenes/basquet/basquet2.jpg'],
     detailedSchedule: {
       'Lunes': ['18:00-20:00'],
       'Miércoles': ['18:00-20:00'],

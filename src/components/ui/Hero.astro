@@ -177,23 +177,6 @@ const { variant = 'page', title, subtitle, showButtons = false } = Astro.props;
     to   { transform: rotate(405deg); }
   }
 
-  /* ── Scanline ────────────────────────────────────────── */
-  .scanline {
-    position: absolute;
-    left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, rgba(212,43,43,0.5), transparent);
-    animation: scanMove 5s ease-in-out infinite;
-    z-index: 2;
-    pointer-events: none;
-  }
-  @keyframes scanMove {
-    0%   { top: 0%; opacity: 0; }
-    10%  { opacity: 1; }
-    90%  { opacity: 1; }
-    100% { top: 100%; opacity: 0; }
-  }
-
   /* ── Logo ────────────────────────────────────────────── */
   .logo-wrapper {
     position: relative;
@@ -493,6 +476,23 @@ const { variant = 'page', title, subtitle, showButtons = false } = Astro.props;
     border-radius: 2px;
     padding: 1.2rem 2.4rem;
   }
+
+  /* ── Mobile ─────────────────────────────────────────────── */
+  @media (max-width: 767px) {
+    .hero-page {
+      padding-top: 8rem;
+      padding-bottom: 3.5rem;
+    }
+    .page-title {
+      font-size: clamp(2.8rem, 14vw, 5rem);
+    }
+    .page-subtitle-box {
+      padding: 0.85rem 1.25rem;
+    }
+    .page-subtitle-box p {
+      font-size: 0.95rem !important;
+    }
+  }
 </style>
 
 {variant === 'home' ? (
@@ -519,9 +519,6 @@ const { variant = 'page', title, subtitle, showButtons = false } = Astro.props;
     <div class="geo-shape geo-ring-2"></div>
     <div class="geo-shape geo-diamond"></div>
     <div class="geo-shape geo-diamond-sm"></div>
-
-    <!-- Scanline -->
-    <div class="scanline"></div>
 
     <!-- Corner accents -->
     <div class="corner corner-tl"></div>
