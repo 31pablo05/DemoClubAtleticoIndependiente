@@ -58,7 +58,7 @@ export const weeklySchedule = {
 
 // ── Color palette — consistent with club brand ────────────
 // Primary: --red #D42B2B matches the site's CSS variable
-export const sportColorMap: Record<string, string> = {
+export const sportColorMap = {
   red:    '#D42B2B',  // Club red — Fútbol / Fútbol Femenino / Baby Fútbol
   blue:   '#2563EB',  // Handball
   pink:   '#DB2777',  // Hockey
@@ -67,7 +67,7 @@ export const sportColorMap: Record<string, string> = {
 };
 
 // ── Background tints (10% opacity) for card/row fills ─────
-export const sportColorMapSoft: Record<string, string> = {
+export const sportColorMapSoft = {
   red:    'rgba(212,43,43,0.12)',
   blue:   'rgba(37,99,235,0.12)',
   pink:   'rgba(219,39,119,0.12)',
@@ -76,7 +76,7 @@ export const sportColorMapSoft: Record<string, string> = {
 };
 
 // ── Sport metadata — icons + display labels ───────────────
-export const sportMeta: Record<string, { icon: string; label: string }> = {
+export const sportMeta = {
   'futbol':          { icon: '⚽', label: 'Fútbol'          },
   'futbol-femenino': { icon: '⚽', label: 'Fútbol Femenino' },
   'baby-futbol':     { icon: '⚽', label: 'Baby Fútbol'     },
