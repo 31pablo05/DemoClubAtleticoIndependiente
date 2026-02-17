@@ -1,0 +1,232 @@
+---
+import Layout from '../components/layout/Layout.astro';
+import Hero from '../components/ui/Hero.astro';
+import SportCard from '../components/ui/SportCard.astro';
+import ProductCard from '../components/ui/ProductCard.astro';
+import SectionTitle from '../components/ui/SectionTitle.astro';
+import CtaBanner from '../components/ui/CtaBanner.astro';
+import { sports } from '../data/sports';
+import { products } from '../data/products';
+import { weeklySchedule, sportColorMap } from '../data/schedule';
+
+const featuredSports = sports.slice(0, 7);
+const featuredProducts = products.filter(p => p.featured);
+---
+
+<Layout title="Club Atlético Independiente de Trelew - Inicio">
+  <!-- Hero Section -->
+  <Hero variant="home" />
+
+  <!-- Sports Section -->
+  <section class="py-20 bg-club-black">
+    <div class="container mx-auto px-4">
+      <SectionTitle 
+        title="NUESTRAS DISCIPLINAS"
+        subtitle="Actividades deportivas para todas las edades y niveles"
+      />
+
+      <!-- Sports Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {featuredSports.map(sport => (
+          <SportCard sport={sport} variant="compact" />
+        ))}
+      </div>
+
+      <!-- View All Button -->
+      <div class="text-center mt-12">
+        <a
+          href="/deportes"
+          class="inline-block bg-club-gold hover:bg-club-gold-dim text-club-black px-8 py-4 rounded-full font-display text-xl tracking-wider transition-all hover:scale-105 hover:glow-gold"
+        >
+          VER TODAS LAS DISCIPLINAS
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Schedule Section -->
+  <section class="py-20 bg-club-surface">
+    <div class="container mx-auto px-4">
+      <SectionTitle 
+        title="ESTA SEMANA EN EL CLUB"
+        subtitle="Actividades programadas para la semana"
+      />
+
+      <!-- Weekly Grid -->
+      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+        {Object.entries(weeklySchedule).map(([day, activities]) => (
+          <div class="bg-club-card rounded-lg p-4 border border-club-gold border-opacity-20 hover:border-opacity-100 transition-all hover-lift">
+            <h3 class="font-display text-xl text-club-gold mb-4 tracking-wider text-center border-b border-club-gold border-opacity-30 pb-2">
+              {day}
+            </h3>
+            <div class="space-y-2">
+              {activities.length > 0 ? (
+                activities.slice(0, 3).map((activity, idx) => {
+                  const colorClass = activity.color === 'red' ? 'bg-club-red' :
+                                   activity.color === 'blue' ? 'bg-blue-600' :
+                                   activity.color === 'pink' ? 'bg-pink-600' :
+                                   activity.color === 'purple' ? 'bg-purple-600' :
+                                   'bg-orange-600';
+                  return (
+                    <div
+                      class={`${colorClass} text-white text-xs p-2 rounded text-center font-medium`}
+                    >
+                      {activity.activity}
+                    </div>
+                  );
+                })
+              ) : (
+                <div class="text-gray-500 text-center text-sm py-2">
+                  Descanso
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- View Full Schedule Button -->
+      <div class="text-center mt-12">
+        <a
+          href="/cronograma"
+          class="inline-block bg-club-red hover:bg-club-red-2 text-white px-8 py-4 rounded-full font-display text-xl tracking-wider transition-all hover:scale-105 hover:glow-red"
+        >
+          VER CRONOGRAMA COMPLETO
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Store Preview Section -->
+  <section class="relative py-20 bg-club-black overflow-hidden">
+    <!-- Decorative Diagonal Stripe -->
+    <div class="absolute top-0 right-0 w-1/3 h-full bg-club-red opacity-10 transform skew-x-12 translate-x-1/4"></div>
+    
+    <div class="relative z-10 container mx-auto px-4">
+      <SectionTitle 
+        title="TIENDA OFICIAL"
+        subtitle="Indumentaria y merchandising del club"
+      />
+
+      <!-- Featured Products Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        {featuredProducts.map(product => (
+          <ProductCard product={product} />
+        ))}
+      </div>
+
+      <!-- View Store Button -->
+      <div class="text-center">
+        <a
+          href="/tienda"
+          class="inline-block bg-club-gold hover:bg-club-gold-dim text-club-black px-10 py-4 rounded-full font-display text-2xl tracking-wider transition-all hover:scale-105 hover:glow-gold"
+        >
+          VER TODA LA TIENDA
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values Section -->
+  <section class="py-20 bg-club-surface">
+    <div class="container mx-auto px-4">
+      <SectionTitle 
+        title="NUESTROS VALORES"
+        subtitle="Lo que nos define como institución"
+      />
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {[
+          {
+            icon: '🏆',
+            title: 'COMPROMISO',
+            description: 'Dedicación total al desarrollo deportivo y personal de cada socio.'
+          },
+          {
+            icon: '🤝',
+            title: 'COMUNIDAD',
+            description: 'Construimos lazos fuertes entre familias, deportistas y la ciudad.'
+          },
+          {
+            icon: '💪',
+            title: 'DISCIPLINA',
+            description: 'Formación basada en el respeto, la constancia y el esfuerzo.'
+          },
+          {
+            icon: '❤️',
+            title: 'ORGULLO',
+            description: 'Representar los colores del club con pasión y honor.'
+          }
+        ].map((value) => (
+          <article class="glass p-8 rounded-lg hover-lift group">
+            <div class="text-5xl mb-4 group-hover:scale-110 transition-transform">
+              {value.icon}
+            </div>
+            <h3 class="font-display text-2xl text-club-gold mb-3 tracking-wider">
+              {value.title}
+            </h3>
+            <p class="text-gray-300 text-sm leading-relaxed">
+              {value.description}
+            </p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Facilities Preview -->
+  <section class="py-20 bg-club-black">
+    <div class="container mx-auto px-4">
+      <SectionTitle 
+        title="INSTALACIONES"
+        subtitle="Espacios de primer nivel para la práctica deportiva"
+      />
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {[
+          { name: 'Cancha Principal', icon: '⚽' },
+          { name: 'Polideportivo', icon: '🏀' },
+          { name: 'Vestuarios', icon: '🚿' }
+        ].map((facility) => (
+          <div class="group relative h-64 bg-gradient-to-br from-club-surface to-club-card rounded-lg overflow-hidden border border-club-gold border-opacity-30 hover:border-opacity-100 transition-all hover-lift">
+            <!-- Icon -->
+            <div class="absolute inset-0 flex items-center justify-center text-8xl opacity-30 group-hover:opacity-50 transition-opacity">
+              {facility.icon}
+            </div>
+            
+            <!-- Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+            
+            <!-- Content -->
+            <div class="absolute bottom-0 left-0 right-0 p-6">
+              <h3 class="font-display text-3xl text-white tracking-wider group-hover:text-club-gold transition-colors">
+                {facility.name}
+              </h3>
+            </div>
+
+            <!-- Geometric Decoration -->
+            <div class="absolute top-0 right-0 w-32 h-32 bg-club-red opacity-20 transform rotate-45 translate-x-16 -translate-y-16"></div>
+          </div>
+        ))}
+      </div>
+
+      <div class="text-center mt-12">
+        <a
+          href="/alquiler"
+          class="inline-block bg-club-red hover:bg-club-red-2 text-white px-8 py-4 rounded-full font-display text-xl tracking-wider transition-all hover:scale-105 hover:glow-red"
+        >
+          ALQUILER DE CANCHAS
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA Section -->
+  <CtaBanner 
+    title="SUMATE AL CLUB"
+    subtitle="Comenzá tu camino deportivo con nosotros. Escribinos y conocé todas las propuestas."
+    buttonText="Contactar por WhatsApp"
+    variant="red"
+  />
+</Layout>
+

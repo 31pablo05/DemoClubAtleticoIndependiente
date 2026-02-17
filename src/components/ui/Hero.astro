@@ -1,0 +1,110 @@
+---
+// Hero.astro - Hero section component with customizable content
+interface Props {
+  variant?: 'home' | 'page';
+  title?: string;
+  subtitle?: string;
+  showButtons?: boolean;
+}
+
+const { variant = 'page', title, subtitle, showButtons = false } = Astro.props;
+---
+
+{variant === 'home' ? (
+  <!-- Home Hero - Full viewport with animation -->
+  <section class="relative min-h-screen flex items-center justify-center overflow-hidden diagonal-cut-bottom pb-20">
+    <!-- Background Video -->
+    <video
+      autoplay
+      muted
+      loop
+      playsinline
+      class="absolute inset-0 w-full h-full object-cover"
+    >
+      <source src="/videos/elClub.mp4" type="video/mp4" />
+    </video>
+    
+    <!-- Dark Overlay -->
+    <div class="absolute inset-0 bg-club-black opacity-70"></div>
+    
+    <!-- Background Effects -->
+    <div class="absolute inset-0">
+      <div class="absolute inset-0 radial-red opacity-50"></div>
+      <div class="absolute inset-0 geometric-bg opacity-20"></div>
+    </div>
+
+    <!-- Animated Geometric Shapes -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+      <div class="absolute top-1/4 left-1/4 w-64 h-64 border-2 border-club-red opacity-20 rotate-45 animate-pulse-slow"></div>
+      <div class="absolute bottom-1/4 right-1/4 w-96 h-96 border-2 border-club-gold opacity-10 -rotate-12 animate-pulse-slow"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="relative z-10 container mx-auto px-4 text-center">
+      <!-- Club Shield -->
+      <div class="mb-8 flex justify-center">
+        <div class="w-40 h-40 flex items-center justify-center drop-shadow-2xl animate-pulse-slow">
+          <img src="/logo/escudoindep.png" alt="Escudo Club Atlético Independiente" class="w-full h-full object-contain filter drop-shadow-[0_0_30px_rgba(242,208,68,0.7)]" />
+        </div>
+      </div>
+
+      <!-- Main Title -->
+      <h1 class="font-display text-5xl md:text-7xl lg:text-8xl text-white mb-6 tracking-wider leading-tight">
+        CLUB ATLÉTICO<br/>
+        <span class="text-club-red">INDEPENDIENTE</span><br/>
+        DE TRELEW
+      </h1>
+
+      <!-- Subtitle -->
+      <h2 class="text-club-gold text-xl md:text-2xl lg:text-3xl mb-12 font-light tracking-wide">
+        Formando deportistas. Construyendo comunidad.
+      </h2>
+
+      <!-- CTA Buttons -->
+      <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+        <a
+          href="/deportes"
+          class="bg-club-red hover:bg-club-red-2 text-white px-8 py-4 rounded-full font-display text-xl tracking-wider transition-all hover:scale-105 hover:glow-red"
+        >
+          VER ACTIVIDADES
+        </a>
+        <a
+          href="/club"
+          class="border-2 border-white hover:border-club-gold text-white hover:text-club-gold px-8 py-4 rounded-full font-display text-xl tracking-wider transition-all hover:scale-105"
+        >
+          CONOCER EL CLUB
+        </a>
+      </div>
+
+      <!-- Scroll Indicator -->
+      <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce-slow">
+        <svg class="w-8 h-8 text-club-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+) : (
+  <!-- Page Hero - Smaller, elegant -->
+  <section class="relative py-32 overflow-hidden diagonal-cut-bottom">
+    <!-- Background -->
+    <div class="absolute inset-0 bg-gradient-to-br from-club-black via-club-surface to-club-black">
+      <div class="absolute inset-0 geometric-bg opacity-20"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="relative z-10 container mx-auto px-4 text-center">
+      <h1 class="font-display text-5xl md:text-6xl lg:text-7xl text-white mb-6 tracking-wider">
+        {title}
+      </h1>
+      {subtitle && (
+        <p class="text-club-gold text-xl md:text-2xl font-light tracking-wide max-w-2xl mx-auto">
+          {subtitle}
+        </p>
+      )}
+    </div>
+
+    <!-- Decorative Gold Line -->
+    <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-club-gold to-transparent opacity-50"></div>
+  </section>
+)}

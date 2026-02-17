@@ -1,0 +1,213 @@
+---
+import Layout from '../components/layout/Layout.astro';
+import Hero from '../components/ui/Hero.astro';
+import SectionTitle from '../components/ui/SectionTitle.astro';
+---
+
+<Layout 
+  title="El Club - Club Atlético Independiente de Trelew"
+  description="Conocé la historia, valores y misión del Club Atlético Independiente de Trelew"
+>
+  <!-- Hero Section -->
+  <Hero 
+    variant="page"
+    title="EL CLUB"
+    subtitle="Historia, Valores e Identidad"
+  />
+
+  <!-- History Section -->
+  <section class="py-20 bg-club-black">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <!-- Text Content -->
+        <div>
+          <h2 class="font-display text-4xl text-club-gold mb-6 tracking-wider">
+            NUESTRA HISTORIA
+          </h2>
+          
+          <div class="text-gray-300 space-y-4 leading-relaxed">
+            <p class="text-lg">
+              <span class="text-6xl float-left text-club-red font-display mr-4 leading-none">E</span>
+              l Club Atlético Independiente de Trelew es una institución deportiva con profundas raíces en la comunidad patagónica. Fundado con la visión de promover el deporte y los valores deportivos, el club se ha convertido en un pilar fundamental para el desarrollo de niños, jóvenes y adultos en la ciudad.
+            </p>
+            <p>
+              A lo largo de los años, hemos formado no solo deportistas, sino también personas comprometidas con el esfuerzo, la disciplina y el compañerismo. Nuestra institución es un espacio donde las familias se encuentran, donde se forjan amistades duraderas y donde los sueños deportivos se hacen realidad.
+            </p>
+            <p>
+              Hoy, el club cuenta con múltiples disciplinas deportivas y continúa creciendo, siempre fiel a sus valores fundacionales y con la mirada puesta en el futuro de las nuevas generaciones.
+            </p>
+          </div>
+        </div>
+
+        <!-- Image Placeholder -->
+        <div class="relative">
+          <div class="aspect-square rounded-lg bg-gradient-to-br from-club-surface to-club-card flex items-center justify-center border-4 border-club-gold overflow-hidden p-12">
+            <img src="/logo/escudoindep.png" alt="Escudo Club Atlético Independiente" class="w-full h-full object-contain" />
+            <div class="absolute inset-0 bg-black opacity-20"></div>
+          </div>
+          <!-- Decorative Element -->
+          <div class="absolute -top-6 -right-6 w-32 h-32 bg-club-red opacity-20 rounded-full blur-2xl"></div>
+          <div class="absolute -bottom-6 -left-6 w-32 h-32 bg-club-gold opacity-20 rounded-full blur-2xl"></div>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="mt-20">
+        <h3 class="font-display text-3xl text-center text-club-gold mb-12 tracking-wider">
+          HITOS IMPORTANTES
+        </h3>
+        
+        <div class="relative">
+          <!-- Timeline Line -->
+          <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-club-red"></div>
+          
+          <!-- Timeline Items -->
+          <div class="space-y-12">
+            {[
+              { year: '1950', event: 'Fundación del club', description: 'Nace el Club Atlético Independiente con el objetivo de promover el deporte en Trelew.' },
+              { year: '1975', event: 'Apertura del polideportivo', description: 'Se inaugura el complejo deportivo con canchas techadas.' },
+              { year: '2000', event: 'Expansión de disciplinas', description: 'Se incorporan hockey, patín y básquet.' },
+              { year: '2020', event: 'Modernización del club', description: 'Renovación integral de las instalaciones y equipamiento.' }
+            ].map((item, index) => (
+              <div class={`flex items-center gap-8 ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}>
+                <div class={`flex-1 ${index % 2 === 0 ? 'text-right' : 'text-left'}`}>
+                  <div class="inline-block bg-club-surface p-6 rounded-lg border border-club-gold border-opacity-30 hover:border-opacity-100 transition-all hover-lift">
+                    <h4 class="font-display text-2xl text-white mb-2 tracking-wider">
+                      {item.event}
+                    </h4>
+                    <p class="text-gray-400 text-sm">
+                      {item.description}
+                    </p>
+                  </div>
+                </div>
+                
+                <div class="relative z-10">
+                  <div class="w-16 h-16 bg-club-red rounded-full flex items-center justify-center border-4 border-club-gold glow-gold">
+                    <span class="font-display text-white text-sm">
+                      {item.year.slice(-2)}
+                    </span>
+                  </div>
+                </div>
+                
+                <div class="flex-1"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values Section -->
+  <section class="py-20 bg-club-surface">
+    <div class="container mx-auto px-4">
+      <SectionTitle 
+        title="NUESTROS VALORES"
+        subtitle="Los pilares que sostienen nuestra institución"
+      />
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {[
+          {
+            icon: '🏆',
+            title: 'Compromiso',
+            description: 'Dedicación absoluta al desarrollo deportivo y personal de cada uno de nuestros socios. Trabajamos día a día para ofrecer lo mejor.'
+          },
+          {
+            icon: '🤝',
+            title: 'Comunidad',
+            description: 'Somos más que un club deportivo. Somos una familia que construye lazos fuertes entre deportistas, familias y la ciudad de Trelew.'
+          },
+          {
+            icon: '💪',
+            title: 'Disciplina',
+            description: 'La formación integral basada en el respeto, la constancia y el esfuerzo. Valores que trascienden el deporte y forman personas.'
+          },
+          {
+            icon: '❤️',
+            title: 'Orgullo',
+            description: 'Representar los colores del club con pasión, honor y dedicación. Ser parte de Independiente es llevar nuestros valores con orgullo.'
+          }
+        ].map((value) => (
+          <article class="glass p-8 rounded-lg hover-lift group text-center">
+            <div class="text-6xl mb-6 group-hover:scale-110 transition-transform">
+              {value.icon}
+            </div>
+            <h3 class="font-display text-2xl text-club-gold mb-4 tracking-wider">
+              {value.title.toUpperCase()}
+            </h3>
+            <p class="text-gray-300 leading-relaxed">
+              {value.description}
+            </p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Facilities Section -->
+  <section class="py-20 bg-club-black">
+    <div class="container mx-auto px-4">
+      <SectionTitle 
+        title="INSTALACIONES"
+        subtitle="Espacios diseñados para el deporte de alto nivel"
+      />
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {[
+          { name: 'Cancha de Fútbol Principal', description: 'Césped natural de primera calidad con iluminación profesional' },
+          { name: 'Polideportivo Techado', description: 'Cancha multiuso para básquet, handball y fútbol indoor' },
+          { name: 'Cancha de Hockey', description: 'Superficie sintética homologada para entrenamientos y competencias' },
+          { name: 'Pista de Patín', description: 'Espacio especialmente acondicionado para patín artístico y velocidad' },
+          { name: 'Vestuarios', description: 'Vestuarios equipados con duchas, lockers y espacios amplios' },
+          { name: 'Oficinas Administrativas', description: 'Atención personalizada para socios y consultas' }
+        ].map((facility) => (
+          <div class="group relative h-80 bg-gradient-to-br from-club-surface to-club-card rounded-lg overflow-hidden border border-club-gold border-opacity-30 hover:border-opacity-100 transition-all hover-lift">
+            <!-- Background Pattern -->
+            <div class="absolute inset-0 geometric-bg opacity-10"></div>
+            
+            <!-- Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90"></div>
+            
+            <!-- Content -->
+            <div class="absolute bottom-0 left-0 right-0 p-6 z-10">
+              <h3 class="font-display text-2xl text-white tracking-wider mb-2 group-hover:text-club-gold transition-colors">
+                {facility.name}
+              </h3>
+              <p class="text-gray-400 text-sm">
+                {facility.description}
+              </p>
+            </div>
+
+            <!-- Icon -->
+            <div class="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-7xl opacity-20 group-hover:opacity-30 transition-opacity">
+              🏟️
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Institutional Message -->
+  <section class="py-20 bg-club-surface">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto text-center">
+        <div class="text-club-gold text-8xl mb-8 opacity-30">"</div>
+        
+        <blockquote class="text-2xl md:text-3xl text-white font-light leading-relaxed mb-8">
+          En Club Atlético Independiente creemos que el deporte es el mejor camino para formar personas íntegras, comprometidas y solidarias. Nuestra misión es acompañar a cada socio en su desarrollo deportivo y personal, brindando espacios de calidad y un ambiente de respeto y camaradería.
+        </blockquote>
+        
+        <div class="border-t border-club-gold border-opacity-30 pt-6 mt-8">
+          <p class="font-display text-xl text-club-gold tracking-wider">
+            COMISIÓN DIRECTIVA
+          </p>
+          <p class="text-gray-400 mt-2">
+            Club Atlético Independiente de Trelew
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

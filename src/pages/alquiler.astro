@@ -1,0 +1,233 @@
+---
+import Layout from '../components/layout/Layout.astro';
+import Hero from '../components/ui/Hero.astro';
+import SectionTitle from '../components/ui/SectionTitle.astro';
+---
+
+<Layout 
+  title="Alquiler de Canchas - Club Atlético Independiente de Trelew"
+  description="Alquilá nuestras canchas para partidos particulares, eventos y torneos. Instalaciones de primera calidad."
+>
+  <!-- Hero Section -->
+  <Hero 
+    variant="page"
+    title="ALQUILER DE CANCHAS"
+    subtitle="Para partidos particulares y eventos"
+  />
+
+  <!-- Intro Section -->
+  <section class="py-12 bg-club-black">
+    <div class="container mx-auto px-4">
+      <div class="max-w-3xl mx-auto text-center">
+        <p class="text-xl text-gray-300 leading-relaxed">
+          Disponemos de <span class="text-club-gold font-semibold">canchas de alta calidad</span> para que organices tu partido, torneo o evento deportivo. Instalaciones profesionales con todos los servicios incluidos.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Facilities Grid -->
+  <section class="py-20 bg-club-black">
+    <div class="container mx-auto px-4">
+      <SectionTitle 
+        title="NUESTRAS CANCHAS"
+        subtitle="Espacios disponibles para alquiler"
+      />
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {[
+          {
+            name: 'Cancha Principal',
+            type: 'Fútbol 11',
+            features: ['Césped natural', 'Iluminación profesional', 'Tribunas', 'Vestuarios amplios'],
+            icon: '⚽',
+            color: 'club-red'
+          },
+          {
+            name: 'Cancha N° 2',
+            type: 'Fútbol 7',
+            features: ['Césped sintético', 'Iluminación LED', 'Vestuarios', 'Estacionamiento'],
+            icon: '🥅',
+            color: 'club-gold'
+          },
+          {
+            name: 'Polideportivo',
+            type: 'Multiuso Techado',
+            features: ['Básquet', 'Handball', 'Fútbol Sala', 'Vestuarios', 'Gradas'],
+            icon: '🏀',
+            color: 'club-red'
+          }
+        ].map((facility) => (
+          <article class="bg-club-surface rounded-lg overflow-hidden border border-club-gold border-opacity-30 hover:border-opacity-100 transition-all hover-lift">
+            <!-- Header -->
+            <div class={`bg-${facility.color} p-8 text-center relative overflow-hidden`}>
+              <div class="absolute inset-0 geometric-bg opacity-20"></div>
+              <div class="relative z-10 text-7xl mb-4">
+                {facility.icon}
+              </div>
+              <h3 class="relative z-10 font-display text-3xl text-white tracking-wider">
+                {facility.name}
+              </h3>
+              <p class="relative z-10 text-white opacity-90 mt-2">
+                {facility.type}
+              </p>
+            </div>
+
+            <!-- Features -->
+            <div class="p-6">
+              <h4 class="font-semibold text-club-gold mb-4 tracking-wide">CARACTERÍSTICAS</h4>
+              <ul class="space-y-3">
+                {facility.features.map((feature) => (
+                  <li class="flex items-center gap-3 text-gray-300">
+                    <span class="text-club-red text-lg">✓</span>
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <!-- CTA Button -->
+              <a
+                href="https://wa.me/542804867740?text=Hola!%20Quiero%20consultar%20sobre%20el%20alquiler%20de:%20${encodeURIComponent(facility.name)}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="mt-6 w-full inline-flex items-center justify-center gap-2 bg-club-red hover:bg-club-red-2 text-white px-6 py-3 rounded-full font-medium transition-all hover:scale-105"
+              >
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                </svg>
+                Consultar disponibilidad
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Info Section -->
+  <section class="py-20 bg-club-surface">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto">
+        <SectionTitle 
+          title="INFORMACIÓN GENERAL"
+          subtitle="Todo lo que necesitás saber"
+        />
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- Included Services -->
+          <div class="bg-club-card p-8 rounded-lg border border-club-gold border-opacity-30">
+            <h3 class="font-display text-2xl text-club-gold mb-6 tracking-wider flex items-center gap-3">
+              <span class="text-3xl">✨</span>
+              INCLUYE
+            </h3>
+            <ul class="space-y-3 text-gray-300">
+              <li class="flex items-start gap-3">
+                <span class="text-club-red text-xl">✓</span>
+                <span>Vestuarios con duchas</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-club-red text-xl">✓</span>
+                <span>Iluminación nocturna</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-club-red text-xl">✓</span>
+                <span>Estacionamiento</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-club-red text-xl">✓</span>
+                <span>Seguridad</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-club-red text-xl">✓</span>
+                <span>Atención personalizada</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Schedule and Booking -->
+          <div class="bg-club-card p-8 rounded-lg border border-club-gold border-opacity-30">
+            <h3 class="font-display text-2xl text-club-gold mb-6 tracking-wider flex items-center gap-3">
+              <span class="text-3xl">📅</span>
+              RESERVAS
+            </h3>
+            <ul class="space-y-3 text-gray-300">
+              <li class="flex items-start gap-3">
+                <span class="text-club-red text-xl">•</span>
+                <span>Horarios disponibles de 8:00 a 23:00</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-club-red text-xl">•</span>
+                <span>Reservá con mínimo 48hs de anticipación</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-club-red text-xl">•</span>
+                <span>Seña del 50% para confirmar</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-club-red text-xl">•</span>
+                <span>Descuentos para torneos y eventos</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="text-club-red text-xl">•</span>
+                <span>Socios del club tienen beneficios especiales</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Important Notes -->
+        <div class="mt-8 glass p-8 rounded-lg">
+          <h3 class="font-display text-xl text-club-gold mb-4 tracking-wider flex items-center gap-3">
+            <span class="text-2xl">⚠️</span>
+            IMPORTANTE
+          </h3>
+          <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-300 text-sm">
+            <li class="flex items-start gap-2">
+              <span class="text-club-red mt-1">•</span>
+              <span>Prohibido el ingreso de bebidas alcohólicas</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-club-red mt-1">•</span>
+              <span>Respetar los horarios de ingreso y egreso</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-club-red mt-1">•</span>
+              <span>Uso obligatorio de calzado deportivo adecuado</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-club-red mt-1">•</span>
+              <span>Mantener las instalaciones en buen estado</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-20 bg-club-red relative overflow-hidden">
+    <div class="absolute inset-0 geometric-bg opacity-10"></div>
+    <div class="absolute -top-20 -right-20 w-96 h-96 bg-black opacity-20 transform rotate-45"></div>
+    
+    <div class="relative z-10 container mx-auto px-4 text-center">
+      <h2 class="font-display text-5xl md:text-6xl text-white tracking-wider mb-6">
+        CONSULTÁ DISPONIBILIDAD
+      </h2>
+      <p class="text-white text-xl mb-8 opacity-90 max-w-2xl mx-auto">
+        Escribinos por WhatsApp y te informamos sobre horarios disponibles, tarifas y promociones
+      </p>
+
+      <a
+        href="https://wa.me/542804867740?text=Hola!%20Quiero%20consultar%20sobre%20el%20alquiler%20de%20canchas"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-3 bg-white text-club-red px-10 py-5 rounded-full font-display text-2xl tracking-wider transition-all hover:scale-105 shadow-2xl"
+      >
+        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+        </svg>
+        CONTACTAR POR WHATSAPP
+      </a>
+    </div>
+  </section>
+</Layout>

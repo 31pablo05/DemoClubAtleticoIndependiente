@@ -1,0 +1,108 @@
+export const sports = [
+  {
+    id: 'futbol',
+    name: 'Fútbol Infantiles',
+    icon: '⚽',
+    description: 'Formación integral en fútbol para niños y adolescentes. Entrenamiento profesional con énfasis en técnica, táctica y valores deportivos.',
+    categories: ['Sub-6', 'Sub-8', 'Sub-10', 'Sub-12', 'Sub-14'],
+    schedule: 'Lunes a Viernes 10:00–12:00 | 17:00–18:00',
+    color: 'red',
+    detailedSchedule: {
+      'Lunes': ['10:00-12:00', '17:00-18:00'],
+      'Martes': ['10:00-12:00', '17:00-18:00'],
+      'Miércoles': ['10:00-12:00', '17:00-18:00'],
+      'Jueves': ['10:00-12:00', '17:00-18:00'],
+      'Viernes': ['10:00-12:00', '17:00-18:00']
+    }
+  },
+  {
+    id: 'baby-futbol',
+    name: 'Baby Fútbol',
+    icon: '👶⚽',
+    description: 'Iniciación deportiva para los más pequeños. Actividades lúdicas que desarrollan coordinación, motricidad y amor por el deporte.',
+    categories: ['Mixto 3-6 años'],
+    schedule: 'Sábados 9:00–11:00',
+    color: 'red',
+    detailedSchedule: {
+      'Sábado': ['9:00-11:00']
+    }
+  },
+  {
+    id: 'futbol-femenino',
+    name: 'Fútbol Femenino',
+    icon: '⚽💪',
+    description: 'Espacio dedicado al desarrollo del fútbol femenino en todas sus categorías. Entrenamiento profesional y competitivo.',
+    categories: ['Infantil', 'Juvenil', 'Mayor'],
+    schedule: 'Martes y Jueves 18:00–20:00',
+    color: 'red',
+    detailedSchedule: {
+      'Martes': ['18:00-20:00'],
+      'Jueves': ['18:00-20:00']
+    }
+  },
+  {
+    id: 'handball',
+    name: 'Handball',
+    icon: '🤾',
+    description: 'Desarrollo de habilidades técnicas y tácticas del handball. Formación de equipos competitivos en todas las categorías.',
+    categories: ['Mini', 'Infantil', 'Juvenil', 'Mayor'],
+    schedule: 'Lunes, Miércoles y Viernes 16:00–18:00',
+    color: 'blue',
+    detailedSchedule: {
+      'Lunes': ['16:00-18:00'],
+      'Miércoles': ['16:00-18:00'],
+      'Viernes': ['16:00-18:00']
+    }
+  },
+  {
+    id: 'hockey',
+    name: 'Hockey',
+    icon: '🏑',
+    description: 'Práctica de hockey sobre césped con entrenadores especializados. Desarrollo técnico y trabajo en equipo.',
+    categories: ['Infantil', 'Juvenil', 'Mayor'],
+    schedule: 'Martes y Jueves 15:00–17:00',
+    color: 'pink',
+    detailedSchedule: {
+      'Martes': ['15:00-17:00'],
+      'Jueves': ['15:00-17:00']
+    }
+  },
+  {
+    id: 'patin',
+    name: 'Patín',
+    icon: '⛸️',
+    description: 'Patín artístico y de velocidad. Aprendizaje progresivo desde nivel inicial hasta avanzado con instructores especializados.',
+    categories: ['Inicial', 'Intermedio', 'Avanzado'],
+    schedule: 'Lunes a Viernes 14:00–16:00',
+    color: 'purple',
+    detailedSchedule: {
+      'Lunes': ['14:00-16:00'],
+      'Martes': ['14:00-16:00'],
+      'Miércoles': ['14:00-16:00'],
+      'Jueves': ['14:00-16:00'],
+      'Viernes': ['14:00-16:00']
+    }
+  },
+  {
+    id: 'basquet',
+    name: 'Básquet',
+    icon: '🏀',
+    description: 'Básquetbol formativo y competitivo. Entrenamiento integral que desarrolla fundamentos técnicos y juego en equipo.',
+    categories: ['Mini', 'U13', 'U15', 'U17', 'Mayor'],
+    schedule: 'Lunes, Miércoles y Viernes 18:00–20:00',
+    color: 'orange',
+    detailedSchedule: {
+      'Lunes': ['18:00-20:00'],
+      'Miércoles': ['18:00-20:00'],
+      'Viernes': ['18:00-20:00']
+    }
+  }
+];
+
+export const sportColors = {
+  red: 'bg-club-red',
+  blue: 'bg-blue-600',
+  pink: 'bg-pink-600',
+  purple: 'bg-purple-600',
+  orange: 'bg-orange-600'
+};

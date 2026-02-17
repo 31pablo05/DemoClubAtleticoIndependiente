@@ -1,0 +1,122 @@
+---
+import Layout from '../components/layout/Layout.astro';
+import Hero from '../components/ui/Hero.astro';
+import SportCard from '../components/ui/SportCard.astro';
+import CtaBanner from '../components/ui/CtaBanner.astro';
+import { sports } from '../data/sports';
+---
+
+<Layout 
+  title="Deportes - Club Atlético Independiente de Trelew"
+  description="Conocé todas las disciplinas deportivas que ofrecemos: fútbol, handball, hockey, básquet, patín y más"
+>
+  <!-- Hero Section -->
+  <Hero 
+    variant="page"
+    title="DEPORTES"
+    subtitle="Todas las disciplinas que ofrecemos"
+  />
+
+  <!-- Sports Catalog Section -->
+  <section class="py-20 bg-club-black">
+    <div class="container mx-auto px-4">
+      
+      <!-- Info Banner -->
+      <div class="glass p-8 rounded-lg mb-12 text-center">
+        <p class="text-xl text-white mb-2">
+          <span class="text-club-gold font-display text-2xl">7 DISCIPLINAS</span> disponibles para todas las edades
+        </p>
+        <p class="text-gray-400">
+          Seleccioná la actividad de tu interés para conocer categorías y horarios
+        </p>
+      </div>
+
+      <!-- Sports Grid - Full Format -->
+      <div class="space-y-12">
+        {sports.map(sport => (
+          <SportCard sport={sport} variant="full" />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Info Section -->
+  <section class="py-20 bg-club-surface">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="font-display text-4xl text-center text-club-gold mb-12 tracking-wider">
+          ¿CÓMO INSCRIBIRSE?
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {[
+            {
+              step: '01',
+              title: 'Contactanos',
+              description: 'Escribinos por WhatsApp o visitanos en el club para conocer más detalles.',
+              icon: '📱'
+            },
+            {
+              step: '02',
+              title: 'Elegí tu deporte',
+              description: 'Te asesoramos sobre la categoría y horarios que mejor se adapten a vos.',
+              icon: '⚽'
+            },
+            {
+              step: '03',
+              title: 'Comenzá a entrenar',
+              description: 'Completá la inscripción y empezá a disfrutar de tu actividad deportiva.',
+              icon: '🏃'
+            }
+          ].map((step) => (
+            <div class="bg-club-card p-8 rounded-lg border border-club-gold border-opacity-30 hover:border-opacity-100 transition-all hover-lift text-center">
+              <div class="text-5xl mb-4">{step.icon}</div>
+              <div class="font-display text-club-red text-4xl mb-4 tracking-wider">
+                {step.step}
+              </div>
+              <h3 class="font-display text-xl text-white mb-3 tracking-wider">
+                {step.title.toUpperCase()}
+              </h3>
+              <p class="text-gray-400 text-sm leading-relaxed">
+                {step.description}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <!-- Requirements Card -->
+        <div class="mt-12 glass p-8 rounded-lg">
+          <h3 class="font-display text-2xl text-club-gold mb-6 tracking-wider text-center">
+            REQUISITOS GENERALES
+          </h3>
+          <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-300">
+            <li class="flex items-start gap-3">
+              <span class="text-club-red text-xl">✓</span>
+              <span>Certificado médico de aptitud física</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-club-red text-xl">✓</span>
+              <span>Fotocopia DNI del deportista y tutor</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-club-red text-xl">✓</span>
+              <span>2 fotos carnet</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-club-red text-xl">✓</span>
+              <span>Ficha de inscripción completa</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <CtaBanner 
+    title="¿TENÉS DUDAS?"
+    subtitle="Contactanos por WhatsApp y te asesoramos sobre la mejor opción para vos"
+    buttonText="Consultar por WhatsApp"
+    variant="red"
+  />
+</Layout>
