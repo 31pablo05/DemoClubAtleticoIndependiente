@@ -1,138 +1,474 @@
 ---
-// Footer.astro - Site footer with contact info and links
+// Footer.astro - Site footer premium redesign
 ---
 
-<footer class="bg-club-card border-t border-club-gold border-opacity-20 py-16">
-  <div class="container mx-auto px-4">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-      
-      <!-- Club Info -->
-      <div>
-        <div class="flex items-center gap-3 mb-6">
-          <div class="w-20 h-20 flex items-center justify-center">
-            <img src="/logo/escudoindep.png" alt="Escudo Club Atlético Independiente" class="w-full h-full object-contain drop-shadow-xl" />
-          </div>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@300;400;500&display=swap');
+
+  :root {
+    --red:     #D42B2B;
+    --red-2:   #B01E1E;
+    --black:   #0A0A0A;
+    --surface: #111111;
+    --card:    #141414;
+    --border:  rgba(212,43,43,0.12);
+    --text:    rgba(255,255,255,0.5);
+  }
+
+  /* ── Footer base ─────────────────────────────────────── */
+  .footer-root {
+    position: relative;
+    background: var(--black);
+    overflow: hidden;
+    border-top: 1px solid var(--border);
+  }
+
+  /* grid BG */
+  .footer-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(212,43,43,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(212,43,43,0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+  }
+
+  /* noise */
+  .footer-noise {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+
+  /* ambient orb */
+  .footer-orb {
+    position: absolute;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--red) 0%, transparent 70%);
+    opacity: 0.05;
+    filter: blur(60px);
+    bottom: -200px; left: -100px;
+    pointer-events: none;
+  }
+  .footer-orb-2 {
+    right: -100px; left: auto; bottom: -150px;
+  }
+
+  /* ── Big club name watermark ─────────────────────────── */
+  .footer-watermark {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 10vw, 9rem);
+    letter-spacing: 0.06em;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(212,43,43,0.08);
+    position: absolute;
+    bottom: 4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+  }
+
+  /* ── Red top accent bar ──────────────────────────────── */
+  .footer-topbar {
+    height: 3px;
+    background: linear-gradient(90deg, transparent 0%, var(--red) 30%, var(--red) 70%, transparent 100%);
+  }
+
+  /* ── Shield hero block ───────────────────────────────── */
+  .shield-block {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+  .shield-wrapper {
+    position: relative;
+    width: 90px; height: 90px;
+  }
+  .shield-ring {
+    position: absolute;
+    inset: -12px;
+    border-radius: 50%;
+    border: 1px solid rgba(212,43,43,0.2);
+    animation: shieldPulse 3s ease-in-out infinite;
+  }
+  .shield-ring-2 {
+    inset: -22px;
+    border-color: rgba(212,43,43,0.08);
+    animation-delay: 0.8s;
+  }
+  .shield-glow {
+    position: absolute;
+    inset: -8px;
+    background: radial-gradient(circle, var(--red) 0%, transparent 70%);
+    opacity: 0.12;
+    border-radius: 50%;
+    filter: blur(12px);
+  }
+  .shield-img {
+    width: 90px; height: 90px;
+    object-fit: contain;
+    position: relative;
+    z-index: 2;
+    filter: drop-shadow(0 0 18px rgba(212,43,43,0.5));
+  }
+  @keyframes shieldPulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50%       { transform: scale(1.06); opacity: 0.6; }
+  }
+
+  .club-name-footer {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.06em;
+    line-height: 1.1;
+    color: white;
+  }
+  .club-tagline {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.4);
+    line-height: 1.6;
+    font-weight: 300;
+    max-width: 220px;
+  }
+
+  /* ── Section label ───────────────────────────────────── */
+  .footer-section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--red);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1.4rem;
+  }
+  .footer-section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 3rem;
+  }
+
+  /* ── Nav links ───────────────────────────────────────── */
+  .footer-nav-link {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.875rem;
+    color: rgba(255,255,255,0.45);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.2s, gap 0.2s;
+    padding: 0.2rem 0;
+  }
+  .footer-nav-link::before {
+    content: '';
+    width: 0; height: 1px;
+    background: var(--red);
+    transition: width 0.25s ease;
+    flex-shrink: 0;
+  }
+  .footer-nav-link:hover {
+    color: white;
+    gap: 0.9rem;
+  }
+  .footer-nav-link:hover::before { width: 14px; }
+
+  /* ── Discipline pills ────────────────────────────────── */
+  .disc-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.45);
+    padding: 0.3rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: color 0.2s;
+  }
+  .disc-pill:last-child { border-bottom: none; }
+  .disc-pill:hover { color: rgba(255,255,255,0.8); }
+  .disc-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--red);
+    opacity: 0.5;
+    flex-shrink: 0;
+    transition: opacity 0.2s;
+  }
+  .disc-pill:hover .disc-dot { opacity: 1; }
+
+  /* ── Contact items ───────────────────────────────────── */
+  .contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.5;
+    transition: color 0.2s;
+  }
+  .contact-item a { color: inherit; transition: color 0.2s; }
+  .contact-item a:hover, .contact-item:hover { color: rgba(255,255,255,0.85); }
+  .contact-icon {
+    width: 34px; height: 34px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: border-color 0.25s, background 0.25s;
+    color: rgba(255,255,255,0.5);
+  }
+  .contact-item:hover .contact-icon,
+  .contact-item a:hover .contact-icon {
+    border-color: var(--red);
+    background: rgba(212,43,43,0.08);
+    color: var(--red);
+  }
+
+  /* ── Social ──────────────────────────────────────────── */
+  .social-btn {
+    width: 38px; height: 38px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.4);
+    transition: border-color 0.25s, color 0.25s, background 0.25s, transform 0.2s;
+  }
+  .social-btn:hover {
+    border-color: var(--red);
+    color: white;
+    background: rgba(212,43,43,0.1);
+    transform: translateY(-3px);
+  }
+
+  /* ── Bottom bar ──────────────────────────────────────── */
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.05);
+    margin-top: 4rem;
+    padding-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .footer-copy {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.2);
+  }
+  .footer-legal-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+  .footer-legal-links a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.2);
+    transition: color 0.2s;
+  }
+  .footer-legal-links a:hover { color: var(--red); }
+
+  /* ── Divider with diamond ────────────────────────────── */
+  .diamond-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.6rem;
+  }
+  .diamond-divider .line {
+    height: 1px;
+    background: var(--border);
+    flex: 1;
+  }
+  .diamond-divider .gem {
+    width: 6px; height: 6px;
+    background: var(--red);
+    transform: rotate(45deg);
+    opacity: 0.7;
+  }
+</style>
+
+<footer class="footer-root">
+
+  <!-- Top accent -->
+  <div class="footer-topbar"></div>
+
+  <!-- BG layers -->
+  <div class="footer-grid"></div>
+  <div class="footer-noise"></div>
+  <div class="footer-orb"></div>
+  <div class="footer-orb footer-orb-2"></div>
+  <div class="footer-watermark">INDEPENDIENTE</div>
+
+  <div class="relative z-10 container mx-auto px-4 pt-16 pb-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+
+      <!-- ── Col 1: Escudo + info ── -->
+      <div class="shield-block">
+        <div class="shield-wrapper">
+          <div class="shield-ring"></div>
+          <div class="shield-ring shield-ring-2"></div>
+          <div class="shield-glow"></div>
+          <img
+            src="/logo/escudoindep.png"
+            alt="Escudo Club Atlético Independiente"
+            class="shield-img"
+            width="90" height="90"
+          />
         </div>
-        <h3 class="font-display text-2xl text-white mb-4 tracking-wider">
-          CLUB ATLÉTICO<br/>INDEPENDIENTE
-        </h3>
-        <p class="text-gray-400 text-sm leading-relaxed">
-          Formando deportistas y construyendo comunidad en Trelew desde hace décadas.
-        </p>
-      </div>
 
-      <!-- Quick Links -->
-      <div>
-        <h4 class="font-display text-xl text-club-gold mb-6 tracking-wider">
-          NAVEGACIÓN
-        </h4>
-        <ul class="space-y-3">
-          <li>
-            <a href="/" class="text-gray-300 hover:text-club-red transition-colors text-sm">
-              Inicio
-            </a>
-          </li>
-          <li>
-            <a href="/club" class="text-gray-300 hover:text-club-red transition-colors text-sm">
-              El Club
-            </a>
-          </li>
-          <li>
-            <a href="/deportes" class="text-gray-300 hover:text-club-red transition-colors text-sm">
-              Deportes
-            </a>
-          </li>
-          <li>
-            <a href="/cronograma" class="text-gray-300 hover:text-club-red transition-colors text-sm">
-              Cronograma
-            </a>
-          </li>
-          <li>
-            <a href="/tienda" class="text-gray-300 hover:text-club-red transition-colors text-sm">
-              Tienda
-            </a>
-          </li>
-        </ul>
-      </div>
+        <div>
+          <p class="club-name-footer">CLUB ATLÉTICO<br/>INDEPENDIENTE</p>
+          <div style="width:2rem; height:2px; background:var(--red); margin:0.6rem 0;"></div>
+          <p class="club-tagline">
+            Formando deportistas y construyendo comunidad en Trelew desde hace décadas.
+          </p>
+        </div>
 
-      <!-- Deportes -->
-      <div>
-        <h4 class="font-display text-xl text-club-gold mb-6 tracking-wider">
-          DISCIPLINAS
-        </h4>
-        <ul class="space-y-3 text-sm">
-          <li class="text-gray-300">⚽ Fútbol</li>
-          <li class="text-gray-300">🤾 Handball</li>
-          <li class="text-gray-300">🏑 Hockey</li>
-          <li class="text-gray-300">⛸️ Patín</li>
-          <li class="text-gray-300">🏀 Básquet</li>
-        </ul>
-      </div>
-
-      <!-- Contact Info -->
-      <div>
-        <h4 class="font-display text-xl text-club-gold mb-6 tracking-wider">
-          CONTACTO
-        </h4>
-        <ul class="space-y-4">
-          <li>
-            <a 
-              href="https://wa.me/542804867740"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="flex items-center gap-3 text-gray-300 hover:text-[#25d366] transition-colors group"
-            >
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-              </svg>
-              <span class="text-sm">280 486 7740</span>
-            </a>
-          </li>
-          <li class="text-gray-300 text-sm">
-            📍 Trelew, Chubut<br/>
-            Argentina
-          </li>
-          <li class="text-gray-300 text-sm">
-            🕒 Lun a Vie: 8:00 - 22:00<br/>
-            Sáb: 8:00 - 18:00
-          </li>
-        </ul>
-
-        <!-- Social Media Icons -->
-        <div class="flex gap-4 mt-6">
-          <a
-            href="#"
-            class="w-10 h-10 rounded-full bg-club-surface flex items-center justify-center text-white hover:bg-gradient-to-br hover:from-purple-600 hover:to-pink-600 transition-all duration-300"
-            aria-label="Instagram"
-          >
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+        <!-- Social -->
+        <div style="display:flex; gap:0.5rem; margin-top:0.25rem;">
+          <a href="#" class="social-btn" aria-label="Instagram">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
             </svg>
           </a>
-          <a
-            href="#"
-            class="w-10 h-10 rounded-full bg-club-surface flex items-center justify-center text-white hover:bg-blue-600 transition-all duration-300"
-            aria-label="Facebook"
-          >
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+          <a href="#" class="social-btn" aria-label="Facebook">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
               <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            </svg>
+          </a>
+          <a href="https://wa.me/542804867740" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="WhatsApp">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
             </svg>
           </a>
         </div>
       </div>
-    </div>
 
-    <!-- Bottom Bar -->
-    <div class="mt-12 pt-8 border-t border-gray-800">
-      <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-        <p class="text-gray-500 text-sm text-center md:text-left">
-          © {new Date().getFullYear()} Club Atlético Independiente de Trelew. Todos los derechos reservados.
-        </p>
-        <div class="flex gap-6 text-xs text-gray-500">
-          <a href="#" class="hover:text-club-red transition-colors">Política de Privacidad</a>
-          <a href="#" class="hover:text-club-red transition-colors">Términos y Condiciones</a>
+      <!-- ── Col 2: Navegación ── -->
+      <div>
+        <p class="footer-section-label">Sitio</p>
+        <nav style="display:flex; flex-direction:column; gap:0.2rem;">
+          {[
+            { href: '/',            label: 'Inicio' },
+            { href: '/club',        label: 'El Club' },
+            { href: '/deportes',    label: 'Deportes' },
+            { href: '/cronograma',  label: 'Cronograma' },
+            { href: '/tienda',      label: 'Tienda oficial' },
+            { href: '/alquiler',    label: 'Alquiler de canchas' },
+            { href: '/contacto',    label: 'Contacto' },
+          ].map(l => (
+            <a href={l.href} class="footer-nav-link">{l.label}</a>
+          ))}
+        </nav>
+      </div>
+
+      <!-- ── Col 3: Disciplinas ── -->
+      <div>
+        <p class="footer-section-label">Disciplinas</p>
+        <div style="display:flex; flex-direction:column;">
+          {[
+            { icon: '⚽', name: 'Fútbol' },
+            { icon: '🤾', name: 'Handball' },
+            { icon: '🏑', name: 'Hockey' },
+            { icon: '⛸️', name: 'Patín' },
+            { icon: '🏀', name: 'Básquet' },
+            { icon: '🎾', name: 'Tenis' },
+            { icon: '🏃', name: 'Atletismo' },
+          ].map(d => (
+            <div class="disc-pill">
+              <div class="disc-dot"></div>
+              <span style="font-size:0.9rem; line-height:1">{d.icon}</span>
+              {d.name}
+            </div>
+          ))}
         </div>
       </div>
+
+      <!-- ── Col 4: Contacto ── -->
+      <div>
+        <p class="footer-section-label">Contacto</p>
+        <div style="display:flex; flex-direction:column; gap:1rem;">
+
+          <!-- WhatsApp -->
+          <a href="https://wa.me/542804867740" target="_blank" rel="noopener noreferrer" class="contact-item">
+            <div class="contact-icon">
+              <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+              </svg>
+            </div>
+            <div>
+              <div style="font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.25); font-family:'Barlow Condensed',sans-serif; margin-bottom:0.15rem;">WhatsApp</div>
+              280 486 7740
+            </div>
+          </a>
+
+          <!-- Dirección -->
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/>
+              </svg>
+            </div>
+            <div>
+              <div style="font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.25); font-family:'Barlow Condensed',sans-serif; margin-bottom:0.15rem;">Ubicación</div>
+              Trelew, Chubut — Argentina
+            </div>
+          </div>
+
+          <!-- Horarios -->
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <div>
+              <div style="font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.25); font-family:'Barlow Condensed',sans-serif; margin-bottom:0.15rem;">Horarios</div>
+              Lun – Vie: 8:00 a 22:00<br/>Sáb: 8:00 a 18:00
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /grid -->
+
+    <!-- ── Bottom bar ── -->
+    <div class="footer-bottom">
+      <p class="footer-copy">
+        © {new Date().getFullYear()} Club Atlético Independiente de Trelew.
+        Todos los derechos reservados.
+      </p>
+      <div class="footer-legal-links">
+        <a href="#">Privacidad</a>
+        <a href="#">Términos</a>
+      </div>
     </div>
-  </div>
+
+  </div><!-- /container -->
 </footer>

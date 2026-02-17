@@ -20,7 +20,7 @@ const alignClass = {
   right: 'text-right items-end'
 }[align];
 
-const titleColor = variant === 'gold' ? 'text-club-gold' : 'text-white';
+const titleColor = variant === 'gold' ? 'text-white' : 'text-white';
 ---
 
 <div class={`flex flex-col ${alignClass} mb-12`}>
@@ -38,7 +38,7 @@ const titleColor = variant === 'gold' ? 'text-club-gold' : 'text-white';
 
   <!-- Subtitle -->
   {subtitle && (
-    <p class="text-club-gold text-lg md:text-xl font-light tracking-wide max-w-2xl mt-4">
+    <p class="text-white text-lg md:text-xl font-light tracking-wide max-w-2xl mt-4">
       {subtitle}
     </p>
   )}

@@ -9,6 +9,7 @@ interface Props {
     categories?: string[];
     schedule: string;
     color: string;
+    images?: string[];
   };
   variant?: 'compact' | 'full';
 }
@@ -16,105 +17,431 @@ interface Props {
 const { sport, variant = 'compact' } = Astro.props;
 ---
 
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@300;400;500&display=swap');
+
+  :root {
+    --red:    #D42B2B;
+    --red-2:  #B01E1E;
+    --black:  #0A0A0A;
+    --surface:#111111;
+    --card:   #141414;
+    --border: rgba(212,43,43,0.12);
+    --white:  #F5F5F5;
+  }
+
+  /* ── COMPACT ─────────────────────────────────────────── */
+  .sc-compact {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .sc-compact:hover {
+    transform: translateY(-5px);
+    border-color: var(--red);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.4), 0 0 0 1px rgba(212,43,43,0.2);
+  }
+
+  /* left red accent bar */
+  .sc-compact::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 0;
+    background: var(--red);
+    transition: height 0.4s ease;
+    z-index: 3;
+  }
+  .sc-compact:hover::before { height: 100%; }
+
+  /* image area */
+  .sc-img-wrap {
+    position: relative;
+    height: 11rem;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .sc-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+  .sc-compact:hover .sc-img-wrap img { transform: scale(1.08); }
+  .sc-img-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(10,10,10,0.9) 0%, rgba(10,10,10,0.2) 60%, transparent 100%);
+  }
+
+  /* icon-only header */
+  .sc-icon-wrap {
+    position: relative;
+    height: 8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--surface) 0%, var(--card) 100%);
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .sc-icon-wrap .bg-num {
+    position: absolute;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 8rem;
+    color: rgba(212,43,43,0.05);
+    line-height: 1;
+    right: 0.25rem;
+    bottom: -0.5rem;
+    transition: color 0.3s;
+    pointer-events: none;
+  }
+  .sc-compact:hover .sc-icon-wrap .bg-num { color: rgba(212,43,43,0.1); }
+  .sc-icon {
+    font-size: 3rem;
+    position: relative;
+    z-index: 2;
+    transition: transform 0.3s ease;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+  }
+  .sc-compact:hover .sc-icon { transform: scale(1.15); }
+
+  /* category pill on image */
+  .sc-cat-badge {
+    position: absolute;
+    top: 0.75rem; right: 0.75rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: rgba(212,43,43,0.9);
+    color: white;
+    padding: 0.2rem 0.6rem;
+    clip-path: polygon(0 0, 100% 0, 95% 100%, 5% 100%);
+    z-index: 2;
+  }
+
+  /* body */
+  .sc-body {
+    padding: 1.2rem 1.25rem 1.4rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .sc-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.45rem;
+    letter-spacing: 0.05em;
+    color: var(--white);
+    line-height: 1;
+    transition: color 0.2s;
+  }
+  .sc-compact:hover .sc-name { color: var(--red); }
+  .sc-desc {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.4);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .sc-schedule {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.35);
+    margin-top: auto;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .sc-schedule svg { color: var(--red); opacity: 0.7; flex-shrink: 0; }
+
+  .sc-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    color: var(--red);
+    transition: gap 0.2s, color 0.2s;
+    text-decoration: none;
+    margin-top: 0.75rem;
+  }
+  .sc-cta:hover { color: white; gap: 0.7rem; }
+  .sc-cta svg { transition: transform 0.2s; }
+  .sc-cta:hover svg { transform: translateX(2px); }
+
+  /* bottom gradient bar */
+  .sc-bottom-bar {
+    height: 2px;
+    background: linear-gradient(90deg, var(--red), transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s ease;
+  }
+  .sc-compact:hover .sc-bottom-bar { transform: scaleX(1); }
+
+  /* ── FULL ────────────────────────────────────────────── */
+  .sc-full {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .sc-full:hover { border-color: rgba(212,43,43,0.5); }
+
+  .sc-full-header {
+    position: relative;
+    height: 16rem;
+    overflow: hidden;
+  }
+  .sc-full-header img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+  .sc-full-header-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.3) 50%, transparent 100%);
+  }
+  .sc-full-header-content {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 1.5rem 2rem;
+  }
+  .sc-full-icon-bg {
+    width: 100%; height: 16rem;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #1a0000 0%, var(--card) 100%);
+    font-size: 6rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .sc-full-icon-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(212,43,43,0.08) 0%, transparent 70%);
+  }
+  .sc-full-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.8rem;
+    letter-spacing: 0.05em;
+    color: white;
+    line-height: 1;
+  }
+  .sc-full-body { padding: 2rem; }
+
+  .sc-full-desc {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.92rem;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+
+  .sc-section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .sc-section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 3rem;
+  }
+
+  .sc-cat-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.5rem;
+  }
+  .sc-cat-pill {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: 1px solid var(--border);
+    color: rgba(255,255,255,0.6);
+    padding: 0.3rem 0.8rem;
+    border-radius: 2px;
+    background: rgba(212,43,43,0.04);
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .sc-cat-pill:hover { border-color: var(--red); color: white; }
+
+  .sc-schedule-full {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.65);
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 2px;
+    padding: 0.9rem 1rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+
+  .sc-wa-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.15em;
+    padding: 0.9rem 2rem;
+    background: var(--red);
+    color: white;
+    border-radius: 2px;
+    width: 100%;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+  }
+  .sc-wa-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+  }
+  .sc-wa-btn:hover::before { transform: translateX(100%); }
+  .sc-wa-btn:hover {
+    background: var(--red-2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(212,43,43,0.4);
+  }
+</style>
+
 {variant === 'compact' ? (
-  <!-- Compact Card for grid display -->
-  <article class="group relative bg-club-surface hover-lift rounded-lg overflow-hidden border-t-4 border-club-gold transition-all duration-300 hover:border-club-red hover:glow-red">
-    <div class="p-6">
-      <!-- Icon -->
-      <div class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">
-        {sport.icon}
+
+  <article class="sc-compact">
+
+    <!-- Image or Icon header -->
+    {sport.images && sport.images.length > 0 ? (
+      <div class="sc-img-wrap">
+        <img src={sport.images[0]} alt={sport.name} loading="lazy" />
+        <div class="sc-img-overlay"></div>
+        <div class="sc-cat-badge">{sport.name}</div>
       </div>
+    ) : (
+      <div class="sc-icon-wrap">
+        <div class="bg-num">{sport.name.slice(0,2).toUpperCase()}</div>
+        <span class="sc-icon">{sport.icon}</span>
+        <div class="sc-cat-badge">{sport.name}</div>
+      </div>
+    )}
 
-      <!-- Sport Name -->
-      <h3 class="font-display text-2xl text-white mb-3 tracking-wider group-hover:text-club-red transition-colors">
-        {sport.name}
-      </h3>
+    <!-- Body -->
+    <div class="sc-body">
+      <h3 class="sc-name">{sport.name}</h3>
+      <p class="sc-desc">{sport.description}</p>
 
-      <!-- Description -->
-      <p class="text-gray-400 text-sm mb-4 line-clamp-3">
-        {sport.description}
-      </p>
-
-      <!-- Schedule Preview -->
-      <div class="flex items-center gap-2 text-xs text-club-gold mb-4">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      <div class="sc-schedule">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M12 6v6l4 2"/>
         </svg>
-        <span class="line-clamp-1">{sport.schedule.split('|')[0]}</span>
+        <span>{sport.schedule.split('|')[0]}</span>
       </div>
 
-      <!-- CTA Button -->
-      <a
-        href="/deportes"
-        class="inline-block bg-club-red hover:bg-club-red-2 text-white px-6 py-2 rounded-full text-sm font-medium transition-all hover:scale-105"
-      >
-        Ver horarios
+      <a href="/deportes" class="sc-cta">
+        VER HORARIOS
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" d="M5 12h14M13 6l6 6-6 6"/>
+        </svg>
       </a>
     </div>
 
-    <!-- Decorative Corner -->
-    <div class="absolute top-0 right-0 w-20 h-20 bg-club-gold opacity-5 transform rotate-45 translate-x-10 -translate-y-10"></div>
+    <div class="sc-bottom-bar"></div>
   </article>
+
 ) : (
-  <!-- Full Card for detailed view -->
-  <article class="bg-club-surface rounded-lg overflow-hidden border border-club-gold border-opacity-30 hover:border-opacity-100 transition-all duration-300">
-    <!-- Header with Icon -->
-    <div class="relative h-48 bg-gradient-to-br from-club-card to-club-surface flex items-center justify-center border-b-2 border-club-gold">
-      <div class="text-8xl">
-        {sport.icon}
-      </div>
-      <div class="absolute inset-0 bg-black opacity-20"></div>
+
+  <article class="sc-full">
+
+    <!-- Header -->
+    <div class="sc-full-header">
+      {sport.images && sport.images.length > 0 ? (
+        <>
+          <img src={sport.images[0]} alt={sport.name} />
+          <div class="sc-full-header-overlay"></div>
+          <div class="sc-full-header-content">
+            <h3 class="sc-full-name">{sport.name}</h3>
+          </div>
+        </>
+      ) : (
+        <>
+          <div class="sc-full-icon-bg">
+            <span style="position:relative;z-index:2;filter:drop-shadow(0 0 20px rgba(212,43,43,0.3))">{sport.icon}</span>
+          </div>
+          <div class="sc-full-header-content" style="position:absolute;bottom:0;left:0;right:0;padding:1.5rem 2rem;">
+            <h3 class="sc-full-name">{sport.name}</h3>
+          </div>
+          <div style="position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--red),transparent)"></div>
+        </>
+      )}
     </div>
 
-    <!-- Content -->
-    <div class="p-8">
-      <!-- Sport Name -->
-      <h3 class="font-display text-4xl text-white mb-4 tracking-wider">
-        {sport.name}
-      </h3>
+    <!-- Body -->
+    <div class="sc-full-body">
+      <p class="sc-full-desc">{sport.description}</p>
 
-      <!-- Description -->
-      <p class="text-gray-300 mb-6 leading-relaxed">
-        {sport.description}
-      </p>
-
-      <!-- Categories -->
       {sport.categories && sport.categories.length > 0 && (
-        <div class="mb-6">
-          <h4 class="text-club-gold font-semibold mb-3 text-sm tracking-wide">CATEGORÍAS</h4>
-          <div class="flex flex-wrap gap-2">
-            {sport.categories.map(category => (
-              <span class="bg-club-card border border-club-red border-opacity-50 text-white px-4 py-2 rounded-full text-sm">
-                {category}
-              </span>
+        <div style="margin-bottom:1.5rem">
+          <p class="sc-section-label">Categorías</p>
+          <div class="sc-cat-pills">
+            {sport.categories.map(cat => (
+              <span class="sc-cat-pill">{cat}</span>
             ))}
           </div>
         </div>
       )}
 
-      <!-- Schedule -->
-      <div class="mb-6">
-        <h4 class="text-club-gold font-semibold mb-3 text-sm tracking-wide flex items-center gap-2">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          </svg>
-          HORARIOS
-        </h4>
-        <p class="text-white font-medium">{sport.schedule}</p>
-      </div>
+      <p class="sc-section-label">Horarios</p>
+      <div class="sc-schedule-full">{sport.schedule}</div>
 
-      <!-- WhatsApp CTA -->
       <a
         href="https://wa.me/542804867740"
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-flex items-center gap-3 bg-club-red hover:bg-club-red-2 text-white px-8 py-3 rounded-full font-display text-lg tracking-wider transition-all hover:scale-105 hover:glow-red"
+        class="sc-wa-btn"
       >
-        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
         </svg>
         CONSULTAR INSCRIPCIÓN
       </a>
     </div>
   </article>
+
 )}

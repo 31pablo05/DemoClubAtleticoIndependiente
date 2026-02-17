@@ -10,101 +10,656 @@ interface Props {
 const { variant = 'page', title, subtitle, showButtons = false } = Astro.props;
 ---
 
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@300;400;500&display=swap');
+
+  /* ── Variables ───────────────────────────────────────── */
+  :root {
+    --red:      #D42B2B;
+    --red-2:    #B01E1E;
+    --red-glow: rgba(212,43,43,0.4);
+    --black:    #0A0A0A;
+    --surface:  #111111;
+    --white:    #F5F5F5;
+  }
+
+  /* ── Hero home ───────────────────────────────────────── */
+  .hero-home {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: var(--black);
+  }
+
+  /* video */
+  .hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.28;
+    transition: opacity 1.2s ease;
+  }
+
+  /* layered overlays */
+  .hero-overlay-gradient {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0.15) 45%, rgba(10,10,10,0.90) 100%),
+      linear-gradient(90deg, rgba(10,10,10,0.6) 0%, transparent 50%, rgba(10,10,10,0.4) 100%);
+  }
+
+  /* noise grain */
+  .hero-noise {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* diagonal grid pattern */
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(212,43,43,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(212,43,43,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    transform: perspective(600px) rotateX(10deg) scale(1.1);
+    transform-origin: top center;
+    pointer-events: none;
+  }
+
+  /* glowing orbs */
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+  }
+  .orb-1 {
+    width: 45vw; height: 45vw;
+    background: var(--red);
+    opacity: 0.08;
+    top: -10%;
+    left: -10%;
+    animation: orbFloat1 12s ease-in-out infinite;
+  }
+  .orb-2 {
+    width: 35vw; height: 35vw;
+    background: var(--red);
+    opacity: 0.07;
+    bottom: -5%;
+    right: -5%;
+    animation: orbFloat2 14s ease-in-out infinite;
+  }
+  .orb-3 {
+    width: 20vw; height: 20vw;
+    background: #ff6b6b;
+    opacity: 0.04;
+    top: 40%;
+    left: 55%;
+    animation: orbFloat1 18s ease-in-out infinite reverse;
+  }
+
+  @keyframes orbFloat1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50%       { transform: translate(4%, 6%) scale(1.06); }
+  }
+  @keyframes orbFloat2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50%       { transform: translate(-5%, -4%) scale(1.08); }
+  }
+
+  /* ── Diagonal corner lines ───────────────────────────── */
+  .corner {
+    position: absolute;
+    width: 5rem;
+    height: 5rem;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .corner-tl { top: 1.5rem; left: 1.5rem; border-top: 2px solid var(--red); border-left: 2px solid var(--red); }
+  .corner-tr { top: 1.5rem; right: 1.5rem; border-top: 2px solid var(--red); border-right: 2px solid var(--red); }
+  .corner-bl { bottom: 5rem; left: 1.5rem; border-bottom: 2px solid var(--red); border-left: 2px solid var(--red); opacity: 0.5; }
+  .corner-br { bottom: 5rem; right: 1.5rem; border-bottom: 2px solid var(--red); border-right: 2px solid var(--red); opacity: 0.5; }
+
+  /* ── Geometric shapes ────────────────────────────────── */
+  .geo-shape {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .geo-ring-1 {
+    width: 420px; height: 420px;
+    border: 1px solid rgba(212,43,43,0.15);
+    border-radius: 50%;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    animation: ringPulse 6s ease-in-out infinite;
+  }
+  .geo-ring-2 {
+    width: 650px; height: 650px;
+    border: 1px solid rgba(212,43,43,0.07);
+    border-radius: 50%;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    animation: ringPulse 6s ease-in-out infinite 1.5s;
+  }
+  .geo-diamond {
+    width: 120px; height: 120px;
+    border: 1.5px solid rgba(212,43,43,0.2);
+    transform: rotate(45deg);
+    top: 18%;
+    right: 12%;
+    animation: diamondSpin 20s linear infinite;
+  }
+  .geo-diamond-sm {
+    width: 60px; height: 60px;
+    border: 1.5px solid rgba(212,43,43,0.15);
+    transform: rotate(45deg);
+    bottom: 22%;
+    left: 8%;
+    animation: diamondSpin 14s linear infinite reverse;
+  }
+  @keyframes ringPulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    50%       { transform: translate(-50%, -50%) scale(1.04); opacity: 0.6; }
+  }
+  @keyframes diamondSpin {
+    from { transform: rotate(45deg); }
+    to   { transform: rotate(405deg); }
+  }
+
+  /* ── Scanline ────────────────────────────────────────── */
+  .scanline {
+    position: absolute;
+    left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(212,43,43,0.5), transparent);
+    animation: scanMove 5s ease-in-out infinite;
+    z-index: 2;
+    pointer-events: none;
+  }
+  @keyframes scanMove {
+    0%   { top: 0%; opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { top: 100%; opacity: 0; }
+  }
+
+  /* ── Logo ────────────────────────────────────────────── */
+  .logo-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+  .logo-ring {
+    position: absolute;
+    inset: -1.5rem;
+    border-radius: 50%;
+    border: 1px solid rgba(212,43,43,0.3);
+    animation: ringPulse 3s ease-in-out infinite;
+  }
+  .logo-ring-2 {
+    inset: -3rem;
+    border-color: rgba(212,43,43,0.12);
+    animation-delay: 0.8s;
+  }
+  .logo-glow {
+    position: absolute;
+    inset: -1rem;
+    background: radial-gradient(circle, var(--red) 0%, transparent 70%);
+    opacity: 0.15;
+    border-radius: 50%;
+    filter: blur(20px);
+    animation: orbFloat1 4s ease-in-out infinite;
+  }
+  .logo-img {
+    width: 9rem;
+    height: 9rem;
+    object-fit: contain;
+    position: relative;
+    z-index: 2;
+    filter: drop-shadow(0 0 30px rgba(212,43,43,0.7));
+    animation: logoReveal 1s cubic-bezier(0.16,1,0.3,1) both;
+  }
+  @keyframes logoReveal {
+    from { opacity: 0; transform: scale(0.7) rotate(-8deg); }
+    to   { opacity: 1; transform: scale(1) rotate(0deg); }
+  }
+
+  /* ── Main title ──────────────────────────────────────── */
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.2rem, 10vw, 9.5rem);
+    line-height: 0.95;
+    letter-spacing: 0.03em;
+    color: var(--white);
+    animation: titleReveal 1s cubic-bezier(0.16,1,0.3,1) 0.2s both;
+  }
+  .hero-title .red-word {
+    color: var(--red);
+    display: block;
+    /* text-stroke for depth */
+    -webkit-text-stroke: 1px rgba(255,255,255,0.1);
+    text-shadow:
+      0 0 60px rgba(212,43,43,0.6),
+      0 0 120px rgba(212,43,43,0.3);
+    animation: redPulse 3s ease-in-out infinite 1.2s;
+  }
+  .hero-title .ghost-word {
+    display: block;
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(255,255,255,0.15);
+    letter-spacing: 0.06em;
+  }
+
+  @keyframes titleReveal {
+    from { opacity: 0; transform: translateY(40px) skewY(2deg); }
+    to   { opacity: 1; transform: translateY(0) skewY(0); }
+  }
+  @keyframes redPulse {
+    0%, 100% { text-shadow: 0 0 60px rgba(212,43,43,0.6), 0 0 120px rgba(212,43,43,0.3); }
+    50%       { text-shadow: 0 0 80px rgba(212,43,43,0.9), 0 0 160px rgba(212,43,43,0.5); }
+  }
+
+  /* ── Subtitle ────────────────────────────────────────── */
+  .hero-sub {
+    font-family: 'Barlow', sans-serif;
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    font-weight: 300;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) 0.5s both;
+  }
+  .hero-sub strong {
+    color: rgba(255,255,255,0.85);
+    font-weight: 500;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Divider ─────────────────────────────────────────── */
+  .hero-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    animation: fadeUp 1s 0.6s both;
+  }
+  .divider-line {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--red), transparent);
+    flex: 1;
+    max-width: 8rem;
+  }
+  .divider-dot {
+    width: 6px; height: 6px;
+    background: var(--red);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--red), 0 0 20px var(--red);
+    animation: dotBlink 2s ease-in-out infinite;
+  }
+  @keyframes dotBlink {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(0.6); }
+  }
+
+  /* ── Buttons ─────────────────────────────────────────── */
+  .btn-hero-primary {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.15em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1rem 2.8rem;
+    background: var(--red);
+    color: white;
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.3s;
+    animation: fadeUp 1s 0.7s both;
+  }
+  .btn-hero-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.12) 50%, transparent 100%);
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+  }
+  .btn-hero-primary:hover::before { transform: translateX(100%); }
+  .btn-hero-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(212,43,43,0.5);
+  }
+
+  .btn-hero-secondary {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.15em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.95rem 2.8rem;
+    background: transparent;
+    color: white;
+    border: 1.5px solid rgba(255,255,255,0.25);
+    border-radius: 2px;
+    transition: border-color 0.25s, background 0.25s, transform 0.2s;
+    animation: fadeUp 1s 0.8s both;
+  }
+  .btn-hero-secondary:hover {
+    border-color: var(--red);
+    background: rgba(212,43,43,0.08);
+    transform: translateY(-3px);
+  }
+
+  /* ── Stats row inside hero ───────────────────────────── */
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border: 1px solid rgba(212,43,43,0.15);
+    border-radius: 3px;
+    overflow: hidden;
+    animation: fadeUp 1s 1s both;
+    backdrop-filter: blur(16px);
+    background: rgba(10,10,10,0.6);
+    max-width: 48rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  @media (max-width: 640px) {
+    .hero-stats { grid-template-columns: repeat(2, 1fr); }
+  }
+  .stat-item {
+    padding: 1.5rem 1rem;
+    text-align: center;
+    border-right: 1px solid rgba(212,43,43,0.1);
+    position: relative;
+    transition: background 0.3s;
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-item:hover { background: rgba(212,43,43,0.05); }
+  .stat-item::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--red);
+    transform: scaleX(0);
+    transition: transform 0.35s ease;
+  }
+  .stat-item:hover::before { transform: scaleX(1); }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    color: var(--white);
+    line-height: 1;
+  }
+  .stat-num .red-char { color: var(--red); }
+  .stat-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    margin-top: 0.4rem;
+  }
+
+  /* ── Scroll indicator ────────────────────────────────── */
+  .scroll-hint {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    z-index: 10;
+    animation: fadeUp 1s 1.4s both;
+  }
+  .scroll-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    color: rgba(255,255,255,0.3);
+    text-transform: uppercase;
+  }
+  .scroll-mouse {
+    width: 22px;
+    height: 36px;
+    border: 1.5px solid rgba(255,255,255,0.2);
+    border-radius: 12px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+  .scroll-wheel {
+    width: 3px;
+    height: 8px;
+    background: var(--red);
+    border-radius: 2px;
+    margin-top: 5px;
+    animation: wheelScroll 2s ease-in-out infinite;
+    box-shadow: 0 0 6px var(--red);
+  }
+  @keyframes wheelScroll {
+    0%   { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(14px); }
+  }
+
+  /* ── Diagonal cut bottom ─────────────────────────────── */
+  .clip-bottom {
+    clip-path: polygon(0 0, 100% 0, 100% 92%, 0 100%);
+  }
+
+  /* ── Page Hero ───────────────────────────────────────── */
+  .hero-page {
+    position: relative;
+    padding-top: 14rem;
+    padding-bottom: 8rem;
+    overflow: hidden;
+    background: var(--black);
+  }
+  .page-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 8vw, 8rem);
+    letter-spacing: 0.05em;
+    line-height: 1;
+    color: var(--white);
+    text-shadow: 0 0 60px rgba(212,43,43,0.3);
+  }
+  .page-subtitle-box {
+    display: inline-block;
+    border: 1px solid rgba(212,43,43,0.2);
+    background: rgba(212,43,43,0.04);
+    backdrop-filter: blur(10px);
+    border-radius: 2px;
+    padding: 1.2rem 2.4rem;
+  }
+</style>
+
 {variant === 'home' ? (
-  <!-- Home Hero - Full viewport with animation -->
-  <section class="relative min-h-screen flex items-center justify-center overflow-hidden diagonal-cut-bottom pb-20">
-    <!-- Background Video -->
-    <video
-      autoplay
-      muted
-      loop
-      playsinline
-      class="absolute inset-0 w-full h-full object-cover"
-    >
+
+  <section class="hero-home clip-bottom">
+
+    <!-- Video -->
+    <video autoplay muted loop playsinline class="hero-video">
       <source src="/videos/elClub.mp4" type="video/mp4" />
     </video>
-    
-    <!-- Dark Overlay -->
-    <div class="absolute inset-0 bg-club-black opacity-70"></div>
-    
-    <!-- Background Effects -->
-    <div class="absolute inset-0">
-      <div class="absolute inset-0 radial-red opacity-50"></div>
-      <div class="absolute inset-0 geometric-bg opacity-20"></div>
-    </div>
 
-    <!-- Animated Geometric Shapes -->
-    <div class="absolute inset-0 overflow-hidden pointer-events-none">
-      <div class="absolute top-1/4 left-1/4 w-64 h-64 border-2 border-club-red opacity-20 rotate-45 animate-pulse-slow"></div>
-      <div class="absolute bottom-1/4 right-1/4 w-96 h-96 border-2 border-club-gold opacity-10 -rotate-12 animate-pulse-slow"></div>
-    </div>
+    <!-- Overlays -->
+    <div class="hero-overlay-gradient"></div>
+    <div class="hero-noise"></div>
+    <div class="hero-grid"></div>
 
-    <!-- Content -->
-    <div class="relative z-10 container mx-auto px-4 text-center">
-      <!-- Club Shield -->
-      <div class="mb-8 flex justify-center">
-        <div class="w-40 h-40 flex items-center justify-center drop-shadow-2xl animate-pulse-slow">
-          <img src="/logo/escudoindep.png" alt="Escudo Club Atlético Independiente" class="w-full h-full object-contain filter drop-shadow-[0_0_30px_rgba(242,208,68,0.7)]" />
-        </div>
+    <!-- Glowing orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <!-- Geometric shapes -->
+    <div class="geo-shape geo-ring-1"></div>
+    <div class="geo-shape geo-ring-2"></div>
+    <div class="geo-shape geo-diamond"></div>
+    <div class="geo-shape geo-diamond-sm"></div>
+
+    <!-- Scanline -->
+    <div class="scanline"></div>
+
+    <!-- Corner accents -->
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+
+    <!-- ── Main Content ── -->
+    <div class="relative z-10 container mx-auto px-4 text-center flex flex-col items-center gap-8 pb-24" style="padding-top: clamp(7rem, 16vh, 11rem); margin-top: 70px;">
+
+      <!-- Logo -->
+      <div class="logo-wrapper mb-2">
+        <div class="logo-ring"></div>
+        <div class="logo-ring logo-ring-2"></div>
+        <div class="logo-glow"></div>
+        <img
+          src="/logo/escudoindep.svg"
+          alt="Escudo Club Atlético Independiente"
+          class="logo-img"
+          width="160" height="160"
+          style="width: 10rem; height: 10rem;"
+        />
+      </div>
+
+      <!-- Eyebrow label -->
+      <div class="hero-divider justify-center">
+        <div class="divider-line"></div>
+        <span style="font-family:'Barlow Condensed',sans-serif; font-size:0.7rem; font-weight:700; letter-spacing:0.35em; color:var(--red); text-transform:uppercase;">
+          Trelew · Chubut · Desde 1917
+        </span>
+        <div class="divider-line" style="background:linear-gradient(270deg, transparent, var(--red), transparent)"></div>
       </div>
 
       <!-- Main Title -->
-      <h1 class="font-display text-5xl md:text-7xl lg:text-8xl text-white mb-6 tracking-wider leading-tight">
-        CLUB ATLÉTICO<br/>
-        <span class="text-club-red">INDEPENDIENTE</span><br/>
-        DE TRELEW
+      <h1 class="hero-title text-center">
+        CLUB ATLÉTICO
+        <span class="red-word">INDEPENDIENTE</span>
+        <span class="ghost-word">DE TRELEW</span>
       </h1>
 
       <!-- Subtitle -->
-      <h2 class="text-club-gold text-xl md:text-2xl lg:text-3xl mb-12 font-light tracking-wide">
-        Formando deportistas. Construyendo comunidad.
-      </h2>
+      <p class="hero-sub">
+        <strong>Formando deportistas.</strong> &nbsp;·&nbsp; Construyendo comunidad.
+      </p>
 
-      <!-- CTA Buttons -->
-      <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
-        <a
-          href="/deportes"
-          class="bg-club-red hover:bg-club-red-2 text-white px-8 py-4 rounded-full font-display text-xl tracking-wider transition-all hover:scale-105 hover:glow-red"
-        >
+      <!-- Buttons -->
+      <div class="flex flex-col sm:flex-row gap-4 items-center mt-2">
+        <a href="/deportes" class="btn-hero-primary">
           VER ACTIVIDADES
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </a>
-        <a
-          href="/club"
-          class="border-2 border-white hover:border-club-gold text-white hover:text-club-gold px-8 py-4 rounded-full font-display text-xl tracking-wider transition-all hover:scale-105"
-        >
+        <a href="/club" class="btn-hero-secondary">
           CONOCER EL CLUB
         </a>
       </div>
 
-      <!-- Scroll Indicator -->
-      <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce-slow">
-        <svg class="w-8 h-8 text-club-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
-        </svg>
+      <!-- Stats -->
+      <div class="hero-stats mt-6 w-full">
+        {[
+          { num: '7',    accent: '',  label: 'Disciplinas' },
+          { num: '108',  accent: '',  label: 'Años de historia' },
+          { num: '500',  accent: '+', label: 'Socios activos' },
+          { num: '24/7', accent: '',  label: 'Compromiso' },
+        ].map(s => (
+          <div class="stat-item">
+            <div class="stat-num">
+              {s.accent && <span class="red-char">{s.accent}</span>}{s.num}
+            </div>
+            <div class="stat-label">{s.label}</div>
+          </div>
+        ))}
       </div>
+
     </div>
+
+   
+
+    <!-- Red bottom line -->
+    <div style="position:absolute; bottom:0; left:0; right:0; height:2px; background:linear-gradient(90deg, transparent, var(--red), transparent); opacity:0.5;"></div>
+
   </section>
+
 ) : (
-  <!-- Page Hero - Smaller, elegant -->
-  <section class="relative py-32 overflow-hidden diagonal-cut-bottom">
-    <!-- Background -->
-    <div class="absolute inset-0 bg-gradient-to-br from-club-black via-club-surface to-club-black">
-      <div class="absolute inset-0 geometric-bg opacity-20"></div>
-    </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       PAGE HERO
+  ══════════════════════════════════════════════════════ -->
+  <section class="hero-page">
+
+    <!-- BG layers -->
+    <div style="position:absolute; inset:0; background: linear-gradient(135deg, var(--black) 0%, #1a0000 50%, var(--black) 100%);"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-noise"></div>
+    <div class="orb orb-1" style="opacity:0.05"></div>
+    <div class="orb orb-2" style="opacity:0.04"></div>
+
+    <!-- Corner accents -->
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+
+    <!-- Red top border -->
+    <div style="position:absolute; top:0; left:0; right:0; height:2px; background:var(--red);"></div>
 
     <!-- Content -->
     <div class="relative z-10 container mx-auto px-4 text-center">
-      <h1 class="font-display text-5xl md:text-6xl lg:text-7xl text-white mb-6 tracking-wider">
-        {title}
-      </h1>
+
+      <!-- Eyebrow -->
+      <div class="hero-divider justify-center mb-6">
+        <div class="divider-line"></div>
+        <div class="divider-dot"></div>
+        <div class="divider-line" style="background:linear-gradient(270deg, transparent, var(--red), transparent)"></div>
+      </div>
+
+      <!-- Title -->
+      <h1 class="page-title mb-8">{title}</h1>
+
       {subtitle && (
-        <p class="text-club-gold text-xl md:text-2xl font-light tracking-wide max-w-2xl mx-auto">
-          {subtitle}
-        </p>
+        <div class="page-subtitle-box">
+          <p style="font-family:'Barlow',sans-serif; font-size:1.1rem; color:rgba(255,255,255,0.75); font-weight:300; letter-spacing:0.04em;">
+            {subtitle}
+          </p>
+        </div>
       )}
+
+      <!-- Bottom decorative -->
+      <div class="hero-divider justify-center mt-10">
+        <div class="divider-line"></div>
+        <div class="divider-dot"></div>
+        <div class="divider-line" style="background:linear-gradient(270deg, transparent, var(--red), transparent)"></div>
+      </div>
+
     </div>
 
-    <!-- Decorative Gold Line -->
-    <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-club-gold to-transparent opacity-50"></div>
+    <!-- Bottom line -->
+    <div style="position:absolute; bottom:0; left:0; right:0; height:1px; background:linear-gradient(90deg, transparent, rgba(212,43,43,0.4), transparent);"></div>
+
   </section>
+
 )}

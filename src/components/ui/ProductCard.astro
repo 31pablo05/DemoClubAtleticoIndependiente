@@ -9,6 +9,7 @@ interface Props {
     price: number;
     category: string;
     description?: string;
+    image?: string;
   };
 }
 
@@ -16,55 +17,283 @@ const { product } = Astro.props;
 const whatsappUrl = `https://wa.me/542804867740?text=Hola!%20Me%20interesa%20el%20producto:%20${encodeURIComponent(product.name)}`;
 ---
 
-<article class="group bg-club-surface rounded-lg overflow-hidden border border-club-gold border-opacity-20 hover:border-opacity-100 hover-lift transition-all duration-300 hover:glow-red">
-  <!-- Image Placeholder -->
-  <div class="relative h-56 bg-gradient-to-br from-club-card to-club-surface flex items-center justify-center overflow-hidden">
-    <div class="text-6xl">👕</div>
-    <div class="absolute inset-0 bg-black opacity-40 group-hover:opacity-20 transition-opacity"></div>
-    
-    <!-- Category Badge -->
-    <div class="absolute top-4 left-4">
-      <span class="bg-club-red text-white px-3 py-1 rounded-full text-xs font-semibold tracking-wide">
-        {product.category}
-      </span>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@300;400;500&display=swap');
+
+  :root {
+    --red:    #D42B2B;
+    --red-2:  #B01E1E;
+    --black:  #0A0A0A;
+    --card:   #141414;
+    --border: rgba(212,43,43,0.12);
+    --white:  #F5F5F5;
+    --green:  #25D366;
+    --green-2:#1eba59;
+  }
+
+  .pc-root {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .pc-root:hover {
+    transform: translateY(-6px);
+    border-color: rgba(212,43,43,0.5);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(212,43,43,0.15);
+  }
+
+  /* top stripe animated */
+  .pc-root::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--red);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s ease;
+    z-index: 4;
+  }
+  .pc-root:hover::before { transform: scaleX(1); }
+
+  /* ── Image area ────────────────────────────────────── */
+  .pc-img-wrap {
+    position: relative;
+    height: 14rem;
+    background: linear-gradient(135deg, #1a0000 0%, var(--card) 100%);
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .pc-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease, filter 0.4s ease;
+    filter: brightness(0.85);
+  }
+  .pc-root:hover .pc-img-wrap img {
+    transform: scale(1.07);
+    filter: brightness(1);
+  }
+
+  .pc-img-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.1) 50%, transparent 100%);
+    z-index: 1;
+  }
+
+  /* placeholder icon */
+  .pc-placeholder {
+    width: 100%; height: 14rem;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #1a0000 0%, var(--card) 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .pc-placeholder::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(212,43,43,0.08) 0%, transparent 65%);
+  }
+  .pc-placeholder-icon {
+    font-size: 4.5rem;
+    position: relative;
+    z-index: 2;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6));
+    transition: transform 0.3s;
+  }
+  .pc-root:hover .pc-placeholder-icon { transform: scale(1.12); }
+
+  /* category badge */
+  .pc-badge {
+    position: absolute;
+    top: 0.85rem; left: 0.85rem;
+    z-index: 3;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: rgba(10,10,10,0.85);
+    color: var(--red);
+    border: 1px solid rgba(212,43,43,0.4);
+    padding: 0.25rem 0.6rem;
+    border-radius: 2px;
+    backdrop-filter: blur(8px);
+  }
+
+  /* wishlist / info button top-right */
+  .pc-tag {
+    position: absolute;
+    top: 0.85rem; right: 0.85rem;
+    z-index: 3;
+    width: 30px; height: 30px;
+    background: rgba(10,10,10,0.7);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    backdrop-filter: blur(8px);
+    color: rgba(255,255,255,0.4);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .pc-root:hover .pc-tag {
+    border-color: var(--red);
+    color: var(--red);
+  }
+
+  /* ── Body ─────────────────────────────────────────── */
+  .pc-body {
+    padding: 1.25rem 1.4rem 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .pc-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.04em;
+    color: var(--white);
+    line-height: 1.05;
+    transition: color 0.2s;
+  }
+  .pc-root:hover .pc-name { color: var(--red); }
+
+  .pc-desc {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.38);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* price + separator */
+  .pc-price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0.75rem;
+    margin-top: auto;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .pc-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.03em;
+    color: var(--white);
+    line-height: 1;
+  }
+  .pc-price-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.2);
+  }
+
+  /* ── WhatsApp CTA ─────────────────────────────────── */
+  .pc-wa-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.15em;
+    padding: 0.75rem;
+    background: var(--green);
+    color: white;
+    border-radius: 2px;
+    text-decoration: none;
+    margin-top: 1rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+  }
+  .pc-wa-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+  }
+  .pc-wa-btn:hover::before { transform: translateX(100%); }
+  .pc-wa-btn:hover {
+    background: var(--green-2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(37,211,102,0.3);
+  }
+
+  /* bottom line */
+  .pc-bottom-line {
+    height: 1px;
+    background: linear-gradient(90deg, var(--red), transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+  .pc-root:hover .pc-bottom-line { transform: scaleX(1); }
+</style>
+
+<article class="pc-root">
+
+  <!-- Image -->
+  {product.image ? (
+    <div class="pc-img-wrap">
+      <img src={product.image} alt={product.name} loading="lazy" />
+      <div class="pc-img-overlay"></div>
+      <div class="pc-badge">{product.category}</div>
+      <div class="pc-tag">NEW</div>
     </div>
-  </div>
+  ) : (
+    <div class="pc-placeholder">
+      <span class="pc-placeholder-icon">👕</span>
+      <div class="pc-badge">{product.category}</div>
+      <div class="pc-tag">NEW</div>
+    </div>
+  )}
 
-  <!-- Content -->
-  <div class="p-6">
-    <!-- Product Name -->
-    <h3 class="font-display text-2xl text-white mb-2 tracking-wider group-hover:text-club-red transition-colors">
-      {product.name}
-    </h3>
+  <!-- Body -->
+  <div class="pc-body">
+    <h3 class="pc-name">{product.name}</h3>
 
-    <!-- Description -->
     {product.description && (
-      <p class="text-gray-400 text-sm mb-4">
-        {product.description}
-      </p>
+      <p class="pc-desc">{product.description}</p>
     )}
 
-    <!-- Price -->
-    <div class="flex items-center justify-between mb-6">
-      <span class="text-club-gold font-display text-3xl tracking-wider">
-        {formatPrice(product.price)}
-      </span>
+    <div class="pc-price-row">
+      <div>
+        <div class="pc-price-label">Precio</div>
+        <div class="pc-price">{formatPrice(product.price)}</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:0.35rem; font-family:'Barlow Condensed',sans-serif; font-size:0.65rem; font-weight:700; letter-spacing:0.15em; color:rgba(37,211,102,0.7);">
+        <div style="width:6px;height:6px;border-radius:50%;background:#25d366;box-shadow:0 0 6px #25d366;"></div>
+        DISPONIBLE
+      </div>
     </div>
 
-    <!-- WhatsApp Button -->
-    <a
-      href={whatsappUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      class="w-full inline-flex items-center justify-center gap-3 bg-[#25d366] hover:bg-[#20ba5a] text-white px-6 py-3 rounded-full font-medium transition-all hover:scale-105"
-    >
-      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+    <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" class="pc-wa-btn">
+      <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
       </svg>
-      Consultar por WhatsApp
+      CONSULTAR POR WHATSAPP
     </a>
   </div>
 
-  <!-- Decorative Element -->
-  <div class="h-1 bg-gradient-to-r from-club-red via-club-gold to-club-red opacity-0 group-hover:opacity-100 transition-opacity"></div>
+  <div class="pc-bottom-line"></div>
 </article>

@@ -10,113 +10,440 @@ import { sports } from '../data/sports';
   title="Deportes - Club Atlético Independiente de Trelew"
   description="Conocé todas las disciplinas deportivas que ofrecemos: fútbol, handball, hockey, básquet, patín y más"
 >
-  <!-- Hero Section -->
-  <Hero 
-    variant="page"
-    title="DEPORTES"
-    subtitle="Todas las disciplinas que ofrecemos"
-  />
 
-  <!-- Sports Catalog Section -->
-  <section class="py-20 bg-club-black">
-    <div class="container mx-auto px-4">
-      
-      <!-- Info Banner -->
-      <div class="glass p-8 rounded-lg mb-12 text-center">
-        <p class="text-xl text-white mb-2">
-          <span class="text-club-gold font-display text-2xl">7 DISCIPLINAS</span> disponibles para todas las edades
-        </p>
-        <p class="text-gray-400">
-          Seleccioná la actividad de tu interés para conocer categorías y horarios
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@300;400;500&display=swap');
+
+  :root {
+    --red:    #D42B2B;
+    --red-2:  #B01E1E;
+    --black:  #0A0A0A;
+    --surface:#111111;
+    --card:   #141414;
+    --border: rgba(212,43,43,0.12);
+    --white:  #F5F5F5;
+  }
+
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.35em; text-transform: uppercase;
+    color: var(--red);
+  }
+  .display-title { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.05em; }
+  .body-text     { font-family: 'Barlow', sans-serif; }
+
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(212,43,43,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(212,43,43,0.025) 1px, transparent 1px);
+    background-size: 52px 52px;
+  }
+  .noise::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0;
+  }
+
+  .reveal {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.08s; }
+  .reveal-delay-2 { transition-delay: 0.16s; }
+  .reveal-delay-3 { transition-delay: 0.24s; }
+  .reveal-delay-4 { transition-delay: 0.32s; }
+
+  /* ── Ticker ──────────────────────────────────────────── */
+  .ticker-wrap { background:var(--red); overflow:hidden; padding:0.55rem 0; }
+  .ticker-track { display:flex; width:max-content; animation:ticker 26s linear infinite; }
+  .ticker-item {
+    font-family:'Bebas Neue',sans-serif; font-size:1rem;
+    letter-spacing:0.15em; color:rgba(255,255,255,0.9);
+    padding:0 2rem; white-space:nowrap;
+  }
+  .ticker-item::before { content:'◆'; margin-right:2rem; opacity:0.5; }
+  @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+  /* ── Stats bar ───────────────────────────────────────── */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+  }
+  .stat-cell {
+    padding: 1.6rem 1rem;
+    text-align: center;
+    border-right: 1px solid var(--border);
+    position: relative;
+    transition: background 0.25s;
+  }
+  .stat-cell:last-child { border-right: none; }
+  .stat-cell:hover { background: rgba(212,43,43,0.04); }
+  .stat-cell::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 2px;
+    background: var(--red);
+    transform: scaleX(0); transition: transform 0.3s ease;
+  }
+  .stat-cell:hover::before { transform: scaleX(1); }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
+    color: var(--white); line-height: 1;
+  }
+  .stat-num .accent { color: var(--red); }
+  .stat-lbl {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 0.28em; text-transform: uppercase;
+    color: rgba(255,255,255,0.25); margin-top: 0.3rem;
+  }
+
+  /* ── Sports list ─────────────────────────────────────── */
+  .sports-section {
+    position: relative;
+    background: var(--black);
+    padding: 5rem 0 6rem;
+  }
+
+  /* Thin numbered divider between cards */
+  .sport-entry {
+    position: relative;
+    padding-bottom: 3rem;
+    margin-bottom: 3rem;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .sport-entry:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+
+  .sport-index {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.75rem; letter-spacing: 0.2em;
+    color: var(--red); opacity: 0.5;
+    margin-bottom: 0.75rem;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .sport-index::after {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(90deg, var(--border), transparent);
+    max-width: 6rem;
+  }
+
+  /* ── Inscription section ─────────────────────────────── */
+  .inscription-section {
+    position: relative;
+    background: var(--surface);
+    padding: 5.5rem 0;
+  }
+
+  /* step cards */
+  .step-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 2rem 1.8rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .step-card:hover { border-color: rgba(212,43,43,0.45); transform: translateY(-5px); }
+  .step-card::after {
+    content: ''; position: absolute;
+    bottom: 0; left: 0; right: 0; height: 2px;
+    background: var(--red);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.35s ease;
+  }
+  .step-card:hover::after { transform: scaleX(1); }
+
+  .step-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem; letter-spacing: 0.04em;
+    color: rgba(212,43,43,0.08); line-height: 1;
+    position: absolute; top: 0.5rem; right: 0.8rem;
+    transition: color 0.3s;
+    pointer-events: none;
+  }
+  .step-card:hover .step-num { color: rgba(212,43,43,0.15); }
+
+  .step-icon {
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+    position: relative; z-index: 2;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+    display: block;
+  }
+  .step-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem; letter-spacing: 0.06em;
+    color: white; margin-bottom: 0.6rem;
+  }
+  .step-desc {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.82rem; color: rgba(255,255,255,0.4); line-height: 1.6;
+  }
+  /* connector line between steps */
+  .steps-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  @media (min-width: 768px) {
+    .steps-grid { grid-template-columns: repeat(3,1fr); gap: 0; }
+    .step-card:not(:last-child)::before {
+      content: '→';
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      color: var(--red);
+      position: absolute;
+      right: -0.8rem; top: 50%;
+      transform: translateY(-50%);
+      z-index: 3;
+    }
+  }
+
+  /* requirements */
+  .req-block {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 2rem 2.4rem;
+    position: relative; overflow: hidden;
+    margin-top: 1.5rem;
+  }
+  .req-block::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 2px;
+    background: var(--red);
+  }
+  .req-item {
+    display: flex; align-items: flex-start; gap: 0.7rem;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.85rem; color: rgba(255,255,255,0.5);
+    padding: 0.65rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    line-height: 1.5; transition: color 0.2s;
+  }
+  .req-item:last-child { border-bottom: none; }
+  .req-item:hover { color: rgba(255,255,255,0.8); }
+  .req-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--red); margin-top: 0.5rem;
+    flex-shrink: 0; box-shadow: 0 0 5px var(--red);
+  }
+
+  /* ── CTA section ─────────────────────────────────────── */
+  .cta-section {
+    position: relative; background: var(--red);
+    padding: 5.5rem 0; text-align: center; overflow: hidden;
+  }
+  .cta-section::before {
+    content: 'INSCRIBITE';
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem,13vw,10rem);
+    color: rgba(0,0,0,0.1);
+    position: absolute; top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    white-space:nowrap; pointer-events:none; letter-spacing:0.06em;
+  }
+  .cta-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,0,0,0.06) 1px,transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.06) 1px,transparent 1px);
+    background-size: 48px 48px;
+  }
+  .btn-cta {
+    display: inline-flex; align-items: center; gap: 0.7rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.15rem; letter-spacing: 0.15em;
+    padding: 1rem 2.8rem; background: white;
+    color: var(--red); border-radius: 2px;
+    text-decoration: none; position: relative; overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.3s;
+  }
+  .btn-cta::before {
+    content: '';position:absolute;inset:0;
+    background: linear-gradient(90deg,transparent,rgba(212,43,43,0.06),transparent);
+    transform:translateX(-100%); transition:transform 0.5s ease;
+  }
+  .btn-cta:hover::before { transform:translateX(100%); }
+  .btn-cta:hover { transform:translateY(-3px); box-shadow:0 16px 48px rgba(0,0,0,0.3); }
+  .btn-outline-white {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem; letter-spacing: 0.15em;
+    padding: 0.95rem 2.4rem; background: transparent;
+    color: white; border: 1.5px solid rgba(255,255,255,0.35);
+    border-radius: 2px; text-decoration: none;
+    transition: border-color 0.25s, background 0.25s, transform 0.2s;
+  }
+  .btn-outline-white:hover {
+    border-color: white; background: rgba(255,255,255,0.08);
+    transform: translateY(-3px);
+  }
+</style>
+
+  <!-- Hero -->
+  <Hero variant="page" title="DEPORTES" subtitle="Todas las disciplinas para formar campeones en Trelew" />
+
+  <!-- Ticker -->
+  <div class="ticker-wrap">
+    <div class="ticker-track">
+      {['Fútbol','Handball','Hockey','Patín','Básquet','Fútbol Femenino','Baby Fútbol',
+        'Fútbol','Handball','Hockey','Patín','Básquet','Fútbol Femenino','Baby Fútbol'].map(i => (
+        <span class="ticker-item">{i}</span>
+      ))}
+    </div>
+  </div>
+
+  <!-- Stats bar -->
+  <div class="stats-bar">
+    {[
+      { num: sports.length.toString(), accent: '',  label: 'Disciplinas' },
+      { num: '15',  accent: '+', label: 'Categorías' },
+      { num: '200', accent: '+', label: 'Deportistas' },
+    ].map(s => (
+      <div class="stat-cell">
+        <div class="stat-num">
+          {s.accent && <span class="accent">{s.accent}</span>}{s.num}
+        </div>
+        <div class="stat-lbl">{s.label}</div>
+      </div>
+    ))}
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       SPORTS CATALOG
+  ══════════════════════════════════════════════════════ -->
+  <section class="sports-section grid-bg noise">
+    <div style="position:absolute;width:45vw;height:45vw;border-radius:50%;background:var(--red);opacity:0.04;filter:blur(90px);top:-5%;left:-10%;pointer-events:none;"></div>
+    <div style="position:absolute;width:35vw;height:35vw;border-radius:50%;background:var(--red);opacity:0.03;filter:blur(70px);bottom:-5%;right:-5%;pointer-events:none;"></div>
+
+    <div class="container mx-auto px-4 relative z-10">
+
+      <!-- Header -->
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-14 gap-4 reveal">
+        <div>
+          <p class="section-label mb-2">Oferta deportiva</p>
+          <h2 class="display-title text-white" style="font-size:clamp(2.5rem,5vw,4.5rem); line-height:1.02">
+            NUESTRAS<br><span style="color:var(--red)">DISCIPLINAS</span>
+          </h2>
+        </div>
+        <p class="body-text" style="font-size:0.82rem; color:rgba(255,255,255,0.3); max-width:280px; text-align:right; line-height:1.6;">
+          Seleccioná la disciplina de tu interés para conocer categorías, horarios e inscripción.
         </p>
       </div>
 
-      <!-- Sports Grid - Full Format -->
-      <div class="space-y-12">
-        {sports.map(sport => (
-          <SportCard sport={sport} variant="full" />
+      <!-- List of sports -->
+      <div>
+        {sports.map((sport, i) => (
+          <div class={`sport-entry reveal reveal-delay-${(i % 3) + 1}`}>
+            <div class="sport-index">
+              {String(i + 1).padStart(2, '0')} — {sport.name.toUpperCase()}
+            </div>
+            <SportCard sport={sport} variant="full" />
+          </div>
         ))}
       </div>
+
     </div>
   </section>
 
-  <!-- Info Section -->
-  <section class="py-20 bg-club-surface">
+  <!-- ══════════════════════════════════════════════════════
+       INSCRIPCIÓN
+  ══════════════════════════════════════════════════════ -->
+  <section class="inscription-section">
     <div class="container mx-auto px-4">
-      <div class="max-w-4xl mx-auto">
-        <h2 class="font-display text-4xl text-center text-club-gold mb-12 tracking-wider">
-          ¿CÓMO INSCRIBIRSE?
+
+      <div class="mb-12 reveal">
+        <p class="section-label mb-2">Sumate al club</p>
+        <h2 class="display-title text-white" style="font-size:clamp(2.5rem,5vw,4.2rem); line-height:1.02">
+          ¿CÓMO<br><span style="color:var(--red)">INSCRIBIRSE?</span>
         </h2>
+      </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            {
-              step: '01',
-              title: 'Contactanos',
-              description: 'Escribinos por WhatsApp o visitanos en el club para conocer más detalles.',
-              icon: '📱'
-            },
-            {
-              step: '02',
-              title: 'Elegí tu deporte',
-              description: 'Te asesoramos sobre la categoría y horarios que mejor se adapten a vos.',
-              icon: '⚽'
-            },
-            {
-              step: '03',
-              title: 'Comenzá a entrenar',
-              description: 'Completá la inscripción y empezá a disfrutar de tu actividad deportiva.',
-              icon: '🏃'
-            }
-          ].map((step) => (
-            <div class="bg-club-card p-8 rounded-lg border border-club-gold border-opacity-30 hover:border-opacity-100 transition-all hover-lift text-center">
-              <div class="text-5xl mb-4">{step.icon}</div>
-              <div class="font-display text-club-red text-4xl mb-4 tracking-wider">
-                {step.step}
+      <!-- 3 steps -->
+      <div class="steps-grid max-w-4xl mx-auto mb-2">
+        {[
+          { step:'01', icon:'📱', title:'CONTACTANOS',       desc:'Escribinos por WhatsApp o visitanos en el club para conocer todos los detalles.' },
+          { step:'02', icon:'⚽', title:'ELEGÍ TU DEPORTE',  desc:'Te asesoramos sobre la categoría y los horarios que mejor se adapten a vos.' },
+          { step:'03', icon:'🏃', title:'COMENZÁ A ENTRENAR', desc:'Completá la inscripción y empezá a disfrutar tu actividad deportiva.' },
+        ].map((s, i) => (
+          <div class={`step-card reveal reveal-delay-${i+1}`}>
+            <div class="step-num">{s.step}</div>
+            <span class="step-icon">{s.icon}</span>
+            <div class="step-title">{s.title}</div>
+            <p class="step-desc">{s.desc}</p>
+          </div>
+        ))}
+      </div>
+
+      <!-- Requirements -->
+      <div class="max-w-4xl mx-auto">
+        <div class="req-block reveal reveal-delay-2">
+          <p class="section-label mb-5">Documentación necesaria</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8">
+            {[
+              'Certificado médico de aptitud física',
+              'Fotocopia DNI del deportista y tutor',
+              '2 fotos carnet',
+              'Ficha de inscripción completa',
+            ].map(r => (
+              <div class="req-item">
+                <div class="req-dot"></div>
+                {r}
               </div>
-              <h3 class="font-display text-xl text-white mb-3 tracking-wider">
-                {step.title.toUpperCase()}
-              </h3>
-              <p class="text-gray-400 text-sm leading-relaxed">
-                {step.description}
-              </p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
+      </div>
 
-        <!-- Requirements Card -->
-        <div class="mt-12 glass p-8 rounded-lg">
-          <h3 class="font-display text-2xl text-club-gold mb-6 tracking-wider text-center">
-            REQUISITOS GENERALES
-          </h3>
-          <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-300">
-            <li class="flex items-start gap-3">
-              <span class="text-club-red text-xl">✓</span>
-              <span>Certificado médico de aptitud física</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <span class="text-club-red text-xl">✓</span>
-              <span>Fotocopia DNI del deportista y tutor</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <span class="text-club-red text-xl">✓</span>
-              <span>2 fotos carnet</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <span class="text-club-red text-xl">✓</span>
-              <span>Ficha de inscripción completa</span>
-            </li>
-          </ul>
-        </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       CTA FINAL
+  ══════════════════════════════════════════════════════ -->
+  <section class="cta-section">
+    <div class="cta-grid"></div>
+    <div class="container mx-auto px-4 relative z-10">
+      <p class="section-label mb-3" style="color:rgba(255,255,255,0.6);">¿Tenés dudas?</p>
+      <h2 class="display-title text-white mb-4" style="font-size:clamp(2.8rem,7vw,6rem); line-height:1.02">
+        HABLEMOS<br>HOY MISMO
+      </h2>
+      <p class="body-text mb-10" style="font-size:1rem; color:rgba(255,255,255,0.75); max-width:380px; margin-left:auto; margin-right:auto; line-height:1.6;">
+        Te asesoramos sobre la disciplina y la categoría que mejor se adapte a tu edad y nivel.
+      </p>
+      <div style="display:flex; flex-wrap:wrap; gap:1rem; justify-content:center;">
+        <a
+          href="https://wa.me/542804867740?text=Hola!%20Me%20interesa%20inscribirme%20en%20el%20club"
+          target="_blank" rel="noopener noreferrer"
+          class="btn-cta"
+        >
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+          CONSULTAR POR WHATSAPP
+        </a>
+        <a href="/cronograma" class="btn-outline-white">
+          VER CRONOGRAMA
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- CTA Banner -->
-  <CtaBanner 
-    title="¿TENÉS DUDAS?"
-    subtitle="Contactanos por WhatsApp y te asesoramos sobre la mejor opción para vos"
-    buttonText="Consultar por WhatsApp"
-    variant="red"
-  />
 </Layout>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>

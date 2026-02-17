@@ -14,219 +14,603 @@ const featuredProducts = products.filter(p => p.featured);
 ---
 
 <Layout title="Club Atlético Independiente de Trelew - Inicio">
-  <!-- Hero Section -->
+
+  <style>
+    /* ── Fuentes ─────────────────────────────────────────────── */
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@300;400;500&display=swap');
+
+    /* ── Variables ───────────────────────────────────────────── */
+    :root {
+      --red:    #D42B2B;
+      --red-2:  #B01E1E;
+      --red-glow: rgba(212,43,43,0.35);
+      --black:  #0A0A0A;
+      --surface:#111111;
+      --card:   #181818;
+      --white:  #F5F5F5;
+      --gray:   #888;
+    }
+
+    /* ── Utilities ───────────────────────────────────────────── */
+    .section-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--red);
+    }
+    .display-title {
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 0.05em;
+    }
+    .body-text {
+      font-family: 'Barlow', sans-serif;
+    }
+
+    /* ── Slash Divider ───────────────────────────────────────── */
+    .slash-divider {
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .slash-divider::before,
+    .slash-divider::after {
+      content: '';
+      width: 3rem;
+      height: 2px;
+      background: var(--red);
+    }
+
+    /* ── Noise overlay ───────────────────────────────────────── */
+    .noise::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Number counter ──────────────────────────────────────── */
+    .stat-number {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 6vw, 5rem);
+      line-height: 1;
+      color: var(--white);
+      position: relative;
+    }
+    .stat-number span.accent {
+      color: var(--red);
+    }
+
+    /* ── Ticker tape ─────────────────────────────────────────── */
+    .ticker-wrap {
+      overflow: hidden;
+      background: var(--red);
+      padding: 0.6rem 0;
+    }
+    .ticker-track {
+      display: flex;
+      width: max-content;
+      animation: ticker 28s linear infinite;
+    }
+    .ticker-item {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.12em;
+      color: white;
+      padding: 0 2.5rem;
+      white-space: nowrap;
+    }
+    .ticker-item::before {
+      content: '◆';
+      margin-right: 2.5rem;
+      opacity: 0.6;
+    }
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── Sport Card ──────────────────────────────────────────── */
+    .sport-tile {
+      position: relative;
+      overflow: hidden;
+      border-radius: 4px;
+      border: 1px solid rgba(212,43,43,0.15);
+      background: var(--card);
+      transition: border-color 0.3s, transform 0.3s;
+      cursor: pointer;
+    }
+    .sport-tile:hover {
+      border-color: var(--red);
+      transform: translateY(-4px);
+    }
+    .sport-tile::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 0;
+      background: var(--red);
+      transition: height 0.35s ease;
+    }
+    .sport-tile:hover::before { height: 100%; }
+    .sport-tile .tile-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4rem;
+      color: rgba(212,43,43,0.08);
+      position: absolute;
+      top: -0.5rem; right: 0.5rem;
+      line-height: 1;
+      transition: color 0.3s;
+    }
+    .sport-tile:hover .tile-num { color: rgba(212,43,43,0.15); }
+
+    /* ── Day column ──────────────────────────────────────────── */
+    .day-col {
+      border-radius: 4px;
+      background: var(--card);
+      border: 1px solid rgba(212,43,43,0.1);
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+    .day-col:hover { border-color: rgba(212,43,43,0.5); }
+    .day-head {
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 0.08em;
+      background: rgba(212,43,43,0.07);
+      border-bottom: 1px solid rgba(212,43,43,0.15);
+    }
+
+    /* ── Product card ────────────────────────────────────────── */
+    .product-frame {
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
+      background: var(--card);
+      border: 1px solid rgba(212,43,43,0.1);
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .product-frame:hover {
+      border-color: var(--red);
+      transform: translateY(-6px);
+    }
+    .product-frame .badge {
+      position: absolute;
+      top: 1rem; left: 1rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      background: var(--red);
+      color: white;
+      padding: 0.2rem 0.6rem;
+      clip-path: polygon(0 0, 100% 0, 95% 100%, 5% 100%);
+    }
+
+    /* ── Value card ──────────────────────────────────────────── */
+    .value-card {
+      position: relative;
+      padding: 2.5rem 2rem;
+      border-radius: 4px;
+      background: var(--card);
+      border: 1px solid rgba(212,43,43,0.1);
+      overflow: hidden;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+    .value-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(212,43,43,0.6);
+    }
+    .value-card .corner-accent {
+      position: absolute;
+      bottom: 0; right: 0;
+      width: 5rem; height: 5rem;
+      background: var(--red);
+      opacity: 0.07;
+      transform: rotate(45deg) translate(30%, 30%);
+      transition: opacity 0.3s;
+    }
+    .value-card:hover .corner-accent { opacity: 0.15; }
+
+    /* ── Facility ────────────────────────────────────────────── */
+    .facility-card {
+      position: relative;
+      height: 20rem;
+      border-radius: 4px;
+      overflow: hidden;
+      background: var(--card);
+      border: 1px solid rgba(212,43,43,0.1);
+      transition: border-color 0.3s;
+    }
+    .facility-card:hover { border-color: var(--red); }
+    .facility-card .fac-icon {
+      font-size: 7rem;
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.12;
+      transition: opacity 0.3s, transform 0.4s;
+    }
+    .facility-card:hover .fac-icon { opacity: 0.2; transform: scale(1.1); }
+    .facility-card .fac-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
+    }
+    .facility-card .fac-content {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 2rem;
+    }
+    .facility-card .fac-stripe {
+      position: absolute;
+      top: 0; right: 0;
+      width: 0.25rem;
+      height: 0;
+      background: var(--red);
+      transition: height 0.4s ease;
+    }
+    .facility-card:hover .fac-stripe { height: 100%; }
+
+    /* ── Stats bar ───────────────────────────────────────────── */
+    .stats-bar {
+      background: var(--surface);
+      border-top: 1px solid rgba(212,43,43,0.2);
+      border-bottom: 1px solid rgba(212,43,43,0.2);
+    }
+    .stats-divider {
+      width: 1px;
+      background: rgba(212,43,43,0.2);
+      height: 4rem;
+      margin: auto 0;
+    }
+
+    /* ── CTA Section ─────────────────────────────────────────── */
+    .cta-mega {
+      position: relative;
+      overflow: hidden;
+      background: var(--red);
+    }
+    .cta-mega::before {
+      content: 'INDEPENDIENTE';
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(5rem, 14vw, 12rem);
+      color: rgba(0,0,0,0.12);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+      pointer-events: none;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Button ──────────────────────────────────────────────── */
+    .btn-primary {
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 0.15em;
+      font-size: 1.1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.9rem 2.4rem;
+      background: var(--red);
+      color: white;
+      border-radius: 2px;
+      transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+    }
+    .btn-primary:hover {
+      background: var(--red-2);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px var(--red-glow);
+    }
+    .btn-outline {
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 0.15em;
+      font-size: 1.1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.85rem 2.4rem;
+      background: transparent;
+      color: white;
+      border: 1.5px solid rgba(255,255,255,0.3);
+      border-radius: 2px;
+      transition: border-color 0.25s, background 0.25s, transform 0.2s;
+    }
+    .btn-outline:hover {
+      border-color: white;
+      background: rgba(255,255,255,0.06);
+      transform: translateY(-2px);
+    }
+
+    /* ── Scroll reveal ───────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+  </style>
+
+  <!-- ══════════════════════════════════════════════════════════
+       HERO
+  ══════════════════════════════════════════════════════════ -->
   <Hero variant="home" />
 
-  <!-- Sports Section -->
-  <section class="py-20 bg-club-black">
-    <div class="container mx-auto px-4">
-      <SectionTitle 
-        title="NUESTRAS DISCIPLINAS"
-        subtitle="Actividades deportivas para todas las edades y niveles"
-      />
+  <!-- ══════════════════════════════════════════════════════════
+       TICKER TAPE
+  ══════════════════════════════════════════════════════════ -->
+  <div class="ticker-wrap">
+    <div class="ticker-track">
+      {[
+        'Fútbol', 'Básquet', 'Fútbol infantiles', 'Handball', 'Hockey', 'Patín', 'Baby Fútbol',
+        'Fútbol', 'Básquet', 'Fútbol infantiles', 'Handball', 'Hockey', 'Patín', 'Baby Fútbol',
+      ].map(item => (
+        <span class="ticker-item">{item}</span>
+      ))}
+    </div>
+  </div>
 
-      <!-- Sports Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {featuredSports.map(sport => (
-          <SportCard sport={sport} variant="compact" />
+  <!-- ══════════════════════════════════════════════════════════
+       STATS BAR
+  ══════════════════════════════════════════════════════════ -->
+  <div class="stats-bar py-12">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-0 text-center">
+        {[
+          { num: '+500', label: 'Socios activos' },
+          { num: '7',    label: 'Disciplinas' },
+          { num: '1940', label: 'Año de fundación' },
+          { num: '+20',  label: 'Profes y entrenadores' },
+        ].map((s, i) => (
+          <div class="flex flex-col items-center py-4 reveal" style={`transition-delay:${i*0.1}s`}>
+            <div class="stat-number">{s.num.includes('+') ? <><span class="accent">+</span>{s.num.slice(1)}</> : s.num}</div>
+            <div class="section-label mt-1" style="color:#888; font-size:0.7rem">{s.label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       DISCIPLINAS
+  ══════════════════════════════════════════════════════════ -->
+  <section class="py-28 noise relative" style="background:var(--black);">
+    <div class="container mx-auto px-4 relative z-10">
+
+      <!-- Header -->
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-16 gap-6">
+        <div>
+          <p class="section-label mb-3">Lo que hacemos</p>
+          <h2 class="display-title text-white" style="font-size: clamp(2.8rem, 6vw, 5rem); line-height:1.05">
+            NUESTRAS<br><span style="color:var(--red)">DISCIPLINAS</span>
+          </h2>
+        </div>
+        <p class="body-text text-gray-400 max-w-xs text-sm leading-relaxed md:text-right">
+          Actividades deportivas para todas las edades y niveles. Encontrá tu pasión deportiva.
+        </p>
+      </div>
+
+      <!-- Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {featuredSports.map((sport, i) => (
+          <div class={`sport-tile p-6 reveal reveal-delay-${(i % 4) + 1}`}>
+            <div class="tile-num">{String(i + 1).padStart(2, '0')}</div>
+            <SportCard sport={sport} variant="compact" />
+          </div>
         ))}
       </div>
 
-      <!-- View All Button -->
-      <div class="text-center mt-12">
-        <a
-          href="/deportes"
-          class="inline-block bg-club-gold hover:bg-club-gold-dim text-club-black px-8 py-4 rounded-full font-display text-xl tracking-wider transition-all hover:scale-105 hover:glow-gold"
-        >
+      <!-- CTA -->
+      <div class="mt-14 flex items-center gap-4 flex-wrap">
+        <a href="/deportes" class="btn-primary">
           VER TODAS LAS DISCIPLINAS
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="/cronograma" class="btn-outline">
+          CRONOGRAMA
         </a>
       </div>
     </div>
   </section>
 
-  <!-- Quick Schedule Section -->
-  <section class="py-20 bg-club-surface">
+  <!-- ══════════════════════════════════════════════════════════
+       CRONOGRAMA SEMANAL
+  ══════════════════════════════════════════════════════════ -->
+  <section class="py-28" style="background:var(--surface)">
     <div class="container mx-auto px-4">
-      <SectionTitle 
-        title="ESTA SEMANA EN EL CLUB"
-        subtitle="Actividades programadas para la semana"
-      />
 
-      <!-- Weekly Grid -->
-      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+      <div class="mb-14">
+        <p class="section-label mb-3">Organización</p>
+        <h2 class="display-title text-white" style="font-size: clamp(2.8rem, 6vw, 5rem); line-height:1.05">
+          ESTA SEMANA<br><span style="color:var(--red)">EN EL CLUB</span>
+        </h2>
+      </div>
+
+      <!-- Days grid -->
+      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
         {Object.entries(weeklySchedule).map(([day, activities]) => (
-          <div class="bg-club-card rounded-lg p-4 border border-club-gold border-opacity-20 hover:border-opacity-100 transition-all hover-lift">
-            <h3 class="font-display text-xl text-club-gold mb-4 tracking-wider text-center border-b border-club-gold border-opacity-30 pb-2">
-              {day}
-            </h3>
-            <div class="space-y-2">
+          <div class="day-col">
+            <div class="day-head px-3 py-3 text-center">
+              <span class="display-title text-white text-lg tracking-widest">{day.slice(0,3).toUpperCase()}</span>
+            </div>
+            <div class="p-3 space-y-2">
               {activities.length > 0 ? (
-                activities.slice(0, 3).map((activity, idx) => {
-                  const colorClass = activity.color === 'red' ? 'bg-club-red' :
-                                   activity.color === 'blue' ? 'bg-blue-600' :
-                                   activity.color === 'pink' ? 'bg-pink-600' :
-                                   activity.color === 'purple' ? 'bg-purple-600' :
-                                   'bg-orange-600';
+                activities.slice(0, 3).map((activity) => {
+                  const colorClass = activity.color === 'red'    ? 'bg-red-700' :
+                                     activity.color === 'blue'   ? 'bg-blue-700' :
+                                     activity.color === 'pink'   ? 'bg-pink-700' :
+                                     activity.color === 'purple' ? 'bg-purple-700' :
+                                     'bg-orange-700';
                   return (
-                    <div
-                      class={`${colorClass} text-white text-xs p-2 rounded text-center font-medium`}
-                    >
+                    <div class={`${colorClass} text-white text-xs py-2 px-2 text-center font-medium body-text tracking-wide rounded-sm`}>
                       {activity.activity}
                     </div>
                   );
                 })
               ) : (
-                <div class="text-gray-500 text-center text-sm py-2">
-                  Descanso
-                </div>
+                <div class="text-gray-600 text-center text-xs py-4 body-text">Descanso</div>
               )}
             </div>
           </div>
         ))}
       </div>
 
-      <!-- View Full Schedule Button -->
-      <div class="text-center mt-12">
-        <a
-          href="/cronograma"
-          class="inline-block bg-club-red hover:bg-club-red-2 text-white px-8 py-4 rounded-full font-display text-xl tracking-wider transition-all hover:scale-105 hover:glow-red"
-        >
+      <div class="mt-12">
+        <a href="/cronograma" class="btn-primary">
           VER CRONOGRAMA COMPLETO
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
       </div>
     </div>
   </section>
 
-  <!-- Store Preview Section -->
-  <section class="relative py-20 bg-club-black overflow-hidden">
-    <!-- Decorative Diagonal Stripe -->
-    <div class="absolute top-0 right-0 w-1/3 h-full bg-club-red opacity-10 transform skew-x-12 translate-x-1/4"></div>
-    
-    <div class="relative z-10 container mx-auto px-4">
-      <SectionTitle 
-        title="TIENDA OFICIAL"
-        subtitle="Indumentaria y merchandising del club"
-      />
+  <!-- ══════════════════════════════════════════════════════════
+       TIENDA OFICIAL
+  ══════════════════════════════════════════════════════════ -->
+  <section class="py-28 relative overflow-hidden noise" style="background:var(--black)">
+    <!-- Diagonal accent -->
+    <div class="absolute top-0 left-0 w-full h-1" style="background:var(--red)"></div>
+    <div class="absolute bottom-0 right-0 w-72 h-72 rounded-full blur-3xl opacity-10" style="background:var(--red)"></div>
 
-      <!-- Featured Products Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-        {featuredProducts.map(product => (
-          <ProductCard product={product} />
+    <div class="container mx-auto px-4 relative z-10">
+
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-16 gap-6">
+        <div>
+          <p class="section-label mb-3">Merchandising oficial</p>
+          <h2 class="display-title text-white" style="font-size: clamp(2.8rem, 6vw, 5rem); line-height:1.05">
+            TIENDA<br><span style="color:var(--red)">DEL CLUB</span>
+          </h2>
+        </div>
+        <a href="/tienda" class="btn-outline self-start md:self-end">VER TIENDA COMPLETA</a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {featuredProducts.map((product, i) => (
+          <div class={`product-frame reveal reveal-delay-${i + 1}`}>
+            <div class="badge">OFICIAL</div>
+            <ProductCard product={product} />
+          </div>
         ))}
       </div>
-
-      <!-- View Store Button -->
-      <div class="text-center">
-        <a
-          href="/tienda"
-          class="inline-block bg-club-gold hover:bg-club-gold-dim text-club-black px-10 py-4 rounded-full font-display text-2xl tracking-wider transition-all hover:scale-105 hover:glow-gold"
-        >
-          VER TODA LA TIENDA
-        </a>
-      </div>
     </div>
   </section>
 
-  <!-- Values Section -->
-  <section class="py-20 bg-club-surface">
+  <!-- ══════════════════════════════════════════════════════════
+       VALORES
+  ══════════════════════════════════════════════════════════ -->
+  <section class="py-28" style="background:var(--surface)">
     <div class="container mx-auto px-4">
-      <SectionTitle 
-        title="NUESTROS VALORES"
-        subtitle="Lo que nos define como institución"
-      />
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="mb-14">
+        <p class="section-label mb-3">Nuestra identidad</p>
+        <h2 class="display-title text-white" style="font-size: clamp(2.8rem, 6vw, 5rem); line-height:1.05">
+          LO QUE NOS<br><span style="color:var(--red)">DEFINE</span>
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          {
-            icon: '🏆',
-            title: 'COMPROMISO',
-            description: 'Dedicación total al desarrollo deportivo y personal de cada socio.'
-          },
-          {
-            icon: '🤝',
-            title: 'COMUNIDAD',
-            description: 'Construimos lazos fuertes entre familias, deportistas y la ciudad.'
-          },
-          {
-            icon: '💪',
-            title: 'DISCIPLINA',
-            description: 'Formación basada en el respeto, la constancia y el esfuerzo.'
-          },
-          {
-            icon: '❤️',
-            title: 'ORGULLO',
-            description: 'Representar los colores del club con pasión y honor.'
-          }
-        ].map((value) => (
-          <article class="glass p-8 rounded-lg hover-lift group">
-            <div class="text-5xl mb-4 group-hover:scale-110 transition-transform">
-              {value.icon}
-            </div>
-            <h3 class="font-display text-2xl text-club-gold mb-3 tracking-wider">
-              {value.title}
-            </h3>
-            <p class="text-gray-300 text-sm leading-relaxed">
-              {value.description}
-            </p>
+          { icon: '🏆', title: 'COMPROMISO', desc: 'Dedicación total al desarrollo deportivo y personal de cada socio.' },
+          { icon: '🤝', title: 'COMUNIDAD',  desc: 'Construimos lazos fuertes entre familias, deportistas y la ciudad.' },
+          { icon: '💪', title: 'DISCIPLINA', desc: 'Formación basada en el respeto, la constancia y el esfuerzo.' },
+          { icon: '❤️',  title: 'ORGULLO',   desc: 'Representar los colores del club con pasión y honor.' },
+        ].map((v, i) => (
+          <article class={`value-card reveal reveal-delay-${i + 1}`}>
+            <div class="corner-accent"></div>
+            <div style="font-size:2.8rem; line-height:1; margin-bottom:1.25rem">{v.icon}</div>
+            <h3 class="display-title text-white text-2xl mb-3" style="letter-spacing:0.05em">{v.title}</h3>
+            <p class="body-text text-gray-400 text-sm leading-relaxed">{v.desc}</p>
+            <div class="mt-6 w-8 h-0.5" style="background:var(--red)"></div>
           </article>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- Facilities Preview -->
-  <section class="py-20 bg-club-black">
-    <div class="container mx-auto px-4">
-      <SectionTitle 
-        title="INSTALACIONES"
-        subtitle="Espacios de primer nivel para la práctica deportiva"
-      />
+  <!-- ══════════════════════════════════════════════════════════
+       INSTALACIONES
+  ══════════════════════════════════════════════════════════ -->
+  <section class="py-28 noise relative" style="background:var(--black)">
+    <div class="container mx-auto px-4 relative z-10">
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {[
-          { name: 'Cancha Principal', icon: '⚽' },
-          { name: 'Polideportivo', icon: '🏀' },
-          { name: 'Vestuarios', icon: '🚿' }
-        ].map((facility) => (
-          <div class="group relative h-64 bg-gradient-to-br from-club-surface to-club-card rounded-lg overflow-hidden border border-club-gold border-opacity-30 hover:border-opacity-100 transition-all hover-lift">
-            <!-- Icon -->
-            <div class="absolute inset-0 flex items-center justify-center text-8xl opacity-30 group-hover:opacity-50 transition-opacity">
-              {facility.icon}
-            </div>
-            
-            <!-- Overlay -->
-            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
-            
-            <!-- Content -->
-            <div class="absolute bottom-0 left-0 right-0 p-6">
-              <h3 class="font-display text-3xl text-white tracking-wider group-hover:text-club-gold transition-colors">
-                {facility.name}
-              </h3>
-            </div>
-
-            <!-- Geometric Decoration -->
-            <div class="absolute top-0 right-0 w-32 h-32 bg-club-red opacity-20 transform rotate-45 translate-x-16 -translate-y-16"></div>
-          </div>
-        ))}
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-14 gap-6">
+        <div>
+          <p class="section-label mb-3">Espacios deportivos</p>
+          <h2 class="display-title text-white" style="font-size: clamp(2.8rem, 6vw, 5rem); line-height:1.05">
+            NUESTRAS<br><span style="color:var(--red)">INSTALACIONES</span>
+          </h2>
+        </div>
+        <a href="/alquiler" class="btn-outline self-start md:self-end">ALQUILER DE CANCHAS</a>
       </div>
 
-      <div class="text-center mt-12">
-        <a
-          href="/alquiler"
-          class="inline-block bg-club-red hover:bg-club-red-2 text-white px-8 py-4 rounded-full font-display text-xl tracking-wider transition-all hover:scale-105 hover:glow-red"
-        >
-          ALQUILER DE CANCHAS
-        </a>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {[
+          { name: 'Cancha Principal', sub: 'Fútbol 11 · Césped sintético', icon: '⚽' },
+          { name: 'Polideportivo',    sub: 'Básquet · Vóley · Handball',   icon: '🏀' },
+          { name: 'Vestuarios',       sub: 'Duchas · Lockers · Sauna',      icon: '🚿' },
+        ].map((f, i) => (
+          <div class={`facility-card reveal reveal-delay-${i + 1}`}>
+            <div class="fac-icon">{f.icon}</div>
+            <div class="fac-overlay"></div>
+            <div class="fac-stripe"></div>
+            <div class="fac-content">
+              <p class="section-label mb-1" style="font-size:0.65rem; color:rgba(212,43,43,0.8)">{f.sub}</p>
+              <h3 class="display-title text-white" style="font-size:1.9rem; letter-spacing:0.04em">{f.name}</h3>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   </section>
 
-  <!-- Final CTA Section -->
-  <CtaBanner 
-    title="SUMATE AL CLUB"
-    subtitle="Comenzá tu camino deportivo con nosotros. Escribinos y conocé todas las propuestas."
-    buttonText="Contactar por WhatsApp"
-    variant="red"
-  />
+  <!-- ══════════════════════════════════════════════════════════
+       MEGA CTA FINAL
+  ══════════════════════════════════════════════════════════ -->
+  <section class="cta-mega py-28 text-center relative z-10">
+    <div class="container mx-auto px-4 relative z-10">
+      <p class="section-label mb-4" style="color:rgba(255,255,255,0.7)">Trelew, Chubut</p>
+      <h2 class="display-title text-white mb-4" style="font-size:clamp(3rem,8vw,7rem); line-height:1">
+        SUMATE AL<br>INDEPENDIENTE
+      </h2>
+      <p class="body-text text-white text-opacity-80 mb-10 max-w-lg mx-auto" style="color:rgba(255,255,255,0.75); font-size:1.05rem">
+        Comenzá tu camino deportivo con nosotros. Escribinos y conocé todas las propuestas del club.
+      </p>
+      <a
+        href="https://wa.me/"
+        class="inline-flex items-center gap-3 bg-white text-red-700 px-10 py-4 rounded-sm font-bold tracking-widest transition-all hover:shadow-2xl hover:scale-105"
+        style="font-family:'Bebas Neue',sans-serif; font-size:1.2rem; letter-spacing:0.15em; color:var(--red)"
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        CONTACTAR POR WHATSAPP
+      </a>
+    </div>
+  </section>
+
 </Layout>
 
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>

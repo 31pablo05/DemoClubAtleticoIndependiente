@@ -1,213 +1,1038 @@
 ---
 import Layout from '../components/layout/Layout.astro';
-import Hero from '../components/ui/Hero.astro';
-import SectionTitle from '../components/ui/SectionTitle.astro';
 ---
 
 <Layout 
   title="El Club - Club Atlético Independiente de Trelew"
   description="Conocé la historia, valores y misión del Club Atlético Independiente de Trelew"
 >
-  <!-- Hero Section -->
-  <Hero 
-    variant="page"
-    title="EL CLUB"
-    subtitle="Historia, Valores e Identidad"
-  />
 
-  <!-- History Section -->
-  <section class="py-20 bg-club-black">
-    <div class="container mx-auto px-4">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        <!-- Text Content -->
-        <div>
-          <h2 class="font-display text-4xl text-club-gold mb-6 tracking-wider">
-            NUESTRA HISTORIA
-          </h2>
-          
-          <div class="text-gray-300 space-y-4 leading-relaxed">
-            <p class="text-lg">
-              <span class="text-6xl float-left text-club-red font-display mr-4 leading-none">E</span>
-              l Club Atlético Independiente de Trelew es una institución deportiva con profundas raíces en la comunidad patagónica. Fundado con la visión de promover el deporte y los valores deportivos, el club se ha convertido en un pilar fundamental para el desarrollo de niños, jóvenes y adultos en la ciudad.
-            </p>
-            <p>
-              A lo largo de los años, hemos formado no solo deportistas, sino también personas comprometidas con el esfuerzo, la disciplina y el compañerismo. Nuestra institución es un espacio donde las familias se encuentran, donde se forjan amistades duraderas y donde los sueños deportivos se hacen realidad.
-            </p>
-            <p>
-              Hoy, el club cuenta con múltiples disciplinas deportivas y continúa creciendo, siempre fiel a sus valores fundacionales y con la mirada puesta en el futuro de las nuevas generaciones.
-            </p>
-          </div>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@300;400;500&display=swap');
+
+  :root {
+    --red: #D0021B;
+    --red-glow: rgba(208, 2, 27, 0.6);
+    --red-soft: rgba(208, 2, 27, 0.15);
+    --black: #080808;
+    --dark: #111111;
+    --surface: #181818;
+    --border: rgba(255,255,255,0.06);
+    --gold: #C9A84C;
+    --text: #E8E8E8;
+    --muted: #777;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .club-page {
+    font-family: 'Barlow', sans-serif;
+    background: var(--black);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ─── HERO ─────────────────────────────────────────────────── */
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 700px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 60% 40%, rgba(208,2,27,0.18) 0%, transparent 70%),
+      linear-gradient(180deg, rgba(8,8,8,0.3) 0%, rgba(8,8,8,0.95) 85%, #080808 100%);
+    z-index: 1;
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: 0;
+    animation: gridMove 20s linear infinite;
+  }
+
+  @keyframes gridMove {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(60px); }
+  }
+
+  .hero-noise {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .hero-year {
+    position: absolute;
+    right: -0.02em;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(200px, 30vw, 400px);
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(208,2,27,0.15);
+    line-height: 1;
+    z-index: 1;
+    user-select: none;
+    letter-spacing: -0.02em;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    padding: 0 6vw 80px;
+    max-width: 900px;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.4em;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 2px;
+    background: var(--red);
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(72px, 12vw, 160px);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    margin-bottom: 32px;
+    animation: fadeUp 0.8s 0.1s ease both;
+  }
+
+  .hero-title span {
+    display: block;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--red);
+    text-shadow: 0 0 80px var(--red-glow);
+  }
+
+  .hero-title strong {
+    display: block;
+    color: #fff;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 40px;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+
+  .hero-stat {
+    border-left: 2px solid var(--red);
+    padding-left: 16px;
+  }
+
+  .hero-stat-num {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 36px;
+    color: #fff;
+    line-height: 1;
+  }
+
+  .hero-stat-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .scroll-cta {
+    position: absolute;
+    bottom: 32px;
+    right: 6vw;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--muted);
+    text-transform: uppercase;
+    animation: fadeIn 1s 0.6s ease both;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, var(--red), transparent);
+    animation: scrollAnim 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollAnim {
+    0%, 100% { transform: scaleY(1); opacity: 1; }
+    50% { transform: scaleY(0.5); opacity: 0.4; }
+  }
+
+  /* ─── FUNDACIÓN ─────────────────────────────────────────────── */
+  .section {
+    padding: 120px 6vw;
+  }
+
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5em;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 30px;
+    height: 1px;
+    background: var(--red);
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(48px, 7vw, 100px);
+    line-height: 0.95;
+    letter-spacing: 0.02em;
+    margin-bottom: 48px;
+  }
+
+  /* ─── HISTORIA GRID ─────────────────────────────────────────── */
+  .historia-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--border);
+    margin-bottom: 2px;
+  }
+
+  .historia-card {
+    background: var(--dark);
+    padding: 48px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+
+  .historia-card:hover {
+    background: var(--surface);
+  }
+
+  .historia-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 0;
+    background: var(--red);
+    transition: height 0.4s ease;
+  }
+
+  .historia-card:hover::before { height: 100%; }
+
+  .historia-year {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 80px;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(208,2,27,0.3);
+    line-height: 1;
+    margin-bottom: -20px;
+    display: block;
+  }
+
+  .historia-text {
+    font-size: 16px;
+    line-height: 1.75;
+    color: #aaa;
+  }
+
+  .historia-text em {
+    color: var(--gold);
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  .historia-text strong {
+    color: #fff;
+  }
+
+  .historia-highlight {
+    background: var(--surface);
+    border: 1px solid rgba(208,2,27,0.2);
+    padding: 20px 24px;
+    margin-top: 24px;
+    border-radius: 2px;
+    font-size: 13px;
+    color: #888;
+    line-height: 1.7;
+    position: relative;
+  }
+
+  .historia-highlight::before {
+    content: '//';
+    color: var(--red);
+    font-family: 'Bebas Neue', cursive;
+    margin-right: 8px;
+  }
+
+  /* ─── TIMELINE ──────────────────────────────────────────────── */
+  .timeline-section {
+    padding: 120px 6vw;
+    background: var(--dark);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .timeline-bg-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(100px, 18vw, 260px);
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.03);
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .timeline {
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--red) 10%, var(--red) 90%, transparent);
+    transform: translateX(-50%);
+  }
+
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 1fr 60px 1fr;
+    gap: 0;
+    margin-bottom: 60px;
+    position: relative;
+  }
+
+  .timeline-item:nth-child(odd) .tl-content {
+    grid-column: 1;
+    text-align: right;
+  }
+
+  .timeline-item:nth-child(odd) .tl-empty { grid-column: 3; }
+  .timeline-item:nth-child(even) .tl-content { grid-column: 3; }
+  .timeline-item:nth-child(even) .tl-empty { grid-column: 1; }
+
+  .tl-dot {
+    grid-column: 2;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 12px;
+    z-index: 2;
+  }
+
+  .tl-dot-inner {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--red);
+    box-shadow: 0 0 20px var(--red-glow);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .timeline-item:hover .tl-dot-inner {
+    transform: scale(1.5);
+    box-shadow: 0 0 40px var(--red-glow);
+  }
+
+  .tl-content {
+    padding: 0 32px;
+  }
+
+  .tl-year {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 48px;
+    color: var(--red);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .tl-event {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .tl-desc {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  /* ─── ESTADIO ───────────────────────────────────────────────── */
+  .estadio-section {
+    padding: 120px 6vw;
+    background: var(--black);
+  }
+
+  .estadio-hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--border);
+    margin-bottom: 2px;
+  }
+
+  .estadio-big {
+    background: var(--red);
+    padding: 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 400px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .estadio-big::before {
+    content: '1972';
+    position: absolute;
+    bottom: -20px;
+    right: -10px;
+    font-family: 'Bebas Neue', cursive;
+    font-size: 180px;
+    color: rgba(0,0,0,0.2);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .estadio-big-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(36px, 5vw, 64px);
+    color: #fff;
+    line-height: 0.95;
+    position: relative;
+    z-index: 1;
+  }
+
+  .estadio-big-sub {
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+    margin-top: 12px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .estadio-stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 2px;
+    background: var(--border);
+  }
+
+  .stat-cell {
+    background: var(--surface);
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: background 0.3s;
+  }
+
+  .stat-cell:hover { background: #1f1f1f; }
+
+  .stat-num {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 56px;
+    color: #fff;
+    line-height: 1;
+  }
+
+  .stat-num span { color: var(--red); }
+
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
+
+  /* ─── CANCHAS EVOLUTION ─────────────────────────────────────── */
+  .canchas-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    background: var(--border);
+    margin-top: 2px;
+  }
+
+  .cancha-step {
+    background: var(--dark);
+    padding: 32px 28px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+
+  .cancha-step:hover { background: var(--surface); }
+
+  .cancha-step:last-child {
+    background: var(--red-soft);
+    border: 1px solid rgba(208,2,27,0.25);
+  }
+
+  .cancha-num {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 120px;
+    color: rgba(255,255,255,0.03);
+    position: absolute;
+    top: -20px;
+    right: -10px;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .cancha-tag {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    font-weight: 700;
+  }
+
+  .cancha-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+
+  .cancha-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  /* ─── VALORES ───────────────────────────────────────────────── */
+  .valores-section {
+    padding: 120px 6vw;
+    background: var(--dark);
+  }
+
+  .valores-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    background: var(--border);
+  }
+
+  .valor-card {
+    background: var(--black);
+    padding: 48px 36px;
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+    transition: background 0.4s;
+  }
+
+  .valor-card:hover { background: var(--surface); }
+
+  .valor-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--red);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+    transform-origin: left;
+  }
+
+  .valor-card:hover::after { transform: scaleX(1); }
+
+  .valor-icon {
+    font-size: 40px;
+    margin-bottom: 24px;
+    display: block;
+    filter: grayscale(0.3);
+    transition: transform 0.3s;
+  }
+
+  .valor-card:hover .valor-icon { transform: scale(1.1) rotate(-5deg); }
+
+  .valor-name {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 32px;
+    color: #fff;
+    letter-spacing: 0.04em;
+    margin-bottom: 16px;
+  }
+
+  .valor-desc {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.75;
+  }
+
+  /* ─── INSTALACIONES ─────────────────────────────────────────── */
+  .instalaciones-section {
+    padding: 120px 6vw;
+    background: var(--black);
+  }
+
+  .inst-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--border);
+  }
+
+  .inst-card {
+    background: var(--dark);
+    padding: 40px 36px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+    group: true;
+  }
+
+  .inst-card:hover { background: #161616; }
+
+  .inst-card:hover .inst-icon {
+    color: var(--red);
+  }
+
+  .inst-icon {
+    font-size: 32px;
+    margin-bottom: 20px;
+    display: block;
+    transition: color 0.3s;
+  }
+
+  .inst-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+  }
+
+  .inst-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .inst-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    height: 2px;
+    width: 0;
+    background: var(--red);
+    transition: width 0.4s ease;
+  }
+
+  .inst-card:hover::before { width: 100%; }
+
+  /* ─── QUOTE ─────────────────────────────────────────────────── */
+  .quote-section {
+    padding: 120px 6vw;
+    background: var(--red);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .quote-section::before {
+    content: '"';
+    position: absolute;
+    top: -60px;
+    left: 4vw;
+    font-family: 'Bebas Neue', cursive;
+    font-size: 400px;
+    color: rgba(0,0,0,0.15);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .quote-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(24px, 3.5vw, 44px);
+    font-weight: 600;
+    line-height: 1.3;
+    color: #fff;
+    max-width: 900px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .quote-footer {
+    margin-top: 48px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .quote-line {
+    width: 40px;
+    height: 2px;
+    background: rgba(255,255,255,0.4);
+  }
+
+  .quote-author {
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+  }
+
+  /* ─── ANIMATIONS ────────────────────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-left {
+    opacity: 0;
+    transform: translateX(-40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* ─── RESPONSIVE ─────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .historia-grid,
+    .estadio-hero,
+    .estadio-stats-grid,
+    .canchas-row,
+    .valores-grid,
+    .inst-grid { grid-template-columns: 1fr; }
+
+    .timeline::before { left: 20px; }
+    .timeline-item { grid-template-columns: 40px 1fr; }
+    .timeline-item:nth-child(odd) .tl-content,
+    .timeline-item:nth-child(even) .tl-content { grid-column: 2; text-align: left; }
+    .timeline-item:nth-child(odd) .tl-empty,
+    .timeline-item:nth-child(even) .tl-empty { display: none; }
+    .tl-dot { grid-column: 1; }
+
+    .estadio-big { min-height: 260px; }
+  }
+</style>
+
+<div class="club-page">
+
+  <!-- ═══ HERO ═══════════════════════════════════════════════════ -->
+  <section class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-bg"></div>
+    <div class="hero-noise"></div>
+    <div class="hero-year">1916</div>
+
+    <div class="hero-content">
+      <p class="hero-eyebrow">Club Atlético Independiente · Trelew, Patagonia</p>
+      <h1 class="hero-title">
+        <span>EL</span>
+        <strong>CLUB</strong>
+      </h1>
+      <div class="hero-meta">
+        <div class="hero-stat">
+          <div class="hero-stat-num">108</div>
+          <div class="hero-stat-label">Años de historia</div>
         </div>
-
-        <!-- Image Placeholder -->
-        <div class="relative">
-          <div class="aspect-square rounded-lg bg-gradient-to-br from-club-surface to-club-card flex items-center justify-center border-4 border-club-gold overflow-hidden p-12">
-            <img src="/logo/escudoindep.png" alt="Escudo Club Atlético Independiente" class="w-full h-full object-contain" />
-            <div class="absolute inset-0 bg-black opacity-20"></div>
-          </div>
-          <!-- Decorative Element -->
-          <div class="absolute -top-6 -right-6 w-32 h-32 bg-club-red opacity-20 rounded-full blur-2xl"></div>
-          <div class="absolute -bottom-6 -left-6 w-32 h-32 bg-club-gold opacity-20 rounded-full blur-2xl"></div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">1916</div>
+          <div class="hero-stat-label">Fundación</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">RJN</div>
+          <div class="hero-stat-label">Colores</div>
         </div>
       </div>
+    </div>
 
-      <!-- Timeline -->
-      <div class="mt-20">
-        <h3 class="font-display text-3xl text-center text-club-gold mb-12 tracking-wider">
-          HITOS IMPORTANTES
-        </h3>
-        
-        <div class="relative">
-          <!-- Timeline Line -->
-          <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-club-red"></div>
-          
-          <!-- Timeline Items -->
-          <div class="space-y-12">
-            {[
-              { year: '1950', event: 'Fundación del club', description: 'Nace el Club Atlético Independiente con el objetivo de promover el deporte en Trelew.' },
-              { year: '1975', event: 'Apertura del polideportivo', description: 'Se inaugura el complejo deportivo con canchas techadas.' },
-              { year: '2000', event: 'Expansión de disciplinas', description: 'Se incorporan hockey, patín y básquet.' },
-              { year: '2020', event: 'Modernización del club', description: 'Renovación integral de las instalaciones y equipamiento.' }
-            ].map((item, index) => (
-              <div class={`flex items-center gap-8 ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}>
-                <div class={`flex-1 ${index % 2 === 0 ? 'text-right' : 'text-left'}`}>
-                  <div class="inline-block bg-club-surface p-6 rounded-lg border border-club-gold border-opacity-30 hover:border-opacity-100 transition-all hover-lift">
-                    <h4 class="font-display text-2xl text-white mb-2 tracking-wider">
-                      {item.event}
-                    </h4>
-                    <p class="text-gray-400 text-sm">
-                      {item.description}
-                    </p>
-                  </div>
-                </div>
-                
-                <div class="relative z-10">
-                  <div class="w-16 h-16 bg-club-red rounded-full flex items-center justify-center border-4 border-club-gold glow-gold">
-                    <span class="font-display text-white text-sm">
-                      {item.year.slice(-2)}
-                    </span>
-                  </div>
-                </div>
-                
-                <div class="flex-1"></div>
+    <div class="scroll-cta">
+      <div class="scroll-line"></div>
+      SCROLL
+    </div>
+  </section>
+
+  <!-- ═══ FUNDACIÓN ══════════════════════════════════════════════ -->
+  <section class="section" style="background: var(--black);">
+    <div class="section-label reveal">Historia</div>
+    <h2 class="section-title reveal">FUNDACIÓN<br>DEL CLUB</h2>
+
+    <div class="historia-grid reveal">
+      <div class="historia-card">
+        <span class="historia-year">1916</span>
+        <p class="historia-text">
+          Independiente nace en <em>1916</em>, como una escisión de la segunda división del <strong>Trelew Athletic Club</strong>, cuyos jugadores deseaban mayor autonomía. En función de ese anhelo de independencia es que bautizan al nuevo club con el nombre que se le conoce.
+        </p>
+        <p class="historia-text" style="margin-top:20px;">
+          La fundación oficial queda decretada el <em>30 de agosto de 1916</em>. La primera Comisión Directiva del entonces <strong>Independiente Football Club</strong> fue presidida por <strong>Dan Lewis</strong>, conformada además por Dionisio Helguera (Secretario), Raúl Stanchi (Tesorero) y Oscar Bimboni (capitán del equipo).
+        </p>
+      </div>
+
+      <div class="historia-card">
+        <span class="historia-year">1916</span>
+        <p class="historia-text">
+          Su primer partido, como flamante equipo de primera división vistiendo los colores <strong>rojinegro</strong>, lo llevan a cabo a los pocos días de su fundación: enfrentaron a Sportiva Rawson en Trelew el <em>20 de septiembre</em>, venciéndolo por <em>2 a 0</em>.
+        </p>
+        <div class="historia-highlight">
+          Los colores de la camiseta no fueron elegidos por jugadores ni directivos. Debieron conformarse con las únicas camisetas disponibles en la localidad, adquiridas en la tienda del «Sastre Chico», propiedad de <strong>Edward Jones</strong>. Por ser mercadería importada de Gran Bretaña, corresponderían a los colores de algún famoso equipo británico.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TIMELINE ════════════════════════════════════════════════ -->
+  <section class="timeline-section">
+    <div class="timeline-bg-text">HISTORIA</div>
+
+    <div class="section-label reveal" style="justify-content:center; margin-bottom:16px;">Cronología</div>
+    <h2 class="section-title reveal" style="text-align:center; margin-bottom:80px;">HITOS<br>IMPORTANTES</h2>
+
+    <div class="timeline">
+      {[
+        { year: '1916', event: 'Fundación del Club', desc: 'Nace el Club Atlético Independiente Football Club el 30 de agosto, escindido del Trelew Athletic Club.' },
+        { year: '1918', event: 'Primer Campeonato Regional', desc: 'Culminación exitosa de la primera campaña, considerada el primer Campeonato Regional de Fútbol de la zona.' },
+        { year: '1932', event: 'Tercera Cancha', desc: 'Inauguración de la cancha en la Manzana Nº 111 (ex Cuarteles) el 9 de octubre.' },
+        { year: '1950', event: 'Predio Definitivo', desc: 'La institución adquiere definitivamente el terreno donde hoy se encuentra su estadio.' },
+        { year: '1954', event: 'Inauguración del Estadio', desc: 'Se inaugura el estadio el 26 de noviembre, que décadas después sería nombrado "Nacional de 1972".' },
+        { year: '1972', event: 'Máximo Logro Institucional', desc: 'El club alcanza su máximo logro deportivo, que da nombre al estadio.' },
+        { year: '1973', event: 'Gimnasio "Alfredo García"', desc: 'Se construye el gimnasio cerrado, que también funciona como sede oficial del club.' },
+        { year: '2015', event: 'Modernización', desc: 'Convenio con el gobierno provincial para la construcción de la cancha de césped sintético.' }
+      ].map((item, i) => (
+        <div class="timeline-item reveal">
+          {i % 2 === 0 ? (
+            <>
+              <div class="tl-content">
+                <div class="tl-year">{item.year}</div>
+                <div class="tl-event">{item.event}</div>
+                <div class="tl-desc">{item.desc}</div>
               </div>
-            ))}
-          </div>
+              <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+              <div class="tl-empty"></div>
+            </>
+          ) : (
+            <>
+              <div class="tl-empty"></div>
+              <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+              <div class="tl-content">
+                <div class="tl-year">{item.year}</div>
+                <div class="tl-event">{item.event}</div>
+                <div class="tl-desc">{item.desc}</div>
+              </div>
+            </>
+          )}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ═══ ESTADIO ═════════════════════════════════════════════════ -->
+  <section class="estadio-section">
+    <div class="section-label reveal">Infraestructura</div>
+    <h2 class="section-title reveal">ESTADIO<br>NACIONAL DE 1972</h2>
+
+    <div class="estadio-hero reveal">
+      <div class="estadio-big">
+        <div class="estadio-big-title">NUESTRO<br>HOGAR<br>DEPORTIVO</div>
+        <div class="estadio-big-sub">Inaugurado el 26 de noviembre de 1954</div>
+      </div>
+
+      <div class="estadio-stats-grid">
+        <div class="stat-cell">
+          <div class="stat-num">19<span>54</span></div>
+          <div class="stat-label">Año de inauguración</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-num">350<span>+</span></div>
+          <div class="stat-label">Capacidad aprox.</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-num"><span>#</span>72</div>
+          <div class="stat-label">El nombre del orgullo</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-num">70<span>+</span></div>
+          <div class="stat-label">Años de historia</div>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- Values Section -->
-  <section class="py-20 bg-club-surface">
-    <div class="container mx-auto px-4">
-      <SectionTitle 
-        title="NUESTROS VALORES"
-        subtitle="Los pilares que sostienen nuestra institución"
-      />
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {[
-          {
-            icon: '🏆',
-            title: 'Compromiso',
-            description: 'Dedicación absoluta al desarrollo deportivo y personal de cada uno de nuestros socios. Trabajamos día a día para ofrecer lo mejor.'
-          },
-          {
-            icon: '🤝',
-            title: 'Comunidad',
-            description: 'Somos más que un club deportivo. Somos una familia que construye lazos fuertes entre deportistas, familias y la ciudad de Trelew.'
-          },
-          {
-            icon: '💪',
-            title: 'Disciplina',
-            description: 'La formación integral basada en el respeto, la constancia y el esfuerzo. Valores que trascienden el deporte y forman personas.'
-          },
-          {
-            icon: '❤️',
-            title: 'Orgullo',
-            description: 'Representar los colores del club con pasión, honor y dedicación. Ser parte de Independiente es llevar nuestros valores con orgullo.'
-          }
-        ].map((value) => (
-          <article class="glass p-8 rounded-lg hover-lift group text-center">
-            <div class="text-6xl mb-6 group-hover:scale-110 transition-transform">
-              {value.icon}
-            </div>
-            <h3 class="font-display text-2xl text-club-gold mb-4 tracking-wider">
-              {value.title.toUpperCase()}
-            </h3>
-            <p class="text-gray-300 leading-relaxed">
-              {value.description}
-            </p>
-          </article>
-        ))}
+    <div class="canchas-row reveal">
+      <div class="cancha-step">
+        <span class="cancha-num">1</span>
+        <div class="cancha-tag">Primera cancha</div>
+        <div class="cancha-title">El Salitral</div>
+        <div class="cancha-desc">Zona hoy conocida como calle Paraguay, entre Av. Yrigoyen y Belgrano.</div>
+      </div>
+      <div class="cancha-step">
+        <span class="cancha-num">2</span>
+        <div class="cancha-tag">Segunda cancha</div>
+        <div class="cancha-title">Campo del Athletic</div>
+        <div class="cancha-desc">Viejo campo del Athletic Trelew, calles 25 de Mayo y Edison.</div>
+      </div>
+      <div class="cancha-step">
+        <span class="cancha-num">3</span>
+        <div class="cancha-tag">Tercera cancha · 1932</div>
+        <div class="cancha-title">Manzana Nº 111</div>
+        <div class="cancha-desc">Ex Cuarteles. Inaugurada oficialmente el 9 de octubre de 1932.</div>
+      </div>
+      <div class="cancha-step">
+        <span class="cancha-num">4</span>
+        <div class="cancha-tag">Estadio actual · 1950</div>
+        <div class="cancha-title">Nacional de 1972</div>
+        <div class="cancha-desc">Adquirido definitivamente en 1950. Nuestro hogar permanente.</div>
       </div>
     </div>
   </section>
 
-  <!-- Facilities Section -->
-  <section class="py-20 bg-club-black">
-    <div class="container mx-auto px-4">
-      <SectionTitle 
-        title="INSTALACIONES"
-        subtitle="Espacios diseñados para el deporte de alto nivel"
-      />
+  <!-- ═══ VALORES ══════════════════════════════════════════════════ -->
+  <section class="valores-section">
+    <div class="section-label reveal">Identidad</div>
+    <h2 class="section-title reveal">NUESTROS<br>VALORES</h2>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {[
-          { name: 'Cancha de Fútbol Principal', description: 'Césped natural de primera calidad con iluminación profesional' },
-          { name: 'Polideportivo Techado', description: 'Cancha multiuso para básquet, handball y fútbol indoor' },
-          { name: 'Cancha de Hockey', description: 'Superficie sintética homologada para entrenamientos y competencias' },
-          { name: 'Pista de Patín', description: 'Espacio especialmente acondicionado para patín artístico y velocidad' },
-          { name: 'Vestuarios', description: 'Vestuarios equipados con duchas, lockers y espacios amplios' },
-          { name: 'Oficinas Administrativas', description: 'Atención personalizada para socios y consultas' }
-        ].map((facility) => (
-          <div class="group relative h-80 bg-gradient-to-br from-club-surface to-club-card rounded-lg overflow-hidden border border-club-gold border-opacity-30 hover:border-opacity-100 transition-all hover-lift">
-            <!-- Background Pattern -->
-            <div class="absolute inset-0 geometric-bg opacity-10"></div>
-            
-            <!-- Overlay -->
-            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90"></div>
-            
-            <!-- Content -->
-            <div class="absolute bottom-0 left-0 right-0 p-6 z-10">
-              <h3 class="font-display text-2xl text-white tracking-wider mb-2 group-hover:text-club-gold transition-colors">
-                {facility.name}
-              </h3>
-              <p class="text-gray-400 text-sm">
-                {facility.description}
-              </p>
-            </div>
-
-            <!-- Icon -->
-            <div class="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-7xl opacity-20 group-hover:opacity-30 transition-opacity">
-              🏟️
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Institutional Message -->
-  <section class="py-20 bg-club-surface">
-    <div class="container mx-auto px-4">
-      <div class="max-w-4xl mx-auto text-center">
-        <div class="text-club-gold text-8xl mb-8 opacity-30">"</div>
-        
-        <blockquote class="text-2xl md:text-3xl text-white font-light leading-relaxed mb-8">
-          En Club Atlético Independiente creemos que el deporte es el mejor camino para formar personas íntegras, comprometidas y solidarias. Nuestra misión es acompañar a cada socio en su desarrollo deportivo y personal, brindando espacios de calidad y un ambiente de respeto y camaradería.
-        </blockquote>
-        
-        <div class="border-t border-club-gold border-opacity-30 pt-6 mt-8">
-          <p class="font-display text-xl text-club-gold tracking-wider">
-            COMISIÓN DIRECTIVA
-          </p>
-          <p class="text-gray-400 mt-2">
-            Club Atlético Independiente de Trelew
-          </p>
+    <div class="valores-grid reveal">
+      {[
+        { icon: '🏆', name: 'Compromiso', desc: 'Dedicación absoluta al desarrollo deportivo y personal de cada uno de nuestros socios. Trabajamos día a día para ofrecer lo mejor.' },
+        { icon: '🤝', name: 'Comunidad', desc: 'Somos más que un club deportivo. Somos una familia que construye lazos fuertes entre deportistas, familias y la ciudad de Trelew.' },
+        { icon: '💪', name: 'Disciplina', desc: 'Formación integral basada en el respeto, la constancia y el esfuerzo. Valores que trascienden el deporte y forman personas.' },
+        { icon: '❤️', name: 'Orgullo', desc: 'Representar los colores del club con pasión, honor y dedicación. Ser parte de Independiente es llevar nuestros valores con orgullo.' }
+      ].map(v => (
+        <div class="valor-card">
+          <span class="valor-icon">{v.icon}</span>
+          <div class="valor-name">{v.name.toUpperCase()}</div>
+          <div class="valor-desc">{v.desc}</div>
         </div>
-      </div>
+      ))}
     </div>
   </section>
+
+  <!-- ═══ INSTALACIONES ════════════════════════════════════════════ -->
+  <section class="instalaciones-section">
+    <div class="section-label reveal">Infraestructura</div>
+    <h2 class="section-title reveal">NUESTRAS<br>INSTALACIONES</h2>
+
+    <div class="inst-grid reveal">
+      {[
+        { icon: '⚽', name: 'Campo Principal', desc: 'Superficie de tierra, con proyecto de césped sintético provincial. Parte del Estadio Nacional de 1972.' },
+        { icon: '🏋️', name: 'Gimnasio Alfredo García', desc: 'Gimnasio techado construido en 1973. Cancha multiuso y sede oficial del club.' },
+        { icon: '🏑', name: 'Cancha de Hockey', desc: 'Superficie especialmente acondicionada para entrenamientos y competencias de hockey.' },
+        { icon: '⛸️', name: 'Pista de Patín', desc: 'Espacio acondicionado para patín artístico y velocidad.' },
+        { icon: '🚿', name: 'Vestuarios', desc: 'Vestuarios equipados con duchas, lockers y espacios amplios para deportistas.' },
+        { icon: '🪑', name: 'Tribunas', desc: 'Dos gradas de madera con capacidad aproximada de 350 espectadores.' }
+      ].map(f => (
+        <div class="inst-card">
+          <span class="inst-icon">{f.icon}</span>
+          <div class="inst-name">{f.name}</div>
+          <div class="inst-desc">{f.desc}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ═══ QUOTE ═══════════════════════════════════════════════════ -->
+  <section class="quote-section">
+    <div class="quote-text">
+      En Club Atlético Independiente creemos que el deporte es el mejor camino para formar personas íntegras, comprometidas y solidarias. Nuestra misión es acompañar a cada socio en su desarrollo deportivo y personal, brindando espacios de calidad y un ambiente de respeto y camaradería.
+    </div>
+    <div class="quote-footer">
+      <div class="quote-line"></div>
+      <div class="quote-author">Comisión Directiva · Club Atlético Independiente de Trelew</div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // Intersection Observer for scroll reveals
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+  document.querySelectorAll('.reveal, .reveal-left').forEach(el => {
+    observer.observe(el);
+  });
+</script>
+
 </Layout>

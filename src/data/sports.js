@@ -7,6 +7,7 @@ export const sports = [
     categories: ['Sub-6', 'Sub-8', 'Sub-10', 'Sub-12', 'Sub-14'],
     schedule: 'Lunes a Viernes 10:00–12:00 | 17:00–18:00',
     color: 'red',
+    images: ['/imagenes/infantiles/infantil1.jpg', '/imagenes/infantiles/infantil2.jpg', '/imagenes/infantiles/infantil3.jpg'],
     detailedSchedule: {
       'Lunes': ['10:00-12:00', '17:00-18:00'],
       'Martes': ['10:00-12:00', '17:00-18:00'],
@@ -23,6 +24,7 @@ export const sports = [
     categories: ['Mixto 3-6 años'],
     schedule: 'Sábados 9:00–11:00',
     color: 'red',
+    images: ['/imagenes/baby/baby1.jpg'],
     detailedSchedule: {
       'Sábado': ['9:00-11:00']
     }
@@ -35,6 +37,7 @@ export const sports = [
     categories: ['Infantil', 'Juvenil', 'Mayor'],
     schedule: 'Martes y Jueves 18:00–20:00',
     color: 'red',
+    images: ['/imagenes/futbol femenino/fem1.jpg', '/imagenes/futbol femenino/fem2.jpg', '/imagenes/futbol femenino/fem3.jpg', '/imagenes/futbol femenino/fem4.jpg'],
     detailedSchedule: {
       'Martes': ['18:00-20:00'],
       'Jueves': ['18:00-20:00']
@@ -48,6 +51,7 @@ export const sports = [
     categories: ['Mini', 'Infantil', 'Juvenil', 'Mayor'],
     schedule: 'Lunes, Miércoles y Viernes 16:00–18:00',
     color: 'blue',
+    images: ['/imagenes/handball/hand1.jpg', '/imagenes/handball/hand2.jpg', '/imagenes/handball/hand3.jpg', '/imagenes/handball/hand4.jpg', '/imagenes/handball/hand5.jpg'],
     detailedSchedule: {
       'Lunes': ['16:00-18:00'],
       'Miércoles': ['16:00-18:00'],
@@ -62,6 +66,7 @@ export const sports = [
     categories: ['Infantil', 'Juvenil', 'Mayor'],
     schedule: 'Martes y Jueves 15:00–17:00',
     color: 'pink',
+    images: ['/imagenes/hockey/hock1.jpg', '/imagenes/hockey/hock2.jpg', '/imagenes/hockey/hock3.jpg', '/imagenes/hockey/hock4.jpg', '/imagenes/hockey/hock5.jpg', '/imagenes/hockey/hock6.jpg', '/imagenes/hockey/hock7.jpg', '/imagenes/hockey/hock8.jpg', '/imagenes/hockey/hock9.jpg', '/imagenes/hockey/hock10.jpg'],
     detailedSchedule: {
       'Martes': ['15:00-17:00'],
       'Jueves': ['15:00-17:00']

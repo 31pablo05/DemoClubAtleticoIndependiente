@@ -8,20 +8,53 @@ import SectionTitle from '../components/ui/SectionTitle.astro';
   title="Alquiler de Canchas - Club Atlético Independiente de Trelew"
   description="Alquilá nuestras canchas para partidos particulares, eventos y torneos. Instalaciones de primera calidad."
 >
-  <!-- Hero Section -->
+  <!-- Enhanced Hero Section -->
   <Hero 
     variant="page"
     title="ALQUILER DE CANCHAS"
-    subtitle="Para partidos particulares y eventos"
+    subtitle="⚽ Para partidos particulares, eventos y torneos 🏆"
   />
 
-  <!-- Intro Section -->
-  <section class="py-12 bg-club-black">
-    <div class="container mx-auto px-4">
-      <div class="max-w-3xl mx-auto text-center">
-        <p class="text-xl text-gray-300 leading-relaxed">
-          Disponemos de <span class="text-club-gold font-semibold">canchas de alta calidad</span> para que organices tu partido, torneo o evento deportivo. Instalaciones profesionales con todos los servicios incluidos.
-        </p>
+  <!-- Enhanced Intro Section -->
+  <section class="py-16 bg-club-black relative overflow-hidden">
+    <!-- Background Effects -->
+    <div class="absolute inset-0">
+      <div class="absolute top-1/2 left-1/4 w-72 h-72 bg-club-red opacity-8 rounded-full blur-3xl animate-pulse"></div>
+      <div class="absolute bottom-1/2 right-1/4 w-72 h-72 bg-club-red opacity-8 rounded-full blur-3xl animate-bounce" style="animation-duration: 4s"></div>
+      <div class="absolute inset-0 stadium-lines opacity-10"></div>
+    </div>
+    
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="max-w-4xl mx-auto text-center">
+        <div class="glass p-10 rounded-2xl border border-club-red border-opacity-20 shadow-dramatic hover-lift">
+          <div class="flex justify-center mb-6">
+            <div class="w-16 h-16 flex items-center justify-center bg-club-red rounded-full glow-pulse">
+              <span class="text-3xl">🏀</span>
+            </div>
+          </div>
+          <h2 class="font-display text-3xl text-club-red mb-6 tracking-wider neon-text">
+            🏰 INSTALACIONES PROFESIONALES 🏰
+          </h2>
+          <p class="text-xl text-gray-300 leading-relaxed mb-6">
+            Disponemos de <span class="text-club-red font-semibold gradient-text">canchas de alta calidad</span> para que organices tu partido, torneo o evento deportivo. <span class="text-white font-medium">Instalaciones profesionales con todos los servicios incluidos</span>.
+          </p>
+          <div class="flex flex-wrap justify-center gap-6">
+            <div class="flex items-center gap-2 text-club-red">
+              <span class="text-xl">✓</span>
+              <span class="text-sm">Equipamiento Completo</span>
+            </div>
+            <div class="text-gray-400">•</div>
+            <div class="flex items-center gap-2 text-club-red">
+              <span class="text-xl">✓</span>
+              <span class="text-sm">Vestuarios Amplios</span>
+            </div>
+            <div class="text-gray-400">•</div>
+            <div class="flex items-center gap-2 text-club-red">
+              <span class="text-xl">✓</span>
+              <span class="text-sm">Estacionamiento</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -48,7 +81,7 @@ import SectionTitle from '../components/ui/SectionTitle.astro';
             type: 'Fútbol 7',
             features: ['Césped sintético', 'Iluminación LED', 'Vestuarios', 'Estacionamiento'],
             icon: '🥅',
-            color: 'club-gold'
+            color: 'club-red'
           },
           {
             name: 'Polideportivo',
@@ -58,7 +91,7 @@ import SectionTitle from '../components/ui/SectionTitle.astro';
             color: 'club-red'
           }
         ].map((facility) => (
-          <article class="bg-club-surface rounded-lg overflow-hidden border border-club-gold border-opacity-30 hover:border-opacity-100 transition-all hover-lift">
+          <article class="bg-club-surface rounded-lg overflow-hidden border border-club-red border-opacity-30 hover:border-opacity-100 transition-all hover-lift">
             <!-- Header -->
             <div class={`bg-${facility.color} p-8 text-center relative overflow-hidden`}>
               <div class="absolute inset-0 geometric-bg opacity-20"></div>
@@ -75,7 +108,7 @@ import SectionTitle from '../components/ui/SectionTitle.astro';
 
             <!-- Features -->
             <div class="p-6">
-              <h4 class="font-semibold text-club-gold mb-4 tracking-wide">CARACTERÍSTICAS</h4>
+              <h4 class="font-semibold text-white mb-4 tracking-wide">CARACTERÍSTICAS</h4>
               <ul class="space-y-3">
                 {facility.features.map((feature) => (
                   <li class="flex items-center gap-3 text-gray-300">
@@ -177,7 +210,7 @@ import SectionTitle from '../components/ui/SectionTitle.astro';
 
         <!-- Important Notes -->
         <div class="mt-8 glass p-8 rounded-lg">
-          <h3 class="font-display text-xl text-club-gold mb-4 tracking-wider flex items-center gap-3">
+          <h3 class="font-display text-xl text-white mb-4 tracking-wider flex items-center gap-3">
             <span class="text-2xl">⚠️</span>
             IMPORTANTE
           </h3>

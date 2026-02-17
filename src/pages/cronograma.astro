@@ -1,7 +1,6 @@
 ---
 import Layout from '../components/layout/Layout.astro';
 import Hero from '../components/ui/Hero.astro';
-import SectionTitle from '../components/ui/SectionTitle.astro';
 import ScheduleTable from '../components/islands/ScheduleTable';
 ---
 
@@ -9,79 +8,592 @@ import ScheduleTable from '../components/islands/ScheduleTable';
   title="Cronograma - Club Atlético Independiente de Trelew"
   description="Horarios y cronograma semanal de todas las actividades deportivas del club"
 >
-  <!-- Hero Section -->
-  <Hero 
-    variant="page"
-    title="CRONOGRAMA"
-    subtitle="Horarios de todas las actividades"
-  />
 
-  <!-- Schedule Section -->
-  <section class="py-20 bg-club-black">
-    <div class="container mx-auto px-4">
-      
-      <!-- Info Card -->
-      <div class="max-w-4xl mx-auto mb-12">
-        <div class="glass p-8 rounded-lg text-center">
-          <h2 class="font-display text-2xl text-club-gold mb-4 tracking-wider">
-            TEMPORADA 2026
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@300;400;500&display=swap');
+
+  :root {
+    --red:    #D42B2B;
+    --red-2:  #B01E1E;
+    --black:  #0A0A0A;
+    --surface:#111111;
+    --card:   #141414;
+    --border: rgba(212,43,43,0.12);
+    --white:  #F5F5F5;
+  }
+
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--red);
+  }
+  .display-title {
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 0.05em;
+  }
+  .body-text { font-family: 'Barlow', sans-serif; }
+
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(212,43,43,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(212,43,43,0.025) 1px, transparent 1px);
+    background-size: 52px 52px;
+  }
+  .noise::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ── Ticker ─────────────────────────────────────────── */
+  .ticker-wrap {
+    background: var(--red);
+    overflow: hidden;
+    padding: 0.55rem 0;
+  }
+  .ticker-track {
+    display: flex;
+    width: max-content;
+    animation: ticker 28s linear infinite;
+  }
+  .ticker-item {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.9);
+    padding: 0 2rem;
+    white-space: nowrap;
+  }
+  .ticker-item::before { content: '◆'; margin-right: 2rem; opacity: 0.5; }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* ── Season banner ──────────────────────────────────── */
+  .season-banner {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    padding: 2.5rem 3rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 4rem;
+  }
+  .season-banner::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--red);
+  }
+  .season-banner .bg-year {
+    position: absolute;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 12rem;
+    color: rgba(212,43,43,0.04);
+    right: -1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .season-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.8rem;
+    letter-spacing: 0.06em;
+    color: white;
+    line-height: 1;
+  }
+  .season-badge .year-accent { color: var(--red); }
+
+  .season-info-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .season-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    padding: 0.45rem 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    background: rgba(255,255,255,0.02);
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .season-pill:hover { border-color: var(--red); color: white; }
+  .season-pill .dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--red);
+    box-shadow: 0 0 5px var(--red);
+    flex-shrink: 0;
+    animation: blink 2s ease-in-out infinite;
+  }
+  @keyframes blink {
+    0%,100% { opacity:1; }
+    50%      { opacity:0.3; }
+  }
+
+  /* ── Schedule wrapper ───────────────────────────────── */
+  .schedule-wrapper {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 4rem;
+  }
+  .schedule-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--red);
+    z-index: 2;
+  }
+  .schedule-header-bar {
+    background: rgba(212,43,43,0.05);
+    border-bottom: 1px solid var(--border);
+    padding: 1.2rem 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .schedule-title-bar {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.08em;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .schedule-title-bar .live-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--red);
+    box-shadow: 0 0 8px var(--red);
+    animation: blink 1.5s ease-in-out infinite;
+  }
+  .schedule-updated {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.25);
+    text-transform: uppercase;
+  }
+  .schedule-inner {
+    padding: 1.5rem;
+  }
+
+  /* ── Info cards grid ────────────────────────────────── */
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1rem;
+    margin-bottom: 4rem;
+  }
+  @media (min-width: 768px) {
+    .info-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 1024px) {
+    .info-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  .info-tile {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 1.6rem 1.4rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .info-tile:hover {
+    border-color: rgba(212,43,43,0.4);
+    transform: translateY(-4px);
+  }
+  .info-tile::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1.5px;
+    background: var(--red);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .info-tile:hover::after { transform: scaleX(1); }
+
+  .tile-icon {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+    display: block;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
+  }
+  .tile-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.06em;
+    color: white;
+    margin-bottom: 0.5rem;
+  }
+  .tile-body {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.4);
+    line-height: 1.6;
+  }
+  .tile-body strong { color: rgba(255,255,255,0.75); font-weight: 500; }
+
+  /* ── Hours table ────────────────────────────────────── */
+  .hours-block {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 4rem;
+  }
+  .hours-block-header {
+    background: rgba(212,43,43,0.05);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 1.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .hours-block-header span {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 0.08em;
+    color: white;
+  }
+  .hours-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.8rem;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: background 0.2s;
+  }
+  .hours-row:last-child { border-bottom: none; }
+  .hours-row:hover { background: rgba(212,43,43,0.03); }
+  .hours-day {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+  }
+  .hours-time {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.35rem;
+    letter-spacing: 0.05em;
+    color: white;
+  }
+  .hours-closed {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.2);
+  }
+
+  /* ── CTA final ──────────────────────────────────────── */
+  .cta-section {
+    position: relative;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 5rem 0;
+    text-align: center;
+    overflow: hidden;
+  }
+  .cta-section .bg-text {
+    position: absolute;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 12vw, 10rem);
+    color: rgba(212,43,43,0.04);
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    white-space: nowrap;
+    pointer-events: none;
+    letter-spacing: 0.06em;
+  }
+
+  .btn-wa-green {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.15em;
+    padding: 1rem 2.8rem;
+    background: #25D366;
+    color: white;
+    border-radius: 2px;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.25s, transform 0.2s, box-shadow 0.3s;
+  }
+  .btn-wa-green::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+  }
+  .btn-wa-green:hover::before { transform: translateX(100%); }
+  .btn-wa-green:hover {
+    background: #1eba59;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 36px rgba(37,211,102,0.3);
+  }
+
+  .btn-red {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.15em;
+    padding: 0.95rem 2.8rem;
+    background: transparent;
+    color: white;
+    border: 1.5px solid rgba(255,255,255,0.2);
+    border-radius: 2px;
+    text-decoration: none;
+    transition: border-color 0.25s, background 0.25s, transform 0.2s;
+  }
+  .btn-red:hover {
+    border-color: var(--red);
+    background: rgba(212,43,43,0.08);
+    transform: translateY(-3px);
+  }
+</style>
+
+  <!-- Hero -->
+  <Hero variant="page" title="CRONOGRAMA" subtitle="Horarios de todas las actividades deportivas del club" />
+
+  <!-- Ticker -->
+  <div class="ticker-wrap">
+    <div class="ticker-track">
+      {['Fútbol','Handball','Hockey','Patín','Básquet','Tenis','Atletismo','Natación',
+        'Fútbol','Handball','Hockey','Patín','Básquet','Tenis','Atletismo','Natación'].map(i => (
+        <span class="ticker-item">{i}</span>
+      ))}
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       SCHEDULE SECTION
+  ══════════════════════════════════════════════════════ -->
+  <section class="relative py-20 grid-bg noise" style="background:var(--black);">
+    <div style="position:absolute;width:45vw;height:45vw;border-radius:50%;background:var(--red);opacity:0.04;filter:blur(90px);top:-10%;left:-10%;pointer-events:none;"></div>
+    <div style="position:absolute;width:35vw;height:35vw;border-radius:50%;background:var(--red);opacity:0.04;filter:blur(70px);bottom:-5%;right:-5%;pointer-events:none;"></div>
+
+    <div class="container mx-auto px-4 relative z-10">
+
+      <!-- Section header -->
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-12 gap-4 reveal">
+        <div>
+          <p class="section-label mb-2">Actividades 2026</p>
+          <h2 class="display-title text-white" style="font-size:clamp(2.5rem,5vw,4.5rem); line-height:1.02">
+            PLAN DE<br><span style="color:var(--red)">ACTIVIDADES</span>
           </h2>
-          <p class="text-gray-300">
-            Los horarios pueden sufrir modificaciones. Consultá siempre por novedades en nuestro WhatsApp.
-          </p>
+        </div>
+        <p class="body-text" style="font-size:0.82rem; color:rgba(255,255,255,0.3); max-width:280px; text-align:right; line-height:1.6;">
+          Los horarios pueden sufrir modificaciones por condiciones climáticas o eventos especiales. Consultá novedades por WhatsApp.
+        </p>
+      </div>
+
+      <!-- Season banner -->
+      <div class="season-banner reveal reveal-delay-1">
+        <div class="bg-year">2026</div>
+
+        <div>
+          <p class="section-label mb-1" style="font-size:0.62rem; color:rgba(255,255,255,0.25);">Temporada</p>
+          <div class="season-badge">
+            TEMPORADA <span class="year-accent">2026</span>
+          </div>
+        </div>
+
+        <div class="season-info-pills">
+          <div class="season-pill">
+            <div class="dot"></div>
+            Horarios actualizados
+          </div>
+          <div class="season-pill">
+            <div class="dot"></div>
+            7 disciplinas activas
+          </div>
+          <div class="season-pill">
+            <div class="dot"></div>
+            Todas las categorías
+          </div>
+          <div class="season-pill">
+            <div class="dot" style="background:#25d366;box-shadow:0 0 5px #25d366;"></div>
+            Consultas por WhatsApp
+          </div>
         </div>
       </div>
 
-      <!-- Interactive Schedule Table -->
-      <ScheduleTable client:load />
-
-      <!-- Additional Info -->
-      <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-        <div class="bg-club-surface p-6 rounded-lg border border-club-gold border-opacity-30">
-          <h3 class="font-display text-xl text-club-gold mb-4 tracking-wider">
-            📅 HORARIO DE ATENCIÓN
-          </h3>
-          <ul class="text-gray-300 space-y-2">
-            <li><strong class="text-white">Lunes a Viernes:</strong> 8:00 - 22:00</li>
-            <li><strong class="text-white">Sábados:</strong> 8:00 - 18:00</li>
-            <li><strong class="text-white">Domingos:</strong> Cerrado</li>
-          </ul>
+      <!-- Schedule table wrapped -->
+      <div class="schedule-wrapper reveal reveal-delay-2">
+        <div class="schedule-header-bar">
+          <div class="schedule-title-bar">
+            <div class="live-dot"></div>
+            CRONOGRAMA SEMANAL
+          </div>
+          <div class="schedule-updated">Actualizado · Temporada 2026</div>
         </div>
-
-        <div class="bg-club-surface p-6 rounded-lg border border-club-gold border-opacity-30">
-          <h3 class="font-display text-xl text-club-gold mb-4 tracking-wider">
-            💡 INFORMACIÓN IMPORTANTE
-          </h3>
-          <ul class="text-gray-300 space-y-2 text-sm">
-            <li>• Se recomienda llegar 10 min antes del horario</li>
-            <li>• Traer ropa deportiva y calzado adecuado</li>
-            <li>• Respetar los protocolos del club</li>
-            <li>• Consultar por clases especiales y eventos</li>
-          </ul>
+        <div class="schedule-inner">
+          <ScheduleTable client:load />
         </div>
+      </div>
+
+      <!-- Info tiles -->
+      <div class="mb-3 reveal">
+        <p class="section-label mb-6">Información importante</p>
+      </div>
+      <div class="info-grid">
+        {[
+          {
+            icon: '⏱️',
+            title: 'LLEGADA',
+            body: 'Se recomienda llegar <strong>10 min antes</strong> del horario de inicio de la actividad.',
+          },
+          {
+            icon: '👟',
+            title: 'INDUMENTARIA',
+            body: 'Traer <strong>ropa deportiva</strong> y <strong>calzado adecuado</strong> para cada disciplina.',
+          },
+          {
+            icon: '📋',
+            title: 'PROTOCOLOS',
+            body: 'Respetar las normas y protocolos del club en todos los espacios compartidos.',
+          },
+          {
+            icon: '📢',
+            title: 'NOVEDADES',
+            body: 'Seguí nuestras redes sociales y <strong>WhatsApp</strong> para enterarte de clases especiales y eventos.',
+          },
+        ].map((t, i) => (
+          <div class={`info-tile reveal reveal-delay-${i+1}`}>
+            <span class="tile-icon">{t.icon}</span>
+            <div class="tile-title">{t.title}</div>
+            <p class="tile-body" set:html={t.body}></p>
+          </div>
+        ))}
+      </div>
+
+      <!-- Hours block -->
+      <div class="hours-block reveal reveal-delay-2">
+        <div class="hours-block-header">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="color:var(--red)">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <span>HORARIO DE ATENCIÓN DEL CLUB</span>
+        </div>
+        {[
+          { day: 'Lunes a Viernes', time: '8:00 — 22:00', closed: false },
+          { day: 'Sábados',         time: '8:00 — 18:00', closed: false },
+          { day: 'Domingos',        time: null,            closed: true  },
+        ].map(h => (
+          <div class="hours-row">
+            <span class="hours-day">{h.day}</span>
+            {h.closed
+              ? <span class="hours-closed">CERRADO</span>
+              : <span class="hours-time">{h.time}</span>
+            }
+          </div>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       CTA FINAL
+  ══════════════════════════════════════════════════════ -->
+  <section class="cta-section">
+    <div class="bg-text">¿CAMBIÓ TU HORARIO?</div>
+    <div class="container mx-auto px-4 relative z-10">
+      <p class="section-label mb-3">Consultá siempre</p>
+      <h2 class="display-title text-white mb-4" style="font-size:clamp(2.5rem,6vw,5rem); line-height:1.02">
+        ¿CAMBIÓ TU<br><span style="color:var(--red)">HORARIO?</span>
+      </h2>
+      <p class="body-text mb-10" style="font-size:0.9rem; color:rgba(255,255,255,0.4); max-width:360px; margin-left:auto; margin-right:auto; line-height:1.6;">
+        Escribinos por WhatsApp para confirmar horarios, consultar sobre cambios o pedir información sobre nuevas actividades.
+      </p>
+      <div style="display:flex; flex-wrap:wrap; gap:1rem; justify-content:center;">
+        <a
+          href="https://wa.me/542804867740?text=Hola!%20Quiero%20consultar%20sobre%20el%20cronograma%20de%20actividades"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-wa-green"
+        >
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+          CONSULTAR POR WHATSAPP
+        </a>
+        <a href="/deportes" class="btn-red">
+          VER DISCIPLINAS
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- Contact Section -->
-  <section class="py-20 bg-club-surface">
-    <div class="container mx-auto px-4 text-center">
-      <SectionTitle 
-        title="¿CAMBIÓ TU HORARIO?"
-        subtitle="Consultá siempre por actualizaciones"
-      />
-
-      <a
-        href="https://wa.me/542804867740"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="inline-flex items-center gap-3 bg-[#25d366] hover:bg-[#20ba5a] text-white px-10 py-5 rounded-full font-display text-2xl tracking-wider transition-all hover:scale-105 shadow-lg hover:shadow-xl"
-      >
-        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-        </svg>
-        CONTACTAR
-      </a>
-    </div>
-  </section>
 </Layout>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
