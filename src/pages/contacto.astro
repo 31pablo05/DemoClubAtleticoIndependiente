@@ -1,251 +1,676 @@
----
+﻿---
 import Layout from '../components/layout/Layout.astro';
-import Hero from '../components/ui/Hero.astro';
-import SectionTitle from '../components/ui/SectionTitle.astro';
 ---
 
 <Layout 
   title="Contacto - Club Atlético Independiente de Trelew"
   description="Contactate con el Club Atlético Independiente de Trelew. Ubicación, horarios y medios de contacto."
 >
-  <!-- Enhanced Hero Section -->
-  <Hero 
-    variant="page"
-    title="CONTACTO"
-    subtitle="📞 Estamos para ayudarte en todo momento 🤝"
-  />
 
-  <!-- Enhanced Contact Section -->
-  <section class="py-24 bg-club-black relative overflow-hidden">
-    <!-- Background Effects -->
-    <div class="absolute inset-0">
-      <div class="absolute top-0 left-1/3 w-96 h-96 bg-club-red opacity-5 rounded-full blur-3xl animate-pulse"></div>
-      <div class="absolute bottom-0 right-1/3 w-96 h-96 bg-club-red opacity-5 rounded-full blur-3xl animate-bounce" style="animation-duration: 6s"></div>
-      <div class="absolute inset-0 hexagon-pattern opacity-10"></div>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@300;400;500&display=swap');
+
+  :root {
+    --red:     #D0021B;
+    --red-glow:rgba(208,2,27,0.5);
+    --red-soft:rgba(208,2,27,0.12);
+    --black:   #080808;
+    --dark:    #111111;
+    --surface: #181818;
+    --card:    #1e1e1e;
+    --border:  rgba(255,255,255,0.06);
+    --border-r:rgba(208,2,27,0.15);
+    --text:    #E8E8E8;
+    --muted:   #666;
+    --green:   #22c55e;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  .contact-page {
+    font-family: 'Barlow', sans-serif;
+    background: var(--black);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ─────────────────────────────────────────────── */
+  .hero {
+    position: relative;
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+    background: var(--black);
+  }
+
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: gridMove 20s linear infinite;
+  }
+  @keyframes gridMove {
+    0%   { transform: translateY(0); }
+    100% { transform: translateY(60px); }
+  }
+
+  .hero-radial {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 30% 50%, rgba(208,2,27,0.18) 0%, transparent 65%);
+  }
+
+  .hero-fade {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(8,8,8,0.1) 0%, rgba(8,8,8,0.7) 70%, var(--black) 100%);
+  }
+
+  .hero-ghost {
+    position: absolute;
+    right: -2vw; top: 50%;
+    transform: translateY(-55%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(180px, 28vw, 380px);
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(208,2,27,0.1);
+    line-height: 1;
+    user-select: none;
+    letter-spacing: -0.02em;
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    padding: 0 6vw 80px;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.45em; text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 12px;
+    animation: fadeUp 0.7s ease both;
+  }
+  .hero-eyebrow::before {
+    content: ''; display: block;
+    width: 36px; height: 2px;
+    background: var(--red);
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(80px, 13vw, 172px);
+    line-height: 0.9; letter-spacing: 0.02em;
+    margin-bottom: 28px;
+    animation: fadeUp 0.7s 0.08s ease both;
+  }
+  .hero-title strong  { display: block; color: #fff; }
+  .hero-title span    {
+    display: block; color: transparent;
+    -webkit-text-stroke: 2px var(--red);
+    text-shadow: 0 0 80px var(--red-glow);
+  }
+
+  .hero-sub {
+    font-family: 'Barlow', sans-serif;
+    font-size: clamp(15px, 1.6vw, 18px);
+    color: var(--muted);
+    max-width: 480px;
+    line-height: 1.7;
+    animation: fadeUp 0.7s 0.16s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── TICKER ───────────────────────────────────────────── */
+  .ticker-wrap {
+    background: var(--red);
+    overflow: hidden;
+    padding: 0.6rem 0;
+    position: relative; z-index: 2;
+  }
+  .ticker-track {
+    display: flex;
+    width: max-content;
+    animation: ticker 28s linear infinite;
+  }
+  .ticker-item {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.95rem; letter-spacing: 0.18em;
+    color: rgba(255,255,255,0.88);
+    padding: 0 2.5rem; white-space: nowrap;
+  }
+  .ticker-item::before { content: '◆'; margin-right: 2.5rem; opacity: 0.45; }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* ── MAIN LAYOUT ──────────────────────────────────────── */
+  .contact-section {
+    padding: 100px 6vw;
+    background: var(--black);
+    position: relative;
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  @media (min-width: 1024px) {
+    .contact-grid { grid-template-columns: 1fr 1fr; gap: 4rem; }
+  }
+
+  /* ── SECTION LABEL ────────────────────────────────────── */
+  .sec-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.5em; text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .sec-label::before {
+    content: ''; display: block;
+    width: 28px; height: 1px;
+    background: var(--red);
+  }
+
+  .sec-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(42px, 6vw, 80px);
+    line-height: 0.95; letter-spacing: 0.02em;
+    margin-bottom: 40px;
+    color: #fff;
+  }
+
+  /* ── CONTACT CARDS ────────────────────────────────────── */
+  .info-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 2rem 2rem 2rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s, background 0.3s;
+    cursor: default;
+  }
+  .info-card::before {
+    content: ''; position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px; background: var(--red);
+    transform: scaleY(0); transform-origin: bottom;
+    transition: transform 0.35s ease;
+  }
+  .info-card:hover { border-color: var(--border-r); transform: translateX(4px); background: var(--surface); }
+  .info-card:hover::before { transform: scaleY(1); }
+
+  .card-icon {
+    width: 40px; height: 40px;
+    background: var(--red-soft);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.1rem;
+    transition: background 0.3s;
+  }
+  .info-card:hover .card-icon { background: rgba(208,2,27,0.25); }
+
+  .card-icon svg { width: 20px; height: 20px; color: var(--red); }
+
+  .card-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.4em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 6px;
+  }
+
+  .card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.7rem; letter-spacing: 0.05em;
+    color: #fff; margin-bottom: 6px;
+  }
+
+  .card-desc {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.88rem; color: #888; line-height: 1.65;
+  }
+  .card-desc strong { color: #ccc; }
+
+  .cards-stack { display: flex; flex-direction: column; gap: 1px; }
+
+  /* ── WHATSAPP FEATURE CARD ────────────────────────────── */
+  .wa-card {
+    background: var(--surface);
+    border: 1px solid rgba(34,197,94,0.2);
+    padding: 2.5rem;
+    position: relative; overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .wa-card:hover { border-color: rgba(34,197,94,0.55); }
+  .wa-card::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--green), transparent);
+    transform: scaleX(0);
+    transition: transform 0.45s ease;
+  }
+  .wa-card:hover::after { transform: scaleX(1); }
+
+  .wa-header {
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 1.4rem;
+  }
+  .wa-icon {
+    width: 52px; height: 52px;
+    background: var(--green);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 20px rgba(34,197,94,0.3);
+  }
+  .wa-icon svg { width: 26px; height: 26px; color: #fff; }
+
+  .wa-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem; letter-spacing: 0.05em; color: #fff;
+  }
+  .wa-sub {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.78rem; color: #666;
+    letter-spacing: 0.04em;
+  }
+
+  .wa-btn {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    background: var(--green);
+    color: #fff;
+    padding: 1rem 2rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.35rem; letter-spacing: 0.1em;
+    text-decoration: none;
+    transition: background 0.25s, transform 0.25s, box-shadow 0.25s;
+    width: 100%;
+  }
+  .wa-btn:hover {
+    background: #16a34a;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(34,197,94,0.35);
+  }
+
+  /* ── SOCIAL ROW ───────────────────────────────────────── */
+  .social-row {
+    display: flex; gap: 1rem; margin-top: 1.5rem;
+  }
+  .soc-btn {
+    width: 48px; height: 48px;
+    background: var(--card); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    text-decoration: none;
+    transition: background 0.25s, border-color 0.25s, transform 0.25s;
+  }
+  .soc-btn svg { width: 20px; height: 20px; color: #888; transition: color 0.25s; }
+  .soc-btn:hover { transform: translateY(-3px); }
+  .soc-btn.ig:hover { background: linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045); border-color: transparent; }
+  .soc-btn.fb:hover { background: #1877f2; border-color: #1877f2; }
+  .soc-btn.ig:hover svg, .soc-btn.fb:hover svg { color: #fff; }
+
+  /* ── MAP / RIGHT COLUMN ───────────────────────────────── */
+  .right-col { display: flex; flex-direction: column; gap: 1.5rem; }
+
+  .map-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 3rem 2.5rem;
+    text-align: center;
+    position: relative; overflow: hidden;
+    flex: 1;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    min-height: 340px;
+    transition: border-color 0.3s;
+  }
+  .map-card:hover { border-color: var(--border-r); }
+
+  .map-pin {
+    font-size: 3.5rem; margin-bottom: 1.2rem;
+    display: block;
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-8px); }
+  }
+
+  .map-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem; letter-spacing: 0.06em; color: var(--red);
+    margin-bottom: 0.5rem;
+  }
+  .map-sub {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.85rem; color: #666; margin-bottom: 1.8rem; line-height: 1.6;
+  }
+  .map-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--red);
+    color: #fff; text-decoration: none;
+    padding: 0.8rem 2rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem; letter-spacing: 0.08em;
+    transition: background 0.25s, transform 0.25s, box-shadow 0.25s;
+  }
+  .map-btn:hover {
+    background: #b00018;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px var(--red-glow);
+  }
+
+  .map-bg-text {
+    position: absolute; bottom: -0.1em; right: 0;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 10rem; letter-spacing: -0.02em;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(208,2,27,0.07);
+    line-height: 1; pointer-events: none; user-select: none;
+  }
+
+  /* ── FAQ ──────────────────────────────────────────────── */
+  .faq-section {
+    padding: 100px 6vw;
+    background: var(--dark);
+    position: relative;
+  }
+
+  .faq-section::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--red), transparent);
+  }
+
+  .faq-header {
+    max-width: 1280px; margin: 0 auto 56px;
+  }
+
+  .faq-list {
+    max-width: 960px; margin: 0 auto;
+    display: flex; flex-direction: column; gap: 2px;
+  }
+
+  .faq-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .faq-item.open { border-color: var(--border-r); }
+
+  .faq-q {
+    width: 100%; background: none; border: none; cursor: pointer;
+    padding: 1.5rem 2rem;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    text-align: left;
+    transition: background 0.2s;
+  }
+  .faq-q:hover { background: rgba(255,255,255,0.025); }
+
+  .faq-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.85rem; letter-spacing: 0.1em;
+    color: var(--red); opacity: 0.5;
+    flex-shrink: 0;
+  }
+  .faq-q-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.05rem; font-weight: 600; letter-spacing: 0.02em;
+    color: #ddd; flex: 1;
+    transition: color 0.2s;
+  }
+  .faq-item.open .faq-q-text { color: #fff; }
+
+  .faq-chevron {
+    width: 20px; height: 20px; color: var(--muted); flex-shrink: 0;
+    transition: transform 0.3s, color 0.2s;
+  }
+  .faq-item.open .faq-chevron { transform: rotate(180deg); color: var(--red); }
+
+  .faq-a {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s;
+    padding: 0 2rem 0 2rem;
+  }
+  .faq-item.open .faq-a {
+    max-height: 200px;
+    padding: 0 2rem 1.5rem;
+  }
+  .faq-a-inner {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.9rem; color: #777; line-height: 1.75;
+    border-left: 2px solid var(--border-r);
+    padding-left: 1rem;
+  }
+
+  /* ── REVEAL ANIMATIONS ────────────────────────────────── */
+  .reveal {
+    opacity: 0; transform: translateY(22px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-d1 { transition-delay: 0.08s; }
+  .reveal-d2 { transition-delay: 0.16s; }
+  .reveal-d3 { transition-delay: 0.24s; }
+  .reveal-d4 { transition-delay: 0.32s; }
+</style>
+
+<div class="contact-page">
+
+  <!-- ── HERO ──────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-radial"></div>
+    <div class="hero-fade"></div>
+    <div class="hero-ghost">CONTACTO</div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Club Atlético Independiente · Trelew</p>
+      <h1 class="hero-title">
+        <strong>HABLEMOS</strong>
+        <span>JUNTOS</span>
+      </h1>
+      <p class="hero-sub">
+        Estamos para ayudarte con inscripciones, alquiler de canchas o cualquier consulta sobre el club.
+      </p>
     </div>
-    
-    <div class="container mx-auto px-4 relative z-10">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
-        
-        <!-- Enhanced Left Column - Contact Info -->
-        <div class="space-y-8">
-          <div class="glass p-8 rounded-2xl border border-club-red border-opacity-20 shadow-dramatic">
-            <h2 class="font-display text-5xl text-club-red mb-8 tracking-wider neon-text">
-              💬 HABLEMOS
-            </h2>
-            <p class="text-gray-300 text-lg leading-relaxed mb-8">
-              Estamos a tu disposición para responder cualquier consulta sobre <span class="text-club-red font-semibold">actividades, inscripciones, alquiler de canchas</span> o cualquier información que necesites sobre el club.
-            </p>
-            <div class="flex flex-wrap gap-4">
-              <div class="flex items-center gap-2 text-club-red">
-                <span class="text-xl">✓</span>
-                <span class="text-sm">Respuesta Rápida</span>
-              </div>
-              <div class="flex items-center gap-2 text-club-red">
-                <span class="text-xl">✓</span>
-                <span class="text-sm">Atención Personalizada</span>
-              </div>
-              <div class="flex items-center gap-2 text-club-red">
-                <span class="text-xl">✓</span>
-                <span class="text-sm">Disponible Todos los Días</span>
-              </div>
+  </section>
+
+  <!-- ── TICKER ─────────────────────────────────────────── -->
+  <div class="ticker-wrap">
+    <div class="ticker-track">
+      {Array(3).fill(['Whatsapp: 280 486 7740', 'Lun–Vie: 8:00–22:00', 'Sáb: 8:00–18:00', 'Trelew · Chubut · Patagonia Argentina', 'Inscripciones Abiertas', 'Alquiler de Canchas Disponible']).flat().map(t => (
+        <span class="ticker-item">{t}</span>
+      ))}
+    </div>
+  </div>
+
+  <!-- ── MAIN CONTENT ───────────────────────────────────── -->
+  <section class="contact-section">
+    <div class="contact-grid">
+
+      <!-- LEFT COL -->
+      <div>
+        <div class="sec-label reveal">Ponete en Contacto</div>
+        <h2 class="sec-title reveal reveal-d1">CONTACTO<br/>DIRECTO</h2>
+
+        <!-- WhatsApp CTA -->
+        <div class="wa-card reveal reveal-d2" style="margin-bottom:1px;">
+          <div class="wa-header">
+            <div class="wa-icon">
+              <svg fill="currentColor" viewBox="0 0 24 24">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+              </svg>
+            </div>
+            <div>
+              <div class="wa-name">WHATSAPP</div>
+              <div class="wa-sub">Respuesta inmediata · 280 486 7740</div>
+            </div>
+          </div>
+          <a href="https://wa.me/542804867740?text=Hola!%20Tengo%20una%20consulta..." target="_blank" rel="noopener noreferrer" class="wa-btn">
+            <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+            </svg>
+            Escribir por WhatsApp
+          </a>
+        </div>
+
+        <!-- Info Cards -->
+        <div class="cards-stack" style="margin-top:1px;">
+          <div class="info-card reveal reveal-d2">
+            <div class="card-icon">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+            </div>
+            <div class="card-label">Sede del Club</div>
+            <div class="card-title">UBICACIÓN</div>
+            <div class="card-desc">Trelew, Chubut<br/><strong>Patagonia Argentina</strong></div>
+          </div>
+
+          <div class="info-card reveal reveal-d3">
+            <div class="card-icon">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <div class="card-label">Horarios de Atención</div>
+            <div class="card-title">HORARIOS</div>
+            <div class="card-desc">
+              <strong>Lunes a Viernes:</strong> 8:00 – 22:00<br/>
+              <strong>Sábados:</strong> 8:00 – 18:00<br/>
+              <strong>Domingos:</strong> Cerrado
             </div>
           </div>
 
-          <!-- WhatsApp Card -->
-          <div class="bg-club-surface p-8 rounded-lg border border-club-red border-opacity-30 hover:border-opacity-100 transition-all hover-lift">
-            <div class="flex items-center gap-4 mb-4">
-              <div class="w-16 h-16 bg-[#25d366] rounded-full flex items-center justify-center">
-                <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-                </svg>
-              </div>
-              <div>
-                <h3 class="font-display text-2xl text-white tracking-wider">
-                  WHATSAPP
-                </h3>
-                <p class="text-gray-400 text-sm">Respuesta inmediata</p>
-              </div>
+          <div class="info-card reveal reveal-d4">
+            <div class="card-icon">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"/>
+              </svg>
             </div>
-            <a
-              href="https://wa.me/542804867740"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="block w-full bg-[#25d366] hover:bg-[#20ba5a] text-white text-center px-6 py-4 rounded-full font-display text-xl tracking-wider transition-all hover:scale-105"
-            >
-              280 486 7740
-            </a>
-          </div>
-
-          <!-- Location Card -->
-          <div class="bg-club-surface p-8 rounded-lg border border-club-gold border-opacity-30">
-            <div class="flex items-start gap-4">
-              <div class="w-12 h-12 bg-club-red rounded-full flex items-center justify-center flex-shrink-0">
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                </svg>
-              </div>
-              <div>
-                <h3 class="font-display text-xl text-white mb-2 tracking-wider">
-                  UBICACIÓN
-                </h3>
-                <p class="text-gray-300">
-                  Trelew, Chubut<br/>
-                  Patagonia Argentina
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Schedule Card -->
-          <div class="bg-club-surface p-8 rounded-lg border border-club-gold border-opacity-30">
-            <div class="flex items-start gap-4">
-              <div class="w-12 h-12 bg-club-red rounded-full flex items-center justify-center flex-shrink-0">
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-              </div>
-              <div>
-                <h3 class="font-display text-xl text-white mb-3 tracking-wider">
-                  HORARIOS
-                </h3>
-                <div class="text-gray-300 space-y-2">
-                  <p><strong class="text-white">Lunes a Viernes:</strong> 8:00 - 22:00</p>
-                  <p><strong class="text-white">Sábados:</strong> 8:00 - 18:00</p>
-                  <p><strong class="text-white">Domingos:</strong> Cerrado</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Social Media -->
-          <div class="bg-club-surface p-8 rounded-lg border border-club-gold border-opacity-30">
-            <h3 class="font-display text-xl text-white mb-6 tracking-wider">
-              REDES SOCIALES
-            </h3>
-            <div class="flex gap-4">
-              <a
-                href="#"
-                class="w-14 h-14 rounded-full bg-club-card flex items-center justify-center text-white hover:bg-gradient-to-br hover:from-purple-600 hover:to-pink-600 transition-all duration-300 hover:scale-110"
-                aria-label="Instagram"
-              >
-                <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
+            <div class="card-label">Redes Sociales</div>
+            <div class="card-title">SEGUINOS</div>
+            <div class="card-desc">Encontranos en nuestras redes para novedades y resultados.</div>
+            <div class="social-row">
+              <a href="#" class="soc-btn ig" aria-label="Instagram">
+                <svg fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                 </svg>
               </a>
-              <a
-                href="#"
-                class="w-14 h-14 rounded-full bg-club-card flex items-center justify-center text-white hover:bg-blue-600 transition-all duration-300 hover:scale-110"
-                aria-label="Facebook"
-              >
-                <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
+              <a href="#" class="soc-btn fb" aria-label="Facebook">
+                <svg fill="currentColor" viewBox="0 0 24 24">
                   <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                 </svg>
               </a>
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- Right Column - Map -->
-        <div class="space-y-8">
-          <!-- Map Placeholder -->
-          <div class="bg-club-surface rounded-lg overflow-hidden border-2 border-club-red border-opacity-30 h-[600px] flex items-center justify-center relative">
-            <!-- You can replace this with an actual Google Maps embed -->
-            <div class="text-center p-8">
-              <div class="text-8xl mb-6">📍</div>
-              <h3 class="font-display text-3xl text-club-red mb-4 tracking-wider">
-                VISITANOS
-              </h3>
-              <p class="text-gray-400 mb-6">
-                Club Atlético Independiente<br/>
-                Trelew, Chubut
-              </p>
-              <a
-                href="https://maps.google.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="inline-block bg-club-red hover:bg-club-red-2 text-white px-8 py-3 rounded-full font-medium transition-all hover:scale-105"
-              >
-                Ver en Google Maps
-              </a>
-            </div>
+      <!-- RIGHT COL -->
+      <div class="right-col">
+        <!-- Map card -->
+        <div class="map-card reveal reveal-d1">
+          <span class="map-pin">📍</span>
+          <div class="map-title">VISITANOS</div>
+          <div class="map-sub">Club Atlético Independiente<br/>Trelew · Chubut · Patagonia</div>
+          <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" class="map-btn">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+            Ver en Google Maps
+          </a>
+          <div class="map-bg-text">TRW</div>
+        </div>
 
-            <!-- Decorative Elements -->
-            <div class="absolute inset-0 geometric-bg opacity-5 pointer-events-none"></div>
+        <!-- Quick info box -->
+        <div class="info-card reveal reveal-d2" style="border-left:3px solid var(--red); padding-left: 2rem;">
+          <div class="card-label">Consulta Rápida</div>
+          <div class="card-title">INSCRIPCIÓN</div>
+          <div class="card-desc" style="margin-bottom:1.2rem;">
+            Para inscribirte a cualquier actividad contactanos por WhatsApp o visitá el club en horario de atención. Te asesoramos sin compromiso.
           </div>
-
-          <!-- Quick Contact Form Alternative -->
-          <div class="bg-club-surface p-8 rounded-lg border border-club-gold border-opacity-30">
-            <h3 class="font-display text-2xl text-club-red mb-6 tracking-wider">
-              CONSULTA RÁPIDA
-            </h3>
-            <p class="text-gray-300 mb-6">
-              Para consultas sobre inscripciones, actividades o cualquier información, la forma más rápida de contactarnos es por WhatsApp.
-            </p>
-            <a
-              href="https://wa.me/542804867740?text=Hola!%20Tengo%20una%20consulta..."
-              target="_blank"
-              rel="noopener noreferrer"
-              class="w-full inline-flex items-center justify-center gap-3 bg-[#25d366] hover:bg-[#20ba5a] text-white px-8 py-4 rounded-full font-display text-xl tracking-wider transition-all hover:scale-105"
-            >
-              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-              </svg>
-              Escribir por WhatsApp
-            </a>
-          </div>
+          <a href="https://wa.me/542804867740?text=Hola!%20Quiero%20inscribirme..." target="_blank" rel="noopener noreferrer" class="map-btn" style="display:inline-flex; width:auto; padding:0.75rem 1.5rem; font-size:1rem;">
+            Consultar ahora →
+          </a>
         </div>
       </div>
+
     </div>
   </section>
 
-  <!-- FAQ Section -->
-  <section class="py-20 bg-club-surface">
-    <div class="container mx-auto px-4">
-      <SectionTitle 
-        title="PREGUNTAS FRECUENTES"
-        subtitle="Respuestas a las consultas más comunes"
-      />
+  <!-- ── FAQ ────────────────────────────────────────────── -->
+  <section class="faq-section">
+    <div class="faq-header">
+      <div class="sec-label reveal">Preguntas Frecuentes</div>
+      <h2 class="sec-title reveal reveal-d1">LO QUE<br/>MÁS NOS<br/>PREGUNTAN</h2>
+    </div>
 
-      <div class="max-w-4xl mx-auto space-y-4">
-        {[
-          {
-            question: '¿Cómo me inscribo a una actividad?',
-            answer: 'Contactanos por WhatsApp o visitanos en el club. Te asesoramos sobre la actividad que mejor se adapte a tus necesidades y te explicamos el proceso de inscripción.'
-          },
-          {
-            question: '¿Qué documentación necesito?',
-            answer: 'Para la inscripción necesitás certificado médico de aptitud física, fotocopia de DNI del deportista y tutor (en caso de menores), 2 fotos carnet y completar la ficha de inscripción.'
-          },
-          {
-            question: '¿Hay cuotas de prueba?',
-            answer: 'Sí, ofrecemos clases de prueba gratuitas para que puedas conocer la disciplina y el equipo de entrenadores antes de inscribirte.'
-          },
-          {
-            question: '¿Cómo se realizan los pagos?',
-            answer: 'Aceptamos efectivo, transferencia bancaria y Mercado Pago. Las cuotas son mensuales y se abonan del 1 al 10 de cada mes.'
-          },
-          {
-            question: '¿Tienen descuentos para grupos familiares?',
-            answer: 'Sí, tenemos descuentos especiales para familias con varios integrantes inscriptos. Consultá por las promociones vigentes.'
-          }
-        ].map((faq, index) => (
-          <details class="bg-club-card rounded-lg border border-club-red border-opacity-30 hover:border-opacity-100 transition-all group">
-            <summary class="p-6 cursor-pointer flex items-center justify-between">
-              <h3 class="font-display text-lg text-white tracking-wide group-hover:text-club-red transition-colors">
-                {faq.question}
-              </h3>
-              <svg class="w-6 h-6 text-club-red transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-              </svg>
-            </summary>
-            <div class="px-6 pb-6 text-gray-300 leading-relaxed">
-              {faq.answer}
-            </div>
-          </details>
-        ))}
-      </div>
+    <div class="faq-list" id="faqList">
+      {[
+        { q: '¿Cómo me inscribo a una actividad?',    a: 'Contactanos por WhatsApp o visitanos en el club. Te asesoramos sobre la actividad que mejor se adapte a tus necesidades y te explicamos el proceso de inscripción paso a paso.' },
+        { q: '¿Qué documentación necesito?',          a: 'Para la inscripción necesitás certificado médico de aptitud física, fotocopia de DNI del deportista y tutor (en caso de menores), 2 fotos carnet y completar la ficha de inscripción.' },
+        { q: '¿Hay clases de prueba?',                a: 'Sí, ofrecemos clases de prueba gratuitas para que puedas conocer la disciplina y el equipo de entrenadores antes de comprometerte con la inscripción.' },
+        { q: '¿Cómo se realizan los pagos?',          a: 'Aceptamos efectivo, transferencia bancaria y Mercado Pago. Las cuotas son mensuales y se abonan del 1 al 10 de cada mes.' },
+        { q: '¿Tienen descuentos para familias?',     a: 'Sí, tenemos descuentos especiales para familias con varios integrantes inscriptos. Consultanos por las promociones vigentes, ¡hay beneficios para todos!' },
+        { q: '¿Se puede alquilar el espacio?',        a: 'Sí, contamos con espacios disponibles para alquiler por horas. Ingresá a la sección de Alquiler o contactanos directamente para consultar disponibilidad y precios.' },
+      ].map((item, i) => (
+        <div class="faq-item reveal" data-faq>
+          <button class="faq-q" type="button" data-faq-btn>
+            <span class="faq-num">0{i + 1}</span>
+            <span class="faq-q-text">{item.q}</span>
+            <svg class="faq-chevron" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </button>
+          <div class="faq-a">
+            <div class="faq-a-inner">{item.a}</div>
+          </div>
+        </div>
+      ))}
     </div>
   </section>
+
+</div>
+
+<script>
+  // Reveal on scroll
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // FAQ accordion
+  document.querySelectorAll('[data-faq-btn]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('[data-faq]');
+      if (!item) return;
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('[data-faq]').forEach(f => f.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+</script>
+
 </Layout>
