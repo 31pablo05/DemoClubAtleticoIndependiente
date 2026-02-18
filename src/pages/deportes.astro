@@ -1,9 +1,28 @@
 ---
 import Layout from '../components/layout/Layout.astro';
-import Hero from '../components/ui/Hero.astro';
 import SportCard from '../components/ui/SportCard.astro';
 import CtaBanner from '../components/ui/CtaBanner.astro';
 import { sports } from '../data/sports';
+
+// Two representative images per sport for the carousel
+const carouselSlides = [
+  { img: '/imagenes/infatiles/infantil1.jpg',       label: 'Fútbol Infantiles', icon: '⚽' },
+  { img: '/imagenes/infatiles/infantil2.jpg',       label: 'Fútbol Infantiles', icon: '⚽' },
+  { img: '/imagenes/baby/baby1.jpg',                label: 'Baby Fútbol',       icon: '👶⚽' },
+  { img: '/imagenes/infatiles/infantil3.jpg',       label: 'Baby Fútbol',       icon: '👶⚽' },
+  { img: '/imagenes/futbol femenino/fem1.jpg',      label: 'Fútbol Femenino',   icon: '⚽💪' },
+  { img: '/imagenes/futbol femenino/fem2.jpg',      label: 'Fútbol Femenino',   icon: '⚽💪' },
+  { img: '/imagenes/handball/hand4.jpg',            label: 'Handball',          icon: '🤾' },
+  { img: '/imagenes/handball/hand1.jpg',            label: 'Handball',          icon: '🤾' },
+  { img: '/imagenes/hockey/hock8.jpg',              label: 'Hockey',            icon: '🏑' },
+  { img: '/imagenes/hockey/hock2.jpg',              label: 'Hockey',            icon: '🏑' },
+  { img: '/imagenes/patin/pat1.jpg',                label: 'Patín',             icon: '⛸️' },
+  { img: '/imagenes/hockey/hock5.jpg',              label: 'Patín',             icon: '⛸️' },
+  { img: '/imagenes/inferiores/inf1.jpg',           label: 'Fútbol Inferiores', icon: '⚽🏆' },
+  { img: '/imagenes/inferiores/inf6.jpg',           label: 'Fútbol Inferiores', icon: '⚽🏆' },
+  { img: '/imagenes/basquet/basquet1.jpg',          label: 'Básquet',           icon: '🏀' },
+  { img: '/imagenes/basquet/basquet2.jpg',          label: 'Básquet',           icon: '🏀' },
+];
 ---
 
 <Layout 
@@ -236,6 +255,288 @@ import { sports } from '../data/sports';
     flex-shrink: 0; box-shadow: 0 0 5px var(--red);
   }
 
+  /* ── HERO CAROUSEL ─────────────────────────────────────── */
+  .sports-hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    background: #080808;
+    overflow: hidden;
+  }
+
+  /* background grid */
+  .sh-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(212,43,43,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(212,43,43,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  /* noise */
+  .sh-noise {
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 1;
+  }
+  /* glow orbs */
+  .sh-orb {
+    position: absolute; border-radius: 50%;
+    background: var(--red); filter: blur(90px); pointer-events: none;
+  }
+  .sh-orb-1 { width: 40vw; height: 40vw; top: -10%; left: -10%; opacity: 0.06; }
+  .sh-orb-2 { width: 30vw; height: 30vw; bottom: -8%; right: -5%; opacity: 0.05; }
+
+  /* layout: text left, carousel right */
+  .sh-inner {
+    position: relative; z-index: 10;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    width: 100%;
+    padding: 10rem 6vw 6rem;
+  }
+  @media (max-width: 900px) {
+    .sh-inner {
+      grid-template-columns: 1fr;
+      padding: 8rem 1.5rem 5rem;
+      gap: 3rem;
+    }
+  }
+
+  /* ─ Text side ─ */
+  .sh-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.4em; text-transform: uppercase;
+    color: var(--red);
+    display: flex; align-items: center; gap: 0.7rem;
+    margin-bottom: 1.2rem;
+  }
+  .sh-label::before { content: ''; width: 2.5rem; height: 2px; background: var(--red); }
+
+  .sh-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 8vw, 7.5rem);
+    line-height: 0.95; letter-spacing: 0.03em;
+    color: #f5f5f5;
+    margin-bottom: 1.5rem;
+  }
+  .sh-title .red { color: var(--red); display: block; }
+
+  .sh-desc {
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.9rem; line-height: 1.75;
+    color: rgba(255,255,255,0.38);
+    max-width: 36ch;
+    margin-bottom: 2.5rem;
+  }
+
+  /* active sport badge */
+  .sh-sport-badge {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    background: rgba(212,43,43,0.1);
+    border: 1px solid rgba(212,43,43,0.25);
+    border-radius: 2px;
+    padding: 0.5rem 1.2rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.9rem; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--red);
+    transition: all 0.4s ease;
+    margin-bottom: 2rem;
+  }
+  .sh-sport-badge .badge-icon { font-size: 1.1rem; }
+
+  /* progress dots */
+  .sh-dots {
+    display: flex; gap: 0.5rem; align-items: center;
+    margin-bottom: 2.5rem;
+  }
+  .sh-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    transition: all 0.4s ease;
+    cursor: pointer;
+  }
+  .sh-dot.active {
+    background: var(--red);
+    width: 24px; border-radius: 3px;
+    box-shadow: 0 0 8px var(--red);
+  }
+
+  /* progress bar */
+  .sh-progress {
+    height: 1px;
+    background: rgba(255,255,255,0.06);
+    margin-bottom: 2.5rem;
+    position: relative; overflow: hidden;
+    max-width: 200px;
+  }
+  .sh-progress-fill {
+    position: absolute; top: 0; left: 0; height: 100%;
+    background: var(--red);
+    width: 0%;
+    transition: width 0.1s linear;
+  }
+  .sh-progress-fill.animating {
+    transition: width 4s linear;
+    width: 100%;
+  }
+
+  /* counter */
+  .sh-counter {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.85rem; letter-spacing: 0.18em;
+    color: rgba(255,255,255,0.2);
+  }
+  .sh-counter span { color: var(--red); }
+
+  /* ─ Carousel ─ */
+  .sh-carousel {
+    perspective: 1200px;
+    position: relative;
+    height: clamp(480px, 75vh, 760px);
+  }
+
+  .sh-card {
+    position: absolute; inset: 0;
+    border-radius: 4px; overflow: hidden;
+    border: 1px solid rgba(212,43,43,0.15);
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    /* default: hidden behind */
+    opacity: 0;
+    transform: rotateY(90deg) scale(0.85);
+    transition:
+      transform 0.75s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity   0.75s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+  }
+
+  /* entering from right */
+  .sh-card.enter-right {
+    opacity: 0;
+    transform: rotateY(25deg) translateX(60px) scale(0.9);
+  }
+  /* entering from left */
+  .sh-card.enter-left {
+    opacity: 0;
+    transform: rotateY(-25deg) translateX(-60px) scale(0.9);
+  }
+  /* active / visible */
+  .sh-card.active {
+    opacity: 1;
+    transform: rotateY(0deg) translateX(0) scale(1);
+    pointer-events: auto;
+  }
+  /* exiting to left */
+  .sh-card.exit-left {
+    opacity: 0;
+    transform: rotateY(-25deg) translateX(-60px) scale(0.9);
+  }
+  /* exiting to right */
+  .sh-card.exit-right {
+    opacity: 0;
+    transform: rotateY(25deg) translateX(60px) scale(0.9);
+  }
+
+  .sh-card img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    filter: brightness(0.75);
+    transition: filter 0.4s, transform 0.6s;
+  }
+  .sh-card.active img { filter: brightness(0.85); }
+
+  /* gradient overlay */
+  .sh-card-overlay {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(to top, rgba(8,8,8,0.9) 0%, rgba(8,8,8,0.2) 50%, transparent 100%),
+      linear-gradient(to right, rgba(8,8,8,0.3) 0%, transparent 40%);
+    pointer-events: none;
+  }
+
+  /* card label */
+  .sh-card-label {
+    position: absolute; bottom: 1.5rem; left: 1.5rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem; letter-spacing: 0.06em;
+    color: white;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.8);
+    line-height: 1;
+  }
+  .sh-card-label-sub {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 0.3rem;
+  }
+
+  /* red corner accent on active card */
+  .sh-card-corner {
+    position: absolute; top: 0; right: 0;
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 0 56px 56px 0;
+    border-color: transparent var(--red) transparent transparent;
+    opacity: 0.7;
+  }
+
+  /* nav arrows */
+  .sh-arrows {
+    position: absolute; bottom: 1.5rem; right: 1.5rem;
+    display: flex; gap: 0.5rem; z-index: 5;
+  }
+  .sh-arrow {
+    width: 38px; height: 38px;
+    border-radius: 2px;
+    background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(212,43,43,0.3);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, transform 0.15s;
+    backdrop-filter: blur(8px);
+  }
+  .sh-arrow:hover {
+    background: var(--red);
+    border-color: var(--red);
+    transform: scale(1.08);
+  }
+
+  /* scroll hint */
+  .sh-scroll {
+    position: absolute; bottom: 2rem; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+    z-index: 10;
+  }
+  .sh-scroll-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.58rem; font-weight: 700;
+    letter-spacing: 0.32em; text-transform: uppercase;
+    color: rgba(255,255,255,0.2);
+  }
+  .sh-scroll-line {
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, var(--red), transparent);
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+  @keyframes scrollLine {
+    0%,100% { opacity:1; transform:scaleY(1); }
+    50% { opacity:0.3; transform:scaleY(0.5); }
+  }
+
+  /* red top border */
+  .sh-top-line {
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 3px; background: var(--red); z-index: 20;
+  }
+
   /* ── CTA section ─────────────────────────────────────── */
   .cta-section {
     position: relative; background: var(--red);
@@ -288,8 +589,86 @@ import { sports } from '../data/sports';
   }
 </style>
 
-  <!-- Hero -->
-  <Hero variant="page" title="DEPORTES" subtitle="Todas las disciplinas para formar campeones en Trelew" />
+  <!-- ══════════════════════════════════════════════════════
+       HERO CON CARRUSEL 3D
+  ══════════════════════════════════════════════════════ -->
+  <section class="sports-hero" id="sports-hero">
+    <div class="sh-top-line"></div>
+    <div class="sh-grid"></div>
+    <div class="sh-noise"></div>
+    <div class="sh-orb sh-orb-1"></div>
+    <div class="sh-orb sh-orb-2"></div>
+
+    <div class="sh-inner container mx-auto">
+
+      <!-- Text side -->
+      <div class="sh-text">
+        <p class="sh-label">Oferta deportiva</p>
+        <h1 class="sh-title">
+          NUESTRAS
+          <span class="red">DISCIPLINAS</span>
+        </h1>
+        <p class="sh-desc">
+          Actividades para todas las edades y niveles. Encontrá tu deporte y empezá hoy mismo en el Club Atlético Independiente de Trelew.
+        </p>
+
+        <!-- Active sport badge -->
+        <div class="sh-sport-badge" id="sh-badge">
+          <span class="badge-icon" id="sh-badge-icon">{carouselSlides[0].icon}</span>
+          <span id="sh-badge-label">{carouselSlides[0].label}</span>
+        </div>
+
+        <!-- Dots -->
+        <div class="sh-dots" id="sh-dots">
+          {carouselSlides.map((_, i) => (
+            <div class={`sh-dot${i === 0 ? ' active' : ''}`} data-index={i}></div>
+          ))}
+        </div>
+
+        <!-- Progress bar -->
+        <div class="sh-progress">
+          <div class="sh-progress-fill animating" id="sh-progress"></div>
+        </div>
+
+        <!-- Counter -->
+        <div class="sh-counter">
+          <span id="sh-current">01</span> / {String(carouselSlides.length).padStart(2,'0')}
+        </div>
+      </div>
+
+      <!-- Carousel -->
+      <div class="sh-carousel" id="sh-carousel">
+        {carouselSlides.map((slide, i) => (
+          <div class={`sh-card${i === 0 ? ' active' : ' enter-right'}`} data-index={i}>
+            <img src={slide.img} alt={slide.label} loading={i === 0 ? 'eager' : 'lazy'} />
+            <div class="sh-card-overlay"></div>
+            <div class="sh-card-corner"></div>
+            <div class="sh-card-label">
+              <div class="sh-card-label-sub">Disciplina</div>
+              {slide.label}
+            </div>
+          </div>
+        ))}
+
+        <!-- Arrow controls -->
+        <div class="sh-arrows">
+          <button class="sh-arrow" id="sh-prev" aria-label="Anterior">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+              <path d="M10 3L5 8l5 5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <button class="sh-arrow" id="sh-next" aria-label="Siguiente">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+              <path d="M6 3l5 5-5 5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    
+  </section>
 
   <!-- Ticker -->
   <div class="ticker-wrap">
@@ -343,10 +722,7 @@ import { sports } from '../data/sports';
       <div>
         {sports.map((sport, i) => (
           <div class={`sport-entry reveal reveal-delay-${(i % 3) + 1}`}>
-            <div class="sport-index">
-              {String(i + 1).padStart(2, '0')} — {sport.name.toUpperCase()}
-            </div>
-            <SportCard sport={sport} variant="full" />
+            <SportCard sport={sport} variant="full" num={String(i + 1).padStart(2, '0')} />
           </div>
         ))}
       </div>
@@ -440,10 +816,141 @@ import { sports } from '../data/sports';
 </Layout>
 
 <script>
+  /* ── Scroll reveal ── */
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
     });
   }, { threshold: 0.08 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  /* ── Hero Carousel ── */
+  const slides = document.querySelectorAll('#sh-carousel .sh-card');
+  const dots   = document.querySelectorAll('#sh-dots .sh-dot');
+  const badge  = document.getElementById('sh-badge-label');
+  const badgeIcon = document.getElementById('sh-badge-icon');
+  const counter = document.getElementById('sh-current');
+  const progress = document.getElementById('sh-progress');
+  const total = slides.length;
+
+  const labels = [
+    { label: 'Fútbol Infantiles', icon: '⚽' },
+    { label: 'Fútbol Infantiles', icon: '⚽' },
+    { label: 'Baby Fútbol',       icon: '👶⚽' },
+    { label: 'Baby Fútbol',       icon: '👶⚽' },
+    { label: 'Fútbol Femenino',   icon: '⚽💪' },
+    { label: 'Fútbol Femenino',   icon: '⚽💪' },
+    { label: 'Handball',          icon: '🤾' },
+    { label: 'Handball',          icon: '🤾' },
+    { label: 'Hockey',            icon: '🏑' },
+    { label: 'Hockey',            icon: '🏑' },
+    { label: 'Patín',             icon: '⛸️' },
+    { label: 'Patín',             icon: '⛸️' },
+    { label: 'Fútbol Inferiores', icon: '⚽🏆' },
+    { label: 'Fútbol Inferiores', icon: '⚽🏆' },
+    { label: 'Básquet',           icon: '🏀' },
+    { label: 'Básquet',           icon: '🏀' },
+  ];
+
+  let current = 0;
+  let autoTimer = null;
+  let direction = 'next'; // 'next' | 'prev'
+
+  function goTo(next, dir = 'next') {
+    if (next === current) return;
+    direction = dir;
+
+    const prev = current;
+    current = (next + total) % total;
+
+    // remove any leftover classes
+    slides[prev].classList.remove('active','enter-right','enter-left');
+    slides[current].classList.remove('active','enter-right','enter-left','exit-left','exit-right');
+
+    // exit current
+    slides[prev].classList.add(dir === 'next' ? 'exit-left' : 'exit-right');
+
+    // place incoming card off-screen
+    slides[current].classList.add(dir === 'next' ? 'enter-right' : 'enter-left');
+
+    // force reflow so transition fires
+    void slides[current].offsetWidth;
+
+    // activate
+    slides[current].classList.remove('enter-right','enter-left');
+    slides[current].classList.add('active');
+
+    // cleanup exit after transition
+    setTimeout(() => {
+      slides[prev].classList.remove('exit-left','exit-right');
+    }, 800);
+
+    // update UI
+    dots.forEach((d,i) => d.classList.toggle('active', i === current));
+    badge.textContent  = labels[current].label;
+    badgeIcon.textContent = labels[current].icon;
+    counter.textContent = String(current + 1).padStart(2, '0');
+
+    // reset progress
+    resetProgress();
+  }
+
+  function resetProgress() {
+    progress.classList.remove('animating');
+    progress.style.width = '0%';
+    void progress.offsetWidth; // reflow
+    progress.classList.add('animating');
+  }
+
+  function startAuto() {
+    stopAuto();
+    autoTimer = setInterval(() => goTo(current + 1, 'next'), 4000);
+  }
+
+  function stopAuto() {
+    if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+  }
+
+  // Init — make sure all slides except first are in enter-right state
+  slides.forEach((s, i) => {
+    if (i !== 0) {
+      s.classList.remove('active');
+      s.classList.add('enter-right');
+    }
+  });
+  startAuto();
+
+  // Arrow buttons
+  document.getElementById('sh-next')?.addEventListener('click', () => {
+    stopAuto(); goTo(current + 1, 'next'); startAuto();
+  });
+  document.getElementById('sh-prev')?.addEventListener('click', () => {
+    stopAuto(); goTo(current - 1, 'prev'); startAuto();
+  });
+
+  // Dot navigation
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => {
+      const dir = i > current ? 'next' : 'prev';
+      stopAuto(); goTo(i, dir); startAuto();
+    });
+  });
+
+  // Pause on hover
+  document.getElementById('sh-carousel')?.addEventListener('mouseenter', stopAuto);
+  document.getElementById('sh-carousel')?.addEventListener('mouseleave', startAuto);
+
+  // Touch/swipe support
+  let touchStartX = 0;
+  document.getElementById('sh-carousel')?.addEventListener('touchstart', e => {
+    touchStartX = e.touches[0].clientX;
+  }, { passive: true });
+  document.getElementById('sh-carousel')?.addEventListener('touchend', e => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) {
+      stopAuto();
+      goTo(diff > 0 ? current + 1 : current - 1, diff > 0 ? 'next' : 'prev');
+      startAuto();
+    }
+  });
 </script>

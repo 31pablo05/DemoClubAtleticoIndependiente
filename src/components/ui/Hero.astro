@@ -5,9 +5,10 @@ interface Props {
   title?: string;
   subtitle?: string;
   showButtons?: boolean;
+  bgImage?: string;
 }
 
-const { variant = 'page', title, subtitle, showButtons = false } = Astro.props;
+const { variant = 'page', title, subtitle, showButtons = false, bgImage } = Astro.props;
 ---
 
 <style>
@@ -456,9 +457,40 @@ const { variant = 'page', title, subtitle, showButtons = false } = Astro.props;
   .hero-page {
     position: relative;
     padding-top: 14rem;
-    padding-bottom: 8rem;
+    padding-bottom: 24rem;
+    min-height: 100svh;
     overflow: hidden;
     background: var(--black);
+  }
+
+  /* background image for page hero */
+  .hero-page-bg-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 60%;
+    opacity: 0.65;
+    filter: brightness(0.75);
+    transition: opacity 1.2s ease;
+  }
+  @media (min-width: 768px) {
+    .hero-page-bg-img {
+      object-fit: cover;
+      object-position: center center;
+      transform: none;
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .hero-page-bg-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(10,10,10,0.45) 0%, rgba(10,10,10,0.05) 40%, rgba(10,10,10,0.55) 100%),
+      linear-gradient(90deg, rgba(10,10,10,0.35) 0%, transparent 60%);
+    z-index: 1;
   }
   .page-title {
     font-family: 'Bebas Neue', sans-serif;
@@ -477,11 +509,28 @@ const { variant = 'page', title, subtitle, showButtons = false } = Astro.props;
     padding: 1.2rem 2.4rem;
   }
 
+  /* content block: centered on mobile, bottom-left on desktop */
+  .hero-page-content {
+    text-align: center;
+  }
+  @media (min-width: 768px) {
+    .hero-page-content {
+      position: absolute;
+      bottom: 13rem;
+      left: 0;
+      right: 0;
+      text-align: left;
+    }
+    .hero-page-content .hero-divider {
+      justify-content: flex-start;
+    }
+  }
+
   /* ── Mobile ─────────────────────────────────────────────── */
   @media (max-width: 767px) {
     .hero-page {
       padding-top: 8rem;
-      padding-bottom: 3.5rem;
+      padding-bottom: 14rem;
     }
     .page-title {
       font-size: clamp(2.8rem, 14vw, 5rem);
@@ -497,7 +546,7 @@ const { variant = 'page', title, subtitle, showButtons = false } = Astro.props;
 
 {variant === 'home' ? (
 
-  <section class="hero-home clip-bottom">
+  <section class="hero-home">
 
     <!-- Video -->
     <video autoplay muted loop playsinline class="hero-video">
@@ -595,6 +644,10 @@ const { variant = 'page', title, subtitle, showButtons = false } = Astro.props;
 
     <!-- BG layers -->
     <div style="position:absolute; inset:0; background: linear-gradient(135deg, var(--black) 0%, #1a0000 50%, var(--black) 100%);"></div>
+    {bgImage && (
+      <img src={bgImage} alt="" class="hero-page-bg-img" aria-hidden="true" />
+    )}
+    {bgImage && <div class="hero-page-bg-overlay"></div>}
     <div class="hero-grid"></div>
     <div class="hero-noise"></div>
 
@@ -606,10 +659,10 @@ const { variant = 'page', title, subtitle, showButtons = false } = Astro.props;
     <div style="position:absolute; top:0; left:0; right:0; height:2px; background:var(--red);"></div>
 
     <!-- Content -->
-    <div class="relative z-10 container mx-auto px-4 text-center">
+    <div class="hero-page-content relative z-10 container mx-auto px-4">
 
       <!-- Eyebrow -->
-      <div class="hero-divider justify-center mb-6">
+      <div class="hero-divider mb-6">
         <div class="divider-line"></div>
         <div class="divider-dot"></div>
         <div class="divider-line" style="background:linear-gradient(270deg, transparent, var(--red), transparent)"></div>
@@ -625,13 +678,6 @@ const { variant = 'page', title, subtitle, showButtons = false } = Astro.props;
           </p>
         </div>
       )}
-
-      <!-- Bottom decorative -->
-      <div class="hero-divider justify-center mt-10">
-        <div class="divider-line"></div>
-        <div class="divider-dot"></div>
-        <div class="divider-line" style="background:linear-gradient(270deg, transparent, var(--red), transparent)"></div>
-      </div>
 
     </div>
 

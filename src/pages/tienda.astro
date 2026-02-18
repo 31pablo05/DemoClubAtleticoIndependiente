@@ -101,51 +101,93 @@ import { products } from '../data/products';
     padding: 5rem 0;
   }
 
-  /* shield display */
-  .shield-display {
+  /* vertical video display */
+  .video-display {
     position: relative;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
   }
-  .shield-outer-ring {
-    position: absolute;
-    width: 220px; height: 220px;
-    border-radius: 50%;
-    border: 1px solid rgba(212,43,43,0.12);
-    animation: ringPulse 4s ease-in-out infinite;
-  }
-  .shield-mid-ring {
-    position: absolute;
-    width: 170px; height: 170px;
-    border-radius: 50%;
-    border: 1px solid rgba(212,43,43,0.2);
-    animation: ringPulse 4s ease-in-out infinite 0.7s;
-  }
-  .shield-inner-glow {
-    position: absolute;
-    width: 120px; height: 120px;
-    border-radius: 50%;
-    background: radial-gradient(circle, var(--red) 0%, transparent 70%);
-    opacity: 0.15;
-    filter: blur(20px);
-    animation: glowPulse 3s ease-in-out infinite;
-  }
-  .shield-img {
-    width: 110px; height: 110px;
-    object-fit: contain;
+  .video-phone-frame {
     position: relative;
+    width: 280px;
+    border-radius: 24px;
+    overflow: hidden;
+    border: 2px solid rgba(212,43,43,0.35);
+    box-shadow:
+      0 0 0 1px rgba(212,43,43,0.1),
+      0 0 40px rgba(212,43,43,0.2),
+      0 30px 80px rgba(0,0,0,0.7);
+  }
+  .video-phone-frame video {
+    width: 100%;
+    display: block;
+    aspect-ratio: 9/16;
+    object-fit: cover;
+  }
+  /* red corner accent */
+  .video-phone-frame::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 0 48px 48px 0;
+    border-color: transparent var(--red) transparent transparent;
+    opacity: 0.8;
+    z-index: 3;
+  }
+  /* bottom gradient overlay */
+  .video-phone-frame::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 30%;
+    background: linear-gradient(to top, rgba(8,8,8,0.8), transparent);
     z-index: 2;
-    filter: drop-shadow(0 0 24px rgba(212,43,43,0.6));
+    pointer-events: none;
   }
-  @keyframes ringPulse {
-    0%,100% { transform: scale(1); opacity:1; }
-    50%      { transform: scale(1.05); opacity:0.5; }
+  /* live badge */
+  .video-badge {
+    position: absolute;
+    bottom: 1.2rem;
+    left: 1rem;
+    z-index: 4;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(212,43,43,0.3);
+    border-radius: 2px;
+    padding: 0.3rem 0.7rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.8);
   }
-  @keyframes glowPulse {
-    0%,100% { opacity:0.15; }
-    50%      { opacity:0.25; }
+  .video-badge .badge-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--red);
+    box-shadow: 0 0 6px var(--red);
+    animation: badgeBlink 1.5s ease-in-out infinite;
+  }
+  @keyframes badgeBlink {
+    0%,100% { opacity:1; }
+    50%      { opacity:0.3; }
+  }
+  /* glow behind frame */
+  .video-glow {
+    position: absolute;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: var(--red);
+    opacity: 0.06;
+    filter: blur(60px);
+    pointer-events: none;
   }
 
   /* intro text card */
@@ -434,19 +476,17 @@ import { products } from '../data/products';
     <div class="container mx-auto px-4 relative z-10">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
 
-        <!-- Shield display -->
-        <div class="shield-display reveal">
-          <div class="shield-outer-ring"></div>
-          <div class="shield-mid-ring"></div>
-          <div class="shield-inner-glow"></div>
-          <img src="/logo/escudoindep.svg" alt="Escudo Club Atlético Independiente" class="shield-img" />
-
-          <!-- year badge below shield -->
-          <div style="margin-top:3rem; text-align:center;">
-            <p class="section-label" style="color:rgba(255,255,255,0.3); font-size:0.6rem;">Desde</p>
-            <p style="font-family:'Bebas Neue',sans-serif; font-size:3.5rem; color:white; line-height:1; letter-spacing:0.08em;">1917</p>
-            <div style="width:2rem;height:2px;background:var(--red);margin:0.4rem auto 0;"></div>
-            <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.65rem; font-weight:700; letter-spacing:0.3em; color:rgba(255,255,255,0.3); text-transform:uppercase; margin-top:0.4rem;">Trelew · Chubut</p>
+        <!-- Video display -->
+        <div class="video-display reveal">
+          <div class="video-glow"></div>
+          <div class="video-phone-frame">
+            <video autoplay muted loop playsinline>
+              <source src="/videos/futbolprimeradivisionmasc.mp4" type="video/mp4" />
+            </video>
+            <div class="video-badge">
+              <div class="badge-dot"></div>
+              Colección oficial
+            </div>
           </div>
         </div>
 

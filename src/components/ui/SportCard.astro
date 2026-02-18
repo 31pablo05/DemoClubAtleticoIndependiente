@@ -12,9 +12,10 @@ interface Props {
     images?: string[];
   };
   variant?: 'compact' | 'full';
+  num?: string;
 }
 
-const { sport, variant = 'compact' } = Astro.props;
+const { sport, variant = 'compact', num = '' } = Astro.props;
 ---
 
 <style>
@@ -206,54 +207,104 @@ const { sport, variant = 'compact' } = Astro.props;
     border-radius: 3px;
     overflow: hidden;
     transition: border-color 0.3s;
+    position: relative;
   }
-  .sc-full:hover { border-color: rgba(212,43,43,0.5); }
+  .sc-full:hover { border-color: rgba(212,43,43,0.4); }
+  .sc-full::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 0;
+    background: var(--red);
+    transition: height 0.4s ease;
+    z-index: 2;
+  }
+  .sc-full:hover::before { height: 100%; }
 
+  /* Mobile: vertical stack */
   .sc-full-header {
     position: relative;
-    height: 26rem;
+    height: 22rem;
     overflow: hidden;
-  }
-  @media (min-width: 768px) {
-    .sc-full-header { height: 38rem; }
+    flex-shrink: 0;
   }
   .sc-full-header img {
     width: 100%; height: 100%;
     object-fit: cover;
     object-position: center top;
+    transition: transform 0.5s ease;
   }
+  .sc-full:hover .sc-full-header img { transform: scale(1.04); }
   .sc-full-header-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.3) 50%, transparent 100%);
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(10,10,10,0.9) 0%, rgba(10,10,10,0.15) 60%, transparent 100%);
   }
   .sc-full-header-content {
     position: absolute;
     bottom: 0; left: 0; right: 0;
-    padding: 1.5rem 2rem;
+    padding: 1.2rem 1.5rem;
   }
   .sc-full-icon-bg {
-    width: 100%; height: 26rem;
+    width: 100%; height: 22rem;
     display: flex; align-items: center; justify-content: center;
     background: linear-gradient(135deg, #1a0000 0%, var(--card) 100%);
-    font-size: 6rem;
-    position: relative;
-    overflow: hidden;
+    font-size: 5rem;
+    position: relative; overflow: hidden;
   }
   .sc-full-icon-bg::after {
     content: '';
-    position: absolute;
-    inset: 0;
+    position: absolute; inset: 0;
     background: radial-gradient(circle at center, rgba(212,43,43,0.08) 0%, transparent 70%);
   }
   .sc-full-name {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.8rem;
+    font-size: 2rem;
     letter-spacing: 0.05em;
     color: white;
     line-height: 1;
   }
-  .sc-full-body { padding: 2rem; }
+  .sc-full-body { padding: 1.5rem; }
+
+  /* Desktop: horizontal layout — image left, info right */
+  @media (min-width: 768px) {
+    .sc-full {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      min-height: 280px;
+    }
+    .sc-full-header {
+      height: 100%;
+      min-height: 280px;
+    }
+    .sc-full-header img {
+      object-position: center center;
+    }
+    .sc-full-header-content {
+      padding: 1.5rem 2rem;
+    }
+    .sc-full-name {
+      font-size: 2.4rem;
+    }
+    .sc-full-body {
+      padding: 2rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    /* number accent top-right */
+    .sc-full::after {
+      content: attr(data-num);
+      position: absolute;
+      top: 1rem; right: 1.5rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 5rem;
+      color: rgba(212,43,43,0.05);
+      line-height: 1;
+      pointer-events: none;
+      transition: color 0.3s;
+    }
+    .sc-full:hover::after { color: rgba(212,43,43,0.1); }
+  }
 
   .sc-full-desc {
     font-family: 'Barlow', sans-serif;
@@ -394,7 +445,7 @@ const { sport, variant = 'compact' } = Astro.props;
 
 ) : (
 
-  <article class="sc-full">
+  <article class="sc-full" data-num={num}>
 
     <!-- Header -->
     <div class="sc-full-header">
