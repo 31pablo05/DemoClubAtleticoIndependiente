@@ -64,9 +64,12 @@ const { sport, variant = 'compact' } = Astro.props;
   /* image area */
   .sc-img-wrap {
     position: relative;
-    height: 11rem;
+    height: 18rem;
     overflow: hidden;
     flex-shrink: 0;
+  }
+  @media (min-width: 768px) {
+    .sc-img-wrap { height: 22rem; }
   }
   .sc-img-wrap img {
     width: 100%; height: 100%;
@@ -208,12 +211,16 @@ const { sport, variant = 'compact' } = Astro.props;
 
   .sc-full-header {
     position: relative;
-    height: 16rem;
+    height: 26rem;
     overflow: hidden;
+  }
+  @media (min-width: 768px) {
+    .sc-full-header { height: 38rem; }
   }
   .sc-full-header img {
     width: 100%; height: 100%;
     object-fit: cover;
+    object-position: center top;
   }
   .sc-full-header-overlay {
     position: absolute;
@@ -226,7 +233,7 @@ const { sport, variant = 'compact' } = Astro.props;
     padding: 1.5rem 2rem;
   }
   .sc-full-icon-bg {
-    width: 100%; height: 16rem;
+    width: 100%; height: 26rem;
     display: flex; align-items: center; justify-content: center;
     background: linear-gradient(135deg, #1a0000 0%, var(--card) 100%);
     font-size: 6rem;

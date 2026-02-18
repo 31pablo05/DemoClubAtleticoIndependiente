@@ -7,7 +7,7 @@ export const sports = [
     categories: ['Sub-6', 'Sub-8', 'Sub-10', 'Sub-12', 'Sub-14'],
     schedule: 'Lunes a Viernes 10:00–12:00 | 17:00–18:00',
     color: 'red',
-    images: ['/imagenes/infantiles/infantil1.jpg', '/imagenes/infantiles/infantil2.jpg', '/imagenes/infantiles/infantil3.jpg'],
+    images: ['/imagenes/infatiles/infantil2.jpg', '/imagenes/infatiles/infantil1.jpg', '/imagenes/infatiles/infantil3.jpg'],
     detailedSchedule: {
       'Lunes': ['10:00-12:00', '17:00-18:00'],
       'Martes': ['10:00-12:00', '17:00-18:00'],
@@ -51,7 +51,7 @@ export const sports = [
     categories: ['Mini', 'Infantil', 'Juvenil', 'Mayor'],
     schedule: 'Lunes, Miércoles y Viernes 16:00–18:00',
     color: 'blue',
-    images: ['/imagenes/handball/hand1.jpg', '/imagenes/handball/hand2.jpg', '/imagenes/handball/hand3.jpg', '/imagenes/handball/hand4.jpg', '/imagenes/handball/hand5.jpg'],
+    images: ['/imagenes/handball/hand4.jpg', '/imagenes/handball/hand2.jpg', '/imagenes/handball/hand3.jpg', '/imagenes/handball/hand4.jpg', '/imagenes/handball/hand5.jpg'],
     detailedSchedule: {
       'Lunes': ['16:00-18:00'],
       'Miércoles': ['16:00-18:00'],
@@ -66,7 +66,7 @@ export const sports = [
     categories: ['Infantil', 'Juvenil', 'Mayor'],
     schedule: 'Martes y Jueves 15:00–17:00',
     color: 'pink',
-    images: ['/imagenes/hockey/hock1.jpg', '/imagenes/hockey/hock2.jpg', '/imagenes/hockey/hock3.jpg', '/imagenes/hockey/hock4.jpg', '/imagenes/hockey/hock5.jpg', '/imagenes/hockey/hock6.jpg', '/imagenes/hockey/hock7.jpg', '/imagenes/hockey/hock8.jpg', '/imagenes/hockey/hock9.jpg', '/imagenes/hockey/hock10.jpg'],
+    images: ['/imagenes/hockey/hock8.jpg', '/imagenes/hockey/hock2.jpg', '/imagenes/hockey/hock3.jpg', '/imagenes/hockey/hock4.jpg', '/imagenes/hockey/hock5.jpg', '/imagenes/hockey/hock6.jpg', '/imagenes/hockey/hock7.jpg', '/imagenes/hockey/hock8.jpg', '/imagenes/hockey/hock9.jpg', '/imagenes/hockey/hock10.jpg'],
     detailedSchedule: {
       'Martes': ['15:00-17:00'],
       'Jueves': ['15:00-17:00']
@@ -80,12 +80,31 @@ export const sports = [
     categories: ['Inicial', 'Intermedio', 'Avanzado'],
     schedule: 'Lunes a Viernes 14:00–16:00',
     color: 'purple',
+    images: ['/imagenes/patin/pat1.jpg'],
     detailedSchedule: {
       'Lunes': ['14:00-16:00'],
       'Martes': ['14:00-16:00'],
       'Miércoles': ['14:00-16:00'],
       'Jueves': ['14:00-16:00'],
       'Viernes': ['14:00-16:00']
+    }
+  },
+  {
+    id: 'inferiores',
+    name: 'Fútbol Inferiores',
+    icon: '⚽🏆',
+    description: 'Divisiones de ascenso del fútbol masculino. Formación táctica y competitiva para jugadores que buscan dar el salto al fútbol de alto nivel.',
+    categories: ['9na División', '8va División', '7ma División'],
+    schedule: 'Lunes a Viernes 17:00–19:00 | Sábados según fixture',
+    color: 'red',
+    images: ['/imagenes/primera/primera1.jpg', '/imagenes/primera/prim2.jpg', '/imagenes/primera/prim3.jpg'],
+    detailedSchedule: {
+      'Lunes': ['17:00-19:00'],
+      'Martes': ['17:00-19:00'],
+      'Miércoles': ['17:00-19:00'],
+      'Jueves': ['17:00-19:00'],
+      'Viernes': ['17:00-19:00'],
+      'Sábado': ['Según fixture']
     }
   },
   {
