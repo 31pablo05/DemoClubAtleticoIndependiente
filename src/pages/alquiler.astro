@@ -342,130 +342,47 @@ import Hero from '../components/ui/Hero.astro';
   }
   .notice-item::before { content:'—'; color:rgba(212,43,43,0.5); flex-shrink:0; }
 
-  /* ── Video/photo showcase ────────────────────────────── */
+  /* ── Video showcase rediseño ───────────────────────────── */
   .showcase-section {
     position:relative; background:var(--black);
     padding:5.5rem 0; overflow:hidden;
   }
-  .showcase-grid {
+
+  /* ── Video showcase grid ────────────────────────────── */
+  .showcase-media-grid {
     display:grid;
-    grid-template-columns:1fr;
+    grid-template-columns:1fr 1fr;
     gap:0.75rem;
   }
-  @media(min-width:768px) {
-    .showcase-grid {
-      grid-template-columns:2fr 1fr;
-      grid-template-rows:auto auto;
-    }
-    .showcase-main { grid-row:span 2; }
-    .showcase-vertical { grid-row:span 2; }
-  }
-  /* vertical phone-frame slot */
-  .showcase-vertical {
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:transparent !important;
-    border:none !important;
-    aspect-ratio:auto !important;
-    padding:0.5rem 0;
-  }
-  .showcase-phone-wrap {
+
+  .showcase-img-card {
     position:relative;
-    width:100%;
-    max-width:200px;
-    border-radius:20px;
+    border-radius:6px;
     overflow:hidden;
-    border:2px solid rgba(212,43,43,0.35);
-    box-shadow:0 0 0 1px rgba(212,43,43,0.1), 0 0 30px rgba(212,43,43,0.15), 0 20px 60px rgba(0,0,0,0.7);
-  }
-  .showcase-phone-wrap video {
-    width:100%;
-    display:block;
-    aspect-ratio:9/16;
-    object-fit:cover;
-    filter:brightness(0.85) !important;
-    transform:none !important;
-    transition:none !important;
-  }
-  .showcase-phone-wrap::before {
-    content:'';
-    position:absolute; top:0; right:0;
-    width:0; height:0;
-    border-style:solid;
-    border-width:0 40px 40px 0;
-    border-color:transparent var(--red) transparent transparent;
-    opacity:0.8; z-index:3;
-  }
-  .showcase-phone-wrap::after {
-    content:'';
-    position:absolute; bottom:0; left:0; right:0;
-    height:30%;
-    background:linear-gradient(to top, rgba(8,8,8,0.8), transparent);
-    z-index:2; pointer-events:none;
-  }
-  .showcase-phone-label {
-    position:absolute; bottom:0.8rem; left:0.8rem; z-index:4;
-    font-family:'Bebas Neue',sans-serif;
-    font-size:0.75rem; letter-spacing:0.1em; color:white;
-  }
-  .showcase-item {
-    position:relative; overflow:hidden;
-    border-radius:3px; border:1px solid var(--border);
-    aspect-ratio:16/9;
+    border:1px solid var(--border);
+    aspect-ratio:4/3;
     background:var(--card);
     transition:border-color 0.3s;
   }
-  .showcase-item:hover { border-color:rgba(212,43,43,0.5); }
-  .showcase-main { aspect-ratio:auto; min-height:22rem; }
-  @media(min-width:768px) { .showcase-main { aspect-ratio:auto; } }
-  .showcase-item video,
-  .showcase-item img {
-    width:100%; height:100%; object-fit:cover;
-    transition:transform 0.5s; filter:brightness(0.75);
+  .showcase-img-card:hover { border-color:rgba(212,43,43,0.4); }
+  .showcase-img-card img,
+  .showcase-img-card video {
+    width:100%; height:100%;
+    object-fit:cover;
+    filter:brightness(0.75);
+    transition:transform 0.5s, filter 0.3s;
   }
-  .showcase-item:hover video,
-  .showcase-item:hover img { transform:scale(1.04); filter:brightness(0.9); }
-  .showcase-overlay {
+  .showcase-img-card:hover img,
+  .showcase-img-card:hover video { transform:scale(1.05); filter:brightness(0.9); }
+  .showcase-img-card .sc-overlay {
     position:absolute; inset:0;
-    background:linear-gradient(to top, rgba(10,10,10,0.7) 0%, transparent 50%);
+    background:linear-gradient(to top, rgba(10,10,10,0.7) 0%, transparent 55%);
     z-index:1;
   }
-  .showcase-label {
-    position:absolute; bottom:0.8rem; left:0.8rem; z-index:2;
+  .showcase-img-card .sc-lbl {
+    position:absolute; bottom:0.6rem; left:0.8rem; z-index:2;
     font-family:'Bebas Neue',sans-serif;
-    font-size:0.85rem; letter-spacing:0.1em; color:white;
-  }
-  /* play icon on video */
-  .play-icon {
-    position:absolute; top:50%; left:50%;
-    transform:translate(-50%,-50%);
-    width:48px; height:48px;
-    border:1.5px solid rgba(255,255,255,0.3);
-    border-radius:50%;
-    display:flex; align-items:center; justify-content:center;
-    color:white; z-index:2;
-    background:rgba(0,0,0,0.3);
-    backdrop-filter:blur(4px);
-    transition:border-color 0.2s, background 0.2s;
-  }
-  .showcase-item:hover .play-icon {
-    border-color:var(--red);
-    background:rgba(212,43,43,0.2);
-  }
-  /* placeholder for items without media */
-  .media-placeholder {
-    width:100%; height:100%; min-height:10rem;
-    display:flex; flex-direction:column;
-    align-items:center; justify-content:center; gap:0.5rem;
-    background:linear-gradient(135deg, #1a0000 0%, var(--card) 100%);
-  }
-  .media-placeholder-icon { font-size:3rem; opacity:0.3; }
-  .media-placeholder-text {
-    font-family:'Barlow Condensed',sans-serif;
-    font-size:0.6rem; font-weight:700;
-    letter-spacing:0.25em; text-transform:uppercase;
-    color:rgba(255,255,255,0.15);
+    font-size:0.75rem; letter-spacing:0.1em; color:white;
   }
 
   /* ── CTA ─────────────────────────────────────────────── */
@@ -578,7 +495,7 @@ import Hero from '../components/ui/Hero.astro';
             type: 'Fútbol 11',
             icon: '⚽',
             video: '/videos/cancha-principal.mp4',
-            image: '/imagenes/primera/primera1.jpg',
+            image: '/imagenes/club/canchas.jpg',
             features: ['Césped natural','Iluminación profesional','Tribunas','Vestuarios amplios','Capacidad: 11 vs 11'],
             wa: 'Hola!%20Quiero%20consultar%20el%20alquiler%20de%20la%20Cancha%20Principal'
           },
@@ -587,7 +504,7 @@ import Hero from '../components/ui/Hero.astro';
             type: 'Fútbol 7',
             icon: '🥅',
             video: '/videos/cancha-2.mp4',
-            image: '/imagenes/infatiles/infantil1.jpg',
+            image: '/imagenes/club/cancahs2.jpg',
             features: ['Césped sintético','Iluminación LED','Vestuarios','Estacionamiento','Capacidad: 7 vs 7'],
             wa: 'Hola!%20Quiero%20consultar%20el%20alquiler%20de%20Cancha%20N%C2%B02'
           },
@@ -596,7 +513,7 @@ import Hero from '../components/ui/Hero.astro';
             type: 'Multiuso Techado',
             icon: '🏀',
             video: '/videos/polideportivo.mp4',
-            image: '/imagenes/basquet/basquet1.jpg',
+            image: '/imagenes/club/cancahgim1.webp',
             features: ['Básquet · Handball · Fútbol Sala','Piso reglamentario','Vestuarios','Gradas','Techado'],
             wa: 'Hola!%20Quiero%20consultar%20el%20alquiler%20del%20Polideportivo'
           }
@@ -659,42 +576,46 @@ import Hero from '../components/ui/Hero.astro';
     <div style="position:absolute;width:40vw;height:40vw;border-radius:50%;background:var(--red);opacity:0.04;filter:blur(80px);bottom:-10%;right:-5%;pointer-events:none;"></div>
     <div class="container mx-auto px-4 relative z-10">
 
-      <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-10 gap-4 reveal">
-        <div>
+      <div class="reveal reveal-delay-1">
+
+        <!-- Título -->
+        <div class="mb-8">
           <p class="section-label mb-2">Mirá nuestras instalaciones</p>
-          <h2 class="display-title text-white" style="font-size:clamp(2.5rem,5vw,4rem); line-height:1.02">
+          <h2 class="display-title text-white" style="font-size:clamp(2.5rem,4vw,3.8rem); line-height:1.02">
             LAS CANCHAS<br><span style="color:var(--red)">EN ACCIÓN</span>
           </h2>
         </div>
-      </div>
 
-      <div class="showcase-grid reveal reveal-delay-1">
-        <!-- Main: video del club -->
-        <div class="showcase-item showcase-main">
-          <video
-            src="/videos/elClub.mp4"
-            autoplay muted loop playsinline
-            style="width:100%;height:100%;object-fit:cover;filter:brightness(0.75);"
-          ></video>
-          <div class="showcase-overlay"></div>
-          <div class="showcase-label">CLUB ATLÉTICO INDEPENDIENTE</div>
-        </div>
+        <!-- Grid 2×2 de medios -->
+        <div class="showcase-media-grid">
 
-        <!-- Secondary slots -->
-        <div class="showcase-item showcase-vertical">
-          <div class="showcase-phone-wrap">
+          <div class="showcase-img-card">
             <video autoplay muted loop playsinline src="/videos/cancha1.mp4"></video>
-            <div class="showcase-phone-label">Cancha de Fútbol 7</div>
+            <div class="sc-overlay"></div>
+            <div class="sc-lbl">Cancha de Fútbol 7</div>
           </div>
+
+          <div class="showcase-img-card">
+            <video src="/videos/elClub.mp4" autoplay muted loop playsinline></video>
+            <div class="sc-overlay"></div>
+            <div class="sc-lbl">Club Atlético Independiente</div>
+          </div>
+
+          <div class="showcase-img-card">
+            <img src="/imagenes/club/canchas.jpg" alt="Cancha Principal" loading="lazy" />
+            <div class="sc-overlay"></div>
+            <div class="sc-lbl">Cancha Principal</div>
+          </div>
+
+          <div class="showcase-img-card">
+            <img src="/imagenes/club/cancahagim.webp" alt="Polideportivo" loading="lazy" />
+            <div class="sc-overlay"></div>
+            <div class="sc-lbl">Polideportivo</div>
+          </div>
+
         </div>
 
-        <div class="showcase-item">
-          <img src="/imagenes/handball/hand1.jpg" alt="Polideportivo" loading="lazy" />
-          <div class="showcase-overlay"></div>
-          <div class="showcase-label">Polideportivo — Multiuso</div>
-        </div>
       </div>
-
 
     </div>
   </section>

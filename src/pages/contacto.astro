@@ -45,6 +45,16 @@ import Layout from '../components/layout/Layout.astro';
     background: var(--black);
   }
 
+  .hero-bg-img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center 70%;
+    opacity: 0.45;
+    filter: brightness(0.7);
+    z-index: 0;
+  }
+
   .hero-grid {
     position: absolute; inset: 0;
     background-image:
@@ -332,58 +342,48 @@ import Layout from '../components/layout/Layout.astro';
   .map-card {
     background: var(--card);
     border: 1px solid var(--border);
-    padding: 3rem 2.5rem;
-    text-align: center;
-    position: relative; overflow: hidden;
+    overflow: hidden;
     flex: 1;
     display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    min-height: 340px;
+    min-height: 380px;
     transition: border-color 0.3s;
   }
   .map-card:hover { border-color: var(--border-r); }
 
-  .map-pin {
-    font-size: 3.5rem; margin-bottom: 1.2rem;
+  .map-card iframe {
+    width: 100%; flex: 1;
+    min-height: 280px;
+    border: none;
     display: block;
-    animation: float 3s ease-in-out infinite;
-  }
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50%       { transform: translateY(-8px); }
+    filter: grayscale(1) invert(1) brightness(0.85) contrast(0.9);
   }
 
-  .map-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.2rem; letter-spacing: 0.06em; color: var(--red);
-    margin-bottom: 0.5rem;
+  .map-footer {
+    padding: 1.2rem 1.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid var(--border);
+    gap: 1rem; flex-wrap: wrap;
   }
-  .map-sub {
+  .map-address {
     font-family: 'Barlow', sans-serif;
-    font-size: 0.85rem; color: #666; margin-bottom: 1.8rem; line-height: 1.6;
+    font-size: 0.8rem; color: #777; line-height: 1.5;
   }
+  .map-address strong { color: #ccc; display: block; margin-bottom: 2px; }
+
   .map-btn {
     display: inline-flex; align-items: center; gap: 8px;
     background: var(--red);
     color: #fff; text-decoration: none;
-    padding: 0.8rem 2rem;
+    padding: 0.65rem 1.4rem;
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.1rem; letter-spacing: 0.08em;
+    font-size: 1rem; letter-spacing: 0.08em; white-space: nowrap;
     transition: background 0.25s, transform 0.25s, box-shadow 0.25s;
+    flex-shrink: 0;
   }
   .map-btn:hover {
     background: #b00018;
     transform: translateY(-2px);
     box-shadow: 0 8px 24px var(--red-glow);
-  }
-
-  .map-bg-text {
-    position: absolute; bottom: -0.1em; right: 0;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 10rem; letter-spacing: -0.02em;
-    color: transparent;
-    -webkit-text-stroke: 1px rgba(208,2,27,0.07);
-    line-height: 1; pointer-events: none; user-select: none;
   }
 
   /* ── FAQ ──────────────────────────────────────────────── */
@@ -510,6 +510,7 @@ import Layout from '../components/layout/Layout.astro';
 
   <!-- ── HERO ──────────────────────────────────────────── -->
   <section class="hero">
+    <img src="/imagenes/club/contactoubi.webp" class="hero-bg-img" alt="" />
     <div class="hero-grid"></div>
     <div class="hero-radial"></div>
     <div class="hero-fade"></div>
@@ -529,7 +530,7 @@ import Layout from '../components/layout/Layout.astro';
   <!-- ── TICKER ─────────────────────────────────────────── -->
   <div class="ticker-wrap">
     <div class="ticker-track">
-      {Array(3).fill(['Whatsapp: 280 486 7740', 'Lun–Vie: 8:00–22:00', 'Sáb: 8:00–18:00', 'Trelew · Chubut · Patagonia Argentina', 'Inscripciones Abiertas', 'Alquiler de Canchas Disponible']).flat().map(t => (
+      {Array(3).fill(['Whatsapp: 0280 430-6350', 'Lun–Vie: 8:00–22:00', 'Sáb: 8:00–18:00', 'Trelew · Chubut · Patagonia Argentina', 'Inscripciones Abiertas', 'Alquiler de Canchas Disponible']).flat().map(t => (
         <span class="ticker-item">{t}</span>
       ))}
     </div>
@@ -554,7 +555,7 @@ import Layout from '../components/layout/Layout.astro';
             </div>
             <div>
               <div class="wa-name">WHATSAPP</div>
-              <div class="wa-sub">Respuesta inmediata · 280 486 7740</div>
+              <div class="wa-sub">Respuesta inmediata · 0280 430-6350</div>
             </div>
           </div>
           <a href="https://wa.me/542804306350?text=Hola!%20Tengo%20una%20consulta..." target="_blank" rel="noopener noreferrer" class="wa-btn">
@@ -576,7 +577,7 @@ import Layout from '../components/layout/Layout.astro';
             </div>
             <div class="card-label">Sede del Club</div>
             <div class="card-title">UBICACIÓN</div>
-            <div class="card-desc">Trelew, Chubut<br/><strong>Patagonia Argentina</strong></div>
+            <div class="card-desc">Soberanía Nacional 210<br/>U9100 Trelew, Chubut<br/><strong>Patagonia Argentina</strong></div>
           </div>
 
           <div class="info-card reveal reveal-d3">
@@ -623,17 +624,26 @@ import Layout from '../components/layout/Layout.astro';
       <div class="right-col">
         <!-- Map card -->
         <div class="map-card reveal reveal-d1">
-          <span class="map-pin">📍</span>
-          <div class="map-title">VISITANOS</div>
-          <div class="map-sub">Club Atlético Independiente<br/>Trelew · Chubut · Patagonia</div>
-          <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" class="map-btn">
-            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-            </svg>
-            Ver en Google Maps
-          </a>
-          <div class="map-bg-text">TRW</div>
+          <iframe
+            src="https://maps.google.com/maps?q=Soberania+Nacional+210+Trelew+Chubut+Argentina&t=&z=16&ie=UTF8&iwloc=&output=embed"
+            allowfullscreen
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Ubicación Club Atlético Independiente"
+          ></iframe>
+          <div class="map-footer">
+            <div class="map-address">
+              <strong>Club Atlético Independiente</strong>
+              Soberanía Nacional 210, U9100 Trelew, Chubut
+            </div>
+            <a href="https://maps.google.com/maps?q=Soberania+Nacional+210+Trelew+Chubut+Argentina" target="_blank" rel="noopener noreferrer" class="map-btn">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+              Abrir en Maps
+            </a>
+          </div>
         </div>
 
         <!-- Quick info box -->
