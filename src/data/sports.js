@@ -97,7 +97,7 @@ export const sports = [
     categories: ['9na División', '8va División', '7ma División'],
     schedule: 'Lunes a Viernes 17:00–19:00 | Sábados según fixture',
     color: 'red',
-    images: ['/imagenes/primera/primera1.jpg', '/imagenes/primera/prim2.jpg', '/imagenes/primera/prim3.jpg'],
+    images: ['/imagenes/inferiores/inf1.jpg', '/imagenes/inferiores/inf2.jpg', '/imagenes/inferiores/inf3.jpg'],
     detailedSchedule: {
       'Lunes': ['17:00-19:00'],
       'Martes': ['17:00-19:00'],
