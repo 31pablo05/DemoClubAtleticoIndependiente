@@ -306,6 +306,58 @@ import Layout from '../components/layout/Layout.astro';
     }
   }
 
+  /* ── Mobile: imagen primero, texto debajo ── */
+  @media (max-width: 767px) {
+    .hero {
+      height: auto;
+      min-height: auto;
+      flex-direction: column;
+      align-items: stretch;
+      padding-top: 0;
+    }
+    /* Images: quitar absolute, ponerlas primero en el flujo */
+    .hero-imgs {
+      position: relative;
+      right: auto; left: auto; bottom: auto; top: auto;
+      transform: none;
+      width: 100%;
+      height: clamp(220px, 58vw, 340px);
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;
+      gap: 0;
+      z-index: 3;
+      order: 1;
+      padding-top: 4.5rem; /* espacio para el header fijo */
+      box-sizing: border-box;
+    }
+    .hero-imgs::before,
+    .hero-imgs::after { display: none; }
+    .hero-img-main {
+      grid-column: 1; grid-row: 1;
+      border: none;
+    }
+    .hero-img-main img {
+      object-position: center 30%;
+      filter: brightness(0.75) grayscale(0.1);
+    }
+    .hero-img-main::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(8,8,8,0.55) 0%, rgba(8,8,8,0.05) 60%, transparent 100%);
+      pointer-events: none;
+    }
+    .hero-img-sec { display: none; }
+    /* Texto: viene debajo de la imagen */
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      order: 2;
+      padding: 2rem 1.25rem 3rem;
+    }
+    .hero-year { display: none; }
+    .scroll-cta { display: none; }
+  }
+
   .scroll-cta {
     position: absolute;
     bottom: 32px;

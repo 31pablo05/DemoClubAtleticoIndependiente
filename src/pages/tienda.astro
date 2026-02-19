@@ -67,6 +67,144 @@ import { products } from '../data/products';
   .reveal-delay-3 { transition-delay: 0.3s; }
   .reveal-delay-4 { transition-delay: 0.4s; }
 
+  /* ── Video Hero ─────────────────────────────────────── */
+  .video-hero {
+    position: relative;
+    width: 100%;
+    height: 100svh;
+    min-height: 560px;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    background: var(--black);
+  }
+  .vh-video {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    opacity: 0.75;
+  }
+  .vh-overlay {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(to top, rgba(10,10,10,1) 0%, rgba(10,10,10,0.65) 35%, rgba(10,10,10,0.1) 65%, rgba(10,10,10,0.5) 100%);
+    z-index: 1;
+  }
+  .vh-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(212,43,43,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(212,43,43,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: 2; pointer-events: none;
+  }
+  .vh-noise {
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    z-index: 2; pointer-events: none;
+  }
+  .vh-top-line {
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 3px; background: var(--red); z-index: 10;
+  }
+  .vh-corner {
+    position: absolute; width: 2.8rem; height: 2.8rem;
+    z-index: 10; pointer-events: none;
+  }
+  .vh-corner-tl { top: 1.2rem; left: 1.2rem; border-top: 2px solid var(--red); border-left: 2px solid var(--red); }
+  .vh-corner-tr { top: 1.2rem; right: 1.2rem; border-top: 2px solid var(--red); border-right: 2px solid var(--red); }
+  .vh-content {
+    position: relative; z-index: 5;
+    text-align: center;
+    padding: 0 1.5rem 5.5rem;
+    width: 100%;
+    max-width: 700px;
+    animation: vhFadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.15s both;
+  }
+  @keyframes vhFadeUp {
+    from { opacity: 0; transform: translateY(36px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .vh-eyebrow {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.42em; text-transform: uppercase;
+    color: var(--red); margin-bottom: 1.2rem;
+  }
+  .vh-eyebrow::before,
+  .vh-eyebrow::after {
+    content: ''; display: block;
+    width: 2rem; height: 2px; background: var(--red); flex-shrink: 0;
+  }
+  .vh-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4.5rem, 14vw, 9.5rem);
+    line-height: 0.93; letter-spacing: 0.04em;
+    color: #f5f5f5;
+    text-shadow: 0 4px 40px rgba(0,0,0,0.7);
+    margin-bottom: 1.2rem;
+  }
+  .vh-title .red-line {
+    color: var(--red); display: block;
+    text-shadow: 0 0 60px rgba(212,43,43,0.5), 0 4px 40px rgba(0,0,0,0.7);
+  }
+  .vh-subtitle {
+    font-family: 'Barlow', sans-serif;
+    font-size: clamp(0.82rem, 2vw, 1rem);
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.06em;
+    max-width: 400px;
+    margin: 0 auto 2rem;
+    line-height: 1.65;
+  }
+  .vh-badge {
+    display: inline-flex; align-items: center; gap: 0.55rem;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(212,43,43,0.4);
+    border-radius: 2px;
+    padding: 0.55rem 1.4rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: rgba(255,255,255,0.8);
+  }
+  .vh-badge .badge-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--red); box-shadow: 0 0 8px var(--red);
+    animation: badgeBlink 1.5s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  .vh-scroll {
+    position: absolute; bottom: 2rem; left: 50%;
+    transform: translateX(-50%);
+    z-index: 6;
+    display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.58rem; font-weight: 700;
+    letter-spacing: 0.35em; text-transform: uppercase;
+    color: rgba(255,255,255,0.2);
+  }
+  .vh-scroll-line {
+    width: 1px; height: 36px;
+    background: linear-gradient(to bottom, var(--red), transparent);
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+  @keyframes scrollLine {
+    0%,100% { opacity:1; transform:scaleY(1); }
+    50% { opacity:0.3; transform:scaleY(0.5); }
+  }
+  @media (max-width: 767px) {
+    .video-hero { min-height: 100svh; }
+    .vh-content { padding-bottom: 4.5rem; }
+    .vh-title { font-size: clamp(3.5rem, 17vw, 5.5rem); }
+    .vh-eyebrow::before, .vh-eyebrow::after { width: 1.2rem; }
+  }
+
   /* ── Brand strip ────────────────────────────────────── */
   .brand-strip {
     background: var(--red);
@@ -100,6 +238,11 @@ import { products } from '../data/products';
     overflow: hidden;
     padding: 5rem 0;
   }
+  @media (max-width: 767px) {
+    .intro-section {
+      padding: 3rem 0 3.5rem;
+    }
+  }
 
   /* vertical video display */
   .video-display {
@@ -107,6 +250,11 @@ import { products } from '../data/products';
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  @media (max-width: 767px) {
+    .video-display {
+      margin-bottom: 0.5rem;
+    }
   }
   .video-phone-frame {
     position: relative;
@@ -118,6 +266,11 @@ import { products } from '../data/products';
       0 0 0 1px rgba(212,43,43,0.1),
       0 0 40px rgba(212,43,43,0.2),
       0 30px 80px rgba(0,0,0,0.7);
+  }
+  @media (max-width: 767px) {
+    .video-phone-frame {
+      width: 220px;
+    }
   }
   .video-phone-frame video {
     width: 100%;
@@ -452,8 +605,36 @@ import { products } from '../data/products';
   }
 </style>
 
-  <!-- Hero -->
-  <Hero variant="page" title="TIENDA OFICIAL" subtitle="Indumentaria oficial y merchandising del club" />
+  <!-- Video Hero -->
+  <section class="video-hero">
+    <video class="vh-video" autoplay muted loop playsinline>
+      <source src="/videos/futbolprimeradivisionmasc.mp4" type="video/mp4" />
+    </video>
+    <div class="vh-overlay"></div>
+    <div class="vh-grid"></div>
+    <div class="vh-noise"></div>
+    <div class="vh-top-line"></div>
+    <div class="vh-corner vh-corner-tl"></div>
+    <div class="vh-corner vh-corner-tr"></div>
+
+    <div class="vh-content">
+      <div class="vh-eyebrow">Coleccion oficial 2025</div>
+      <h1 class="vh-title">
+        TIENDA
+        <span class="red-line">OFICIAL</span>
+      </h1>
+      <p class="vh-subtitle">Indumentaria y merchandising del Club Atlético Independiente de Trelew</p>
+      <div class="vh-badge">
+        <div class="badge-dot"></div>
+        Disponible ahora
+      </div>
+    </div>
+
+    <div class="vh-scroll">
+      <div class="vh-scroll-line"></div>
+      scroll
+    </div>
+  </section>
 
   <!-- Ticker -->
   <div class="brand-strip">
@@ -474,57 +655,36 @@ import { products } from '../data/products';
     <div style="position:absolute;width:30vw;height:30vw;border-radius:50%;background:var(--red);opacity:0.04;filter:blur:60px;bottom:-5%;left:-5%;pointer-events:none;"></div>
 
     <div class="container mx-auto px-4 relative z-10">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-
-        <!-- Video display -->
-        <div class="video-display reveal">
-          <div class="video-glow"></div>
-          <div class="video-phone-frame">
-            <video autoplay muted loop playsinline>
-              <source src="/videos/futbolprimeradivisionmasc.mp4" type="video/mp4" />
-            </video>
-            <div class="video-badge">
-              <div class="badge-dot"></div>
-              Colección oficial
+      <div class="max-w-3xl mx-auto text-center reveal">
+        <p class="section-label mb-3">Colección oficial</p>
+        <h2 class="display-title text-white mb-4" style="font-size:clamp(2.5rem,5vw,4rem); line-height:1.02">
+          VESTÍ LOS<br><span style="color:var(--red)">COLORES</span>
+        </h2>
+        <p class="body-text mb-8" style="font-size:0.93rem; line-height:1.75; color:rgba(255,255,255,0.45); max-width:480px; margin:0 auto 2rem;">
+          Llevá los colores de Independiente con orgullo. Indumentaria de calidad premium para entrenamientos, competencias y uso diario.
+        </p>
+        <!-- Feature pills -->
+        <div style="display:flex; flex-wrap:wrap; gap:0.5rem; justify-content:center; margin-bottom:2.5rem;">
+          {['Calidad premium','Diseño oficial','Todos los talles','Entrega en el club'].map(f => (
+            <div class="feature-pill">
+              <div class="dot"></div>
+              {f}
             </div>
-          </div>
+          ))}
         </div>
-
-        <!-- Text content -->
-        <div class="reveal reveal-delay-2">
-          <p class="section-label mb-3">Colección oficial</p>
-          <h2 class="display-title text-white mb-2" style="font-size:clamp(2.5rem,5vw,4.5rem); line-height:1.02">
-            VESTÍ LOS<br><span style="color:var(--red)">COLORES</span>
-          </h2>
-          <p class="body-text text-white mb-8" style="font-size:0.95rem; line-height:1.7; color:rgba(255,255,255,0.5); max-width:400px;">
-            Llevá los colores de Independiente con orgullo. Indumentaria de calidad premium para entrenamientos, competencias y uso diario. Diseño 100% oficial del club.
-          </p>
-
-          <!-- Feature pills -->
-          <div style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:2rem;">
-            {['Calidad premium','Diseño oficial','Todos los talles','Entrega en el club'].map(f => (
-              <div class="feature-pill">
-                <div class="dot"></div>
-                {f}
-              </div>
-            ))}
-          </div>
-
-          <!-- mini stats -->
-          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:0; border:1px solid var(--border); border-radius:3px; overflow:hidden; background:var(--card);">
-            {[
-              { num: products.length.toString(), label: 'Productos' },
-              { num: '3',    label: 'Categorías' },
-              { num: '24h',  label: 'Respuesta' },
-            ].map((s, i) => (
-              <div style={`padding:1rem; text-align:center; ${i < 2 ? 'border-right:1px solid var(--border);' : ''} position:relative;`}>
-                <div style="font-family:'Bebas Neue',sans-serif; font-size:2rem; color:white; line-height:1;">{s.num}</div>
-                <div style="font-family:'Barlow Condensed',sans-serif; font-size:0.6rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.25); margin-top:0.2rem;">{s.label}</div>
-              </div>
-            ))}
-          </div>
+        <!-- mini stats -->
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:0; border:1px solid var(--border); border-radius:3px; overflow:hidden; background:var(--card); max-width:420px; margin:0 auto;">
+          {[
+            { num: products.length.toString(), label: 'Productos' },
+            { num: '3',    label: 'Categorías' },
+            { num: '24h',  label: 'Respuesta' },
+          ].map((s, i) => (
+            <div style={`padding:1.1rem 0.5rem; text-align:center; ${i < 2 ? 'border-right:1px solid var(--border);' : ''}`}>
+              <div style="font-family:'Bebas Neue',sans-serif; font-size:2rem; color:white; line-height:1;">{s.num}</div>
+              <div style="font-family:'Barlow Condensed',sans-serif; font-size:0.58rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.25); margin-top:0.2rem;">{s.label}</div>
+            </div>
+          ))}
         </div>
-
       </div>
     </div>
   </section>
